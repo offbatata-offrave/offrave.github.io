@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assistir - OFFRAVE</title>
+  
+  <!-- Fontes Google & Ícones -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #08080a;
+      color: #ffffff;
+      min-height: 100vh;
+      padding-bottom: 120px;
+    }
+
+    /* LIQUID GLASS EFFECT */
+    .glass-panel {
+      background: rgba(18, 19, 26, 0.45);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* TOP HEADER */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(8, 8, 10, 0.98) 0%, rgba(8, 8, 10, 0.8) 70%, rgba(8, 8, 10, 0) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .brand-logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      color: #e50914;
+      text-decoration: none;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(229, 9, 20, 0.4);
+    }
+
+    .btn-back {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-back:hover { background: rgba(255, 255, 255, 0.2); }
+
+    /* PLAYER WRAPPER */
+    .player-page-container {
+      max-width: 900px;
+      margin: 80px auto 20px auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .player-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: #000;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .player-box iframe,
+    .player-box video {
+      width: 100%;
+      height: 100%;
+      border: none;
+      object-fit: cover;
+    }
+
+    /* DETALHES DO VÍDEO */
+    .movie-details-card {
+      background: rgba(18, 19, 26, 0.55);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .movie-main-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .movie-category-badge {
+      display: inline-block;
+      background: rgba(229, 9, 20, 0.2);
+      color: #e50914;
+      border: 1px solid rgba(229, 9, 20, 0.4);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: fit-content;
+      text-transform: uppercase;
+    }
+
+    /* BOTÃO ASSISTIR JUNTO NO PARTY */
+    .btn-party-sync {
+      background: #6366f1;
+      color: #ffffff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn-party-sync:hover {
+      background: #4f46e5;
+      transform: scale(1.02);
+    }
+
+    /* BARRA INFERIOR FLUTUANTE (LIQUID GLASS) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 30px);
+      max-width: 450px;
+      height: 62px;
+      border-radius: 35px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 2000;
+      background: rgba(18, 19, 26, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 500;
+      transition: color 0.3s;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .nav-item i { font-size: 1.15rem; }
+    .nav-item:hover, .nav-item.active { color: #ffffff; }
+
+    .loading-msg {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPO -->
+  <header class='top-header'>
+    <a class='brand-logo' href='index.html'>OFFRAVE</a>
+    <a class='btn-back' href='index.html'><i class='fa-solid fa-arrow-left'></i> Voltar</a>
+  </header>
+
+  <div class='player-page-container' id='playerPageContent'>
+    <div class='loading-msg' id='loadingMsg'>Carregando player...</div>
+  </div>
+
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Início</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-tv"></i>
+      <span>Séries</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Filmes</span>
+    </a>
+    <a class="nav-item" href="party.html">
+      <i class="fa-solid fa-users"></i>
+      <span>OFF Party</span>
+    </a>
+    <button class="nav-item" onclick="alert('Use a busca na página inicial')">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Buscar</span>
+    </button>
+  </nav>
+
+  <script>
+    // Pega o ID do filme na URL (ex: player.html?id=1)
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get('id');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!movieId) {
+        document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Nenhum filme selecionado. <a href="index.html" style="color:#e50914;">Voltar ao Início</a></div>';
+        return;
+      }
+
+      fetch('filmes.json')
+        .then(res => res.json())
+        .then(movies => {
+          const movie = movies.find(m => m.id === movieId);
+          const container = document.getElementById('playerPageContent');
+
+          if (!movie) {
+            container.innerHTML = '<div class="loading-msg">Filme não encontrado no catálogo. <a href="index.html" style="color:#e50914;">Voltar ao Início</a></div>';
+            return;
+          }
+
+          // Verifica se é link do YouTube ou MP4 direto
+          let playerHTML = '';
+          if (movie.videoUrl.includes('youtube.com') || movie.videoUrl.includes('youtu.be') || movie.videoUrl.includes('embed')) {
+            let ytEmbedUrl = movie.videoUrl;
+            if (ytEmbedUrl.includes('watch?v=')) {
+              ytEmbedUrl = ytEmbedUrl.replace('watch?v=', 'embed/');
+            }
+            playerHTML = `<iframe src="${ytEmbedUrl}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+          } else {
+            playerHTML = `<video src="${movie.videoUrl}" controls autoplay playsinline></video>`;
+          }
+
+          container.innerHTML = `
+            <div class='player-box'>
+              ${playerHTML}
+            </div>
+
+            <div class='movie-details-card'>
+              <span class='movie-category-badge'>${movie.categoria}</span>
+              <h1 class='movie-main-title'>${movie.titulo}</h1>
+              
+              <a href="party.html" class='btn-party-sync'>
+                <i class='fa-solid fa-users-rectangle'></i> Assistir junto no OFF Party
+              </a>
+            </div>
+          `;
+        })
+        .catch(() => {
+          document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Erro ao carregar o arquivo filmes.json.</div>';
+        });
+    });
+  </script>
+</body>
+</html>
