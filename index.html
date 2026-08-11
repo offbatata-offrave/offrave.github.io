@@ -645,16 +645,26 @@
       profileOverlay.classList.add('hide');
       document.body.style.overflow = 'auto';
     }
-
-    function loginWithGoogleProfile() {
+    
+function loginWithGoogleProfile() {
       if (typeof firebase === 'undefined') return alert('Firebase SDK carregando...');
       const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
-        .then(result => {
+      
+      // Usa redirecionamento em vez de popup para evitar bloqueadores de anúncio e erros no GitHub Pages
+      firebase.auth().signInWithRedirect(provider);
+    }
+
+    // Adicione também este trecho logo abaixo para capturar o retorno do login do Google após o redirecionamento
+    firebase.auth().getRedirectResult()
+      .then(result => {
+        if (result.user) {
           const user = result.user;
           selectProfile(user.displayName, user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
-        })
-        .catch(err => alert('Erro no login Google: ' + err.message));
+        }
+      })
+      .catch(err => {
+        alert('Erro no login Google: ' + err.message);
+      });
     }
 
     function resetProfileSelection() {
