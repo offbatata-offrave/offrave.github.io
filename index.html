@@ -1,4 +1,37 @@
-function loginWithGoogleProfile() {
+<!-- SCRIPT ESTÁTICO -->
+  <script>
+    let allMovies = [];
+
+    // Perfil
+    const profileOverlay = document.getElementById('profileOverlay');
+    const footerProfileName = document.getElementById('footerProfileName');
+    const footerProfileAvatar = document.getElementById('footerProfileAvatar');
+
+    function updateFooterProfile() {
+      const savedName = localStorage.getItem('offrave_active_profile') || 'Principal';
+      const savedAvatar = localStorage.getItem('offrave_active_avatar') || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png';
+      if(footerProfileName) footerProfileName.textContent = savedName;
+      if(footerProfileAvatar) footerProfileAvatar.src = savedAvatar;
+    }
+
+    if (localStorage.getItem('offrave_profile_selected') === 'true') {
+      profileOverlay.classList.add('hide');
+      updateFooterProfile();
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
+
+    function selectProfile(profileName, avatarUrl) {
+      localStorage.setItem('offrave_profile_selected', 'true');
+      localStorage.setItem('offrave_active_profile', profileName);
+      localStorage.setItem('offrave_active_avatar', avatarUrl);
+      updateFooterProfile();
+      profileOverlay.classList.add('hide');
+      document.body.style.overflow = 'auto';
+    }
+
+    // AQUI ESTÁ A FUNÇÃO CORRIGIDA E DENTRO DO SCRIPT
+    function loginWithGoogleProfile() {
       if (typeof firebase === 'undefined') {
         alert('Erro: Firebase não carregou.');
         return;
@@ -12,8 +45,133 @@ function loginWithGoogleProfile() {
           selectProfile(user.displayName, user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
         })
         .catch(err => {
-          // Isso vai te mostrar na hora se é erro de domínio ou pop-up bloqueado
           alert('Erro no login do Google: ' + err.message);
           console.error(err);
         });
     }
+
+    function resetProfileSelection() {
+      localStorage.removeItem('offrave_profile_selected');
+      closeMenu();
+      profileOverlay.classList.remove('hide');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Carregar dados de filmes/séries locais (filmes.json)
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('filmes.json')
+        .then(res => res.json())
+        .then(data => {
+          allMovies = data;
+          renderCatalog(allMovies);
+          renderTrending(allMovies);
+        })
+        .catch(() => {
+          document.getElementById('catalogGrid').innerHTML = '<p style="color:#94a3b8;">Crie um arquivo <b>filmes.json</b> para exibir os títulos.</p>';
+        });
+    });
+
+    function renderCatalog(movies) {
+      const grid = document.getElementById('catalogGrid');
+      grid.innerHTML = '';
+      movies.forEach(movie => {
+        grid.innerHTML += `
+          <a href="player.html?id=${movie.id}" class="poster-card">
+            <img src="${movie.capa}" alt="${movie.titulo}" class="poster-img"/>
+            <div class="poster-overlay">
+              <div class="poster-title">${movie.titulo}</div>
+            </div>
+          </a>
+        `;
+      });
+    }
+
+    function renderTrending(movies) {
+      const slider = document.getElementById('trendingSlider');
+      slider.innerHTML = '';
+      movies.slice(0, 10).forEach((movie, index) => {
+        slider.innerHTML += `
+          <a href="player.html?id=${movie.id}" class="trending-card">
+            <span class="trending-number">${index + 1}</span>
+            <div class="trending-poster-box">
+              <img src="${movie.capa}" alt="${movie.titulo}" class="trending-poster-img"/>
+            </div>
+          </a>
+        `;
+      });
+    }
+
+    function filterCategory(category) {
+      const title = document.getElementById('catalogCategoryTitle');
+      title.innerHTML = `<i class='fa-solid fa-layer-group'></i> ${category}`;
+      const filtered = allMovies.filter(m => m.categoria.toLowerCase() === category.toLowerCase());
+      renderCatalog(filtered);
+    }
+
+    // Menu Lateral
+    const openSideMenuBtn = document.getElementById('openSideMenuBtn');
+    const closeSideMenuBtn = document.getElementById('closeSideMenuBtn');
+    const sideMenuOverlay = document.getElementById('sideMenuOverlay');
+    const sideMenuPopup = document.getElementById('sideMenuPopup');
+
+    function openMenu() { updateFooterProfile(); sideMenuOverlay.classList.add('active'); sideMenuPopup.classList.add('active'); }
+    function closeMenu() { sideMenuOverlay.classList.remove('active'); sideMenuPopup.classList.remove('active'); }
+
+    if (openSideMenuBtn) openSideMenuBtn.addEventListener('click', openMenu);
+    if (closeSideMenuBtn) closeSideMenuBtn.addEventListener('click', closeMenu);
+    if (sideMenuOverlay) sideMenuOverlay.addEventListener('click', closeMenu);
+
+    // Modal de Busca
+    const openSearchBtn = document.getElementById('openSearchBtn');
+    const closeSearchBtn = document.getElementById('closeSearchBtn');
+    const searchModal = document.getElementById('searchModal');
+    const searchInput = document.getElementById('searchInput');
+    const searchResultsGrid = document.getElementById('searchResultsGrid');
+    const searchStatusTitle = document.getElementById('searchStatusTitle');
+
+    if (openSearchBtn) {
+      openSearchBtn.addEventListener('click', () => {
+        searchModal.classList.add('active');
+        setTimeout(() => searchInput.focus(), 100);
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    function closeSearch() {
+      searchModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+      searchInput.value = '';
+      searchResultsGrid.innerHTML = '';
+      searchStatusTitle.textContent = 'Digite para começar a buscar...';
+    }
+
+    if (closeSearchBtn) closeSearchBtn.addEventListener('click', closeSearch);
+
+    searchInput.addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      if (q.length < 2) {
+        searchResultsGrid.innerHTML = '';
+        searchStatusTitle.textContent = 'Digite para começar a buscar...';
+        return;
+      }
+      const results = allMovies.filter(m => m.titulo.toLowerCase().includes(q));
+      searchResultsGrid.innerHTML = '';
+      if (results.length === 0) {
+        searchStatusTitle.textContent = `Nenhum resultado para "${q}"`;
+        return;
+      }
+      searchStatusTitle.textContent = `Resultados para "${q}":`;
+      results.forEach(movie => {
+        searchResultsGrid.innerHTML += `
+          <a href="player.html?id=${movie.id}" class="poster-card">
+            <img src="${movie.capa}" alt="${movie.titulo}" class="poster-img"/>
+            <div class="poster-overlay">
+              <div class="poster-title">${movie.titulo}</div>
+            </div>
+          </a>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>
