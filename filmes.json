@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "titulo": "Avatar Aang",
+    "categoria": "Séries",
+    "capa": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=500&q=80",
+    "videoUrl": "https://www.youtube.com/embed/5U9fadIdWqg"
+  },
+  {
+    "id": "2",
+    "titulo": "Exemplo de Filme",
+    "categoria": "Filmes",
+    "capa": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=500&q=80",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  }
+]
