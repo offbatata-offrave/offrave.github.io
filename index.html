@@ -251,20 +251,30 @@
       profileOverlay.classList.add('hide');
       document.body.style.overflow = 'auto';
     }
+let isLoggingIn = false;
 
     function loginWithGoogleProfile() {
+      if (isLoggingIn) return; // Impede duplo clique
       if (typeof firebase === 'undefined') {
         alert('Firebase não carregou.');
         return;
       }
+      
+      isLoggingIn = true;
       const provider = new firebase.auth.GoogleAuthProvider();
+      
       firebase.auth().signInWithPopup(provider)
         .then(result => {
+          isLoggingIn = false;
           const user = result.user;
           selectProfile(user.displayName, user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
         })
         .catch(err => {
-          alert('Erro no login do Google: ' + err.message);
+          isLoggingIn = false;
+          // Se for cancelado por outro popup, ignoramos o alerta chato
+          if (err.code !== 'auth/cancelled-popup-request') {
+            alert('Erro no login do Google: ' + err.message);
+          }
         });
     }
 
