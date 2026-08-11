@@ -27,9 +27,10 @@
     }
 
     body {
-      background-color: #08080a;
+      background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
+      background-attachment: fixed;
       color: #ffffff;
-      padding-bottom: 90px;
+      padding-bottom: 120px;
     }
 
     .party-container {
@@ -41,15 +42,15 @@
       gap: 15px;
     }
 
-    /* GLASS CARD PADRÃO */
+    /* GLASS CARD PADRÃO (LIQUID GLASS) */
     .glass-card {
-      background: rgba(18, 19, 26, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      background: rgba(18, 19, 26, 0.45);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
 
     .card-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
@@ -58,13 +59,14 @@
     .party-input {
       width: 100%;
       padding: 14px 18px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: #fff;
       font-size: 0.95rem;
       outline: none;
       margin-bottom: 12px;
+      backdrop-filter: blur(10px);
     }
 
     .btn-action-row { display: flex; gap: 10px; }
@@ -84,9 +86,9 @@
       transition: all 0.2s;
     }
 
-    .btn-gold { background: #f59e0b; color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
-    .btn-green { background: #10b981; color: #000; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
-    .btn-purple { background: #6366f1; color: #fff; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
+    .btn-gold { background: rgba(245, 158, 11, 0.9); color: #000; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); }
+    .btn-green { background: rgba(16, 185, 129, 0.9); color: #000; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); }
+    .btn-purple { background: rgba(99, 102, 241, 0.9); color: #fff; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3); }
     .btn-action:hover { transform: scale(1.02); }
 
     .media-picker-grid {
@@ -97,8 +99,8 @@
     }
 
     .btn-catalog-select {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: #fff;
       padding: 12px;
       border-radius: 14px;
@@ -114,8 +116,8 @@
     .btn-catalog-select:hover { background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; }
 
     .btn-youtube-select {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
       color: #ff4d4d;
       padding: 12px;
       border-radius: 14px;
@@ -128,7 +130,7 @@
       gap: 8px;
       transition: all 0.2s;
     }
-    .btn-youtube-select:hover { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; }
+    .btn-youtube-select:hover { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; }
 
     /* SALAS ATIVAS */
     .active-rooms-list {
@@ -141,14 +143,19 @@
     }
 
     .room-item-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 14px;
       padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+    }
+
+    .room-item-card:hover {
+      background: rgba(99, 102, 241, 0.08);
+      border-color: rgba(99, 102, 241, 0.25);
     }
 
     .room-item-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
@@ -169,16 +176,55 @@
 
     .no-rooms-msg { font-size: 0.85rem; color: #64748b; text-align: center; padding: 15px 0; font-style: italic; }
 
-    /* MODAL POPUP - LIQUID GLASS */
+    /* BARRA INFERIOR FLUTUANTE - LIQUID GLASS ALTAMENTE TRANSPARENTE */
+    .bottom-nav {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 30px);
+      max-width: 450px;
+      height: 62px;
+      border-radius: 35px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 2000;
+      background: rgba(12, 13, 18, 0.45);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 500;
+      transition: color 0.3s;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .nav-item i { font-size: 1.15rem; }
+    .nav-item:hover, .nav-item.active { color: #ffffff; }
+
+    /* MODAL POPUP - TEMA LIQUID GLASS */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(5, 6, 10, 0.8);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       z-index: 2500;
       display: none;
       align-items: center;
@@ -191,24 +237,26 @@
     .modal-card {
       width: 100%;
       max-width: 480px;
-      background: rgba(15, 16, 21, 0.92);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 24px;
+      background: rgba(15, 16, 22, 0.65);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 28px;
       padding: 24px;
-      box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       display: flex;
       flex-direction: column;
       gap: 18px;
     }
 
     .modal-card-green {
-      border-color: rgba(16, 185, 129, 0.3);
-      box-shadow: 0 0 40px rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     .modal-card-purple {
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     .modal-header { display: flex; align-items: center; justify-content: space-between; }
@@ -259,8 +307,8 @@
     .privacy-box {
       padding: 16px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 2px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -305,8 +353,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
       padding: 10px 14px;
       border-radius: 14px;
       gap: 12px;
@@ -342,7 +390,7 @@
 
     /* CARD DE PRÉVIA YOUTUBE NO POPUP */
     .yt-preview-card {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(239, 68, 68, 0.3);
       border-radius: 16px;
       padding: 12px;
@@ -367,7 +415,7 @@
     .live-top-left { display: flex; align-items: center; gap: 10px; }
 
     .btn-back-room {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border: none;
       color: #fff;
       width: 36px;
@@ -386,7 +434,7 @@
     .live-top-right { display: flex; align-items: center; gap: 10px; }
 
     .icon-top-btn {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border: none;
       color: #fff;
       padding: 8px 14px;
@@ -465,15 +513,15 @@
     
     .sync-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; color: #818cf8; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); padding: 4px 10px; border-radius: 12px; margin-top: 4px; font-weight: 600; }
 
-    .btn-movie-purple { background: #1e1b4b; color: #ffffff; border: 1px solid rgba(99, 102, 241, 0.4); padding: 10px 18px; border-radius: 14px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .btn-movie-purple { background: rgba(30, 27, 75, 0.8); color: #ffffff; border: 1px solid rgba(99, 102, 241, 0.4); padding: 10px 18px; border-radius: 14px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 
-    .security-notice-box { background: rgba(30, 27, 75, 0.4); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 16px; padding: 12px 16px; font-size: 0.75rem; color: #94a3b8; line-height: 1.4; text-align: center; font-style: italic; }
+    .security-notice-box { background: rgba(30, 27, 75, 0.3); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 16px; padding: 12px 16px; font-size: 0.75rem; color: #94a3b8; line-height: 1.4; text-align: center; font-style: italic; }
 
     .system-chat-event { background: rgba(255, 255, 255, 0.03); border-radius: 20px; padding: 8px 14px; font-size: 0.78rem; color: #a1a1aa; text-align: center; font-style: italic; margin: 4px 0; }
 
     .chat-stream-box { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; padding: 5px 0; }
 
-    .user-msg-bubble { font-size: 0.85rem; padding: 8px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.06); width: fit-content; max-width: 85%; }
+    .user-msg-bubble { font-size: 0.85rem; padding: 8px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); width: fit-content; max-width: 85%; }
 
     .user-msg-author { font-weight: 800; color: #ef4444; margin-right: 6px; }
 
@@ -481,20 +529,20 @@
     .reactions-row { display: flex; gap: 10px; overflow-x: auto; padding: 6px 0; scrollbar-width: none; }
     .reactions-row::-webkit-scrollbar { display: none; }
 
-    .reaction-item-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; }
+    .reaction-item-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; }
 
     .chat-input-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
 
-    .btn-chat-tool { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); color: #a1a1aa; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; flex-shrink: 0; }
+    .btn-chat-tool { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: #a1a1aa; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; flex-shrink: 0; }
 
-    .input-msg-text { flex: 1; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px; padding: 12px 20px; color: #fff; font-size: 0.9rem; outline: none; }
+    .input-msg-text { flex: 1; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 25px; padding: 12px 20px; color: #fff; font-size: 0.9rem; outline: none; }
 
-    .btn-send-purple { background: #6366f1; border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; flex-shrink: 0; }
+    .btn-send-purple { background: rgba(99, 102, 241, 0.9); border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; flex-shrink: 0; }
 
     /* PARTICIPANTES DA SALA */
     .participants-list { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; margin-top: 10px; }
 
-    .participant-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 12px; gap: 10px; }
+    .participant-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); padding: 10px 14px; border-radius: 12px; gap: 10px; }
     .participant-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
     .participant-avatar { width: 32px; height: 32px; border-radius: 50%; background: #10b981; color: #000; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .participant-name { font-weight: 700; font-size: 0.9rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -842,6 +890,30 @@
     </div>
   </div>
 
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE (LIQUID GLASS) -->
+  <nav class="bottom-nav glass-panel">
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Início</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-tv"></i>
+      <span>Séries</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Filmes</span>
+    </a>
+    <a class="nav-item active" href="party.html">
+      <i class="fa-solid fa-users"></i>
+      <span>OFF Party</span>
+    </a>
+    <button class="nav-item" onclick="alert('Use a busca na página inicial')">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Buscar</span>
+    </button>
+  </nav>
+
   <script>
     // --- FIREBASE SETUP ---
     const firebaseConfig = {
@@ -869,7 +941,7 @@
     let selectedPrivacy = 'public';
     let catalogPosts = [];
     let catalogTargetMode = 'create';
-    let hostHeartbeatInterval = null;
+    let syncInterval = null;
 
     // --- ELEMENTOS DO PLAYER ---
     const video = document.getElementById('netflixVideo');
@@ -1034,49 +1106,62 @@
       });
     }
 
+    // --- EXTRAÇÃO AUTOMÁTICA DO VÍDEO DO BLOGGER ---
     function loadBloggerPostsForCatalog() {
-      fetch('/feeds/posts/default?alt=json&max-results=50')
+      fetch('filmes.json')
         .then(res => res.json())
         .then(data => {
-          if (data.feed && data.feed.entry) {
-            catalogPosts = data.feed.entry.map(entry => {
-              let title = entry.title.$t;
-              let img = 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa';
-              if (entry.media$thumbnail) {
-                img = entry.media$thumbnail.url.replace('/s72-c/', '/s300/');
-              }
-              let category = 'Filme / Série';
-              if (entry.category && entry.category[0]) {
-                category = entry.category[0].term;
-              }
-
-              let videoUrl = '';
-              let content = entry.content ? entry.content.$t : (entry.summary ? entry.summary.$t : '');
-
-              let mp4Match = content.match(/https?:\/\/[^\s"']+\.mp4/i);
-              let ytMatch = content.match(/(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\/[^\s"']+)/i);
-              let iframeSrcMatch = content.match(/src=["'](https?:\/\/[^"']+)["']/i);
-
-              if (mp4Match) {
-                videoUrl = mp4Match[0];
-              } else if (ytMatch) {
-                videoUrl = ytMatch[0];
-              } else if (iframeSrcMatch) {
-                videoUrl = iframeSrcMatch[1];
-              } else {
-                for (let i = 0; i < entry.link.length; i++) {
-                  if (entry.link[i].rel === 'alternate') {
-                    videoUrl = entry.link[i].href;
-                    break;
-                  }
-                }
-              }
-
-              return { title, img, category, videoUrl };
-            });
-          }
+          catalogPosts = data.map(movie => ({
+            title: movie.titulo,
+            img: movie.capa,
+            category: movie.categoria,
+            videoUrl: movie.videoUrl
+          }));
         })
-        .catch(() => {});
+        .catch(() => {
+          fetch('/feeds/posts/default?alt=json&max-results=50')
+            .then(res => res.json())
+            .then(data => {
+              if (data.feed && data.feed.entry) {
+                catalogPosts = data.feed.entry.map(entry => {
+                  let title = entry.title.$t;
+                  let img = 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa';
+                  if (entry.media$thumbnail) {
+                    img = entry.media$thumbnail.url.replace('/s72-c/', '/s300/');
+                  }
+                  let category = 'Filme / Série';
+                  if (entry.category && entry.category[0]) {
+                    category = entry.category[0].term;
+                  }
+
+                  let videoUrl = '';
+                  let content = entry.content ? entry.content.$t : (entry.summary ? entry.summary.$t : '');
+
+                  let mp4Match = content.match(/https?:\/\/[^\s"']+\.mp4/i);
+                  let ytMatch = content.match(/(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\/[^\s"']+)/i);
+                  let iframeSrcMatch = content.match(/src=["'](https?:\/\/[^"']+)["']/i);
+
+                  if (mp4Match) {
+                    videoUrl = mp4Match[0];
+                  } else if (ytMatch) {
+                    videoUrl = ytMatch[0];
+                  } else if (iframeSrcMatch) {
+                    videoUrl = iframeSrcMatch[1];
+                  } else {
+                    for (let i = 0; i < entry.link.length; i++) {
+                      if (entry.link[i].rel === 'alternate') {
+                        videoUrl = entry.link[i].href;
+                        break;
+                      }
+                    }
+                  }
+
+                  return { title, img, category, videoUrl };
+                });
+              }
+            })
+            .catch(() => {});
+        });
     }
 
     function renderCatalogList(posts) {
@@ -1138,6 +1223,7 @@
       closeCatalogSelectModal();
     }
 
+    // --- POPUP DO YOUTUBE ---
     function openYouTubeSearchModal(targetMode = 'create') {
       catalogTargetMode = targetMode;
       document.getElementById('ytUrlInput').value = '';
@@ -1208,6 +1294,7 @@
       });
     }
 
+    // --- POPUPS & MODAIS ---
     function openCreateModal() { document.getElementById('createRoomModal').classList.add('active'); }
     function closeCreateModal() { document.getElementById('createRoomModal').classList.remove('active'); }
 
@@ -1372,12 +1459,12 @@
         chatBox.scrollTop = chatBox.scrollHeight;
       });
 
-      // SE FOR HOST, ENVIA HEARTBEAT DE TEMPO A CADA 2 SEGUNDOS
+      // SE FOR HOST, ENVIA HEARTBEAT DE TEMPO A CADA 1.5 SEGUNDOS
       if (isHost) {
-        if (hostHeartbeatInterval) clearInterval(hostHeartbeatInterval);
-        hostHeartbeatInterval = setInterval(() => {
+        if (syncInterval) clearInterval(syncInterval);
+        syncInterval = setInterval(() => {
           sendPlayerState(video.paused ? 'pause' : 'play');
-        }, 2000);
+        }, 1500);
       }
     }
 
@@ -1454,13 +1541,13 @@
     }
 
     function syncPlayerFromFirebase(state) {
-      if (isHost) return; // Host não se auto-sincroniza
+      if (isHost) return; 
       isRemoteAction = true;
 
       if (isYouTubeMode && ytPlayer && ytPlayer.getCurrentTime) {
         try {
-          const currentTime = ytPlayer.getCurrentTime();
-          if (Math.abs(currentTime - state.currentTime) > 1.2) {
+          const localTime = ytPlayer.getCurrentTime();
+          if (Math.abs(localTime - state.currentTime) > 1.0) {
             ytPlayer.seekTo(state.currentTime, true);
           }
           if (state.status === 'play' && ytPlayer.getPlayerState() !== YT.PlayerState.PLAYING) {
@@ -1470,7 +1557,7 @@
           }
         } catch(e) {}
       } else {
-        if (Math.abs(video.currentTime - state.currentTime) > 1.2) {
+        if (Math.abs(video.currentTime - state.currentTime) > 1.0) {
           video.currentTime = state.currentTime;
         }
 
@@ -1522,7 +1609,7 @@
 
     function leaveRoom() {
       localStorage.removeItem('offparty_active_room');
-      if (hostHeartbeatInterval) clearInterval(hostHeartbeatInterval);
+      if (syncInterval) clearInterval(syncInterval);
 
       if (currentRoomId) {
         db.ref('rooms/' + currentRoomId + '/members/' + myUserId).remove();
@@ -1539,5 +1626,30 @@
       }
     }
   </script>
+
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE (LIQUID GLASS) -->
+  <nav class="bottom-nav glass-panel">
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Início</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-tv"></i>
+      <span>Séries</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Filmes</span>
+    </a>
+    <a class="nav-item active" href="party.html">
+      <i class="fa-solid fa-users"></i>
+      <span>OFF Party</span>
+    </a>
+    <button class="nav-item" onclick="alert('Use a busca na página inicial')">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Buscar</span>
+    </button>
+  </nav>
+
 </body>
 </html>
