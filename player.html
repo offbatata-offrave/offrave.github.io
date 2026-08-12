@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Assistir - OFFRAVE</title>
   
-  <!-- Fontes Google & Ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
@@ -26,7 +25,6 @@
       padding-bottom: 150px;
     }
 
-    /* TOP HEADER */
     .top-header {
       position: fixed;
       top: 0;
@@ -69,7 +67,6 @@
 
     .btn-back:hover { background: rgba(255, 255, 255, 0.2); }
 
-    /* PLAYER PAGE CONTAINER */
     .player-page-container {
       max-width: 900px;
       margin: 80px auto 20px auto;
@@ -79,7 +76,6 @@
       gap: 20px;
     }
 
-    /* DETALHES DO VÍDEO NO FUNDO (LIQUID GLASS) */
     .movie-details-card {
       background: rgba(18, 19, 26, 0.55);
       backdrop-filter: blur(25px);
@@ -131,7 +127,6 @@
       text-transform: uppercase;
     }
 
-    /* SISTEMA DE "LER MAIS" */
     .movie-synopsis {
       font-size: 0.95rem;
       color: #cbd5e1;
@@ -180,30 +175,25 @@
 
     .btn-party-sync:hover { background: #4f46e5; transform: scale(1.02); }
 
-    /* =========================================
-       CONTAINER DO PLAYER
-       ========================================= */
     .netflix-player-container {
       position: relative;
       width: 100%;
       background-color: #000;
       border-radius: 12px;
       overflow: hidden;
-      font-family: 'Roboto', sans-serif;
       box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-      -webkit-tap-highlight-color: transparent;
       aspect-ratio: 16 / 9;
     }
 
-    .netflix-video { width: 100%; height: 100%; display: block; object-fit: contain; background: #000; }
-    .youtube-iframe { width: 100%; height: 100%; border: none; display: none; }
+    .netflix-video, .embedded-iframe {
+      width: 100%; height: 100%; display: block; border: none; background: #000;
+    }
 
     .movie-title-player {
       position: absolute; top: 15px; left: 20px; color: #fff; font-size: 16px; font-weight: bold;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 5; pointer-events: none;
     }
 
-    /* BARRA INFERIOR FLUTUANTE */
     .bottom-nav {
       position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: calc(100% - 30px);
       max-width: 450px; height: 62px; border-radius: 35px; display: flex; justify-content: space-around;
@@ -222,17 +212,15 @@
 </head>
 <body>
 
-  <!-- TOPO -->
   <header class='top-header'>
     <a class='brand-logo' href='index.html'>OFFRAVE</a>
     <a class='btn-back' href='index.html'><i class='fa-solid fa-arrow-left'></i> Voltar</a>
   </header>
 
   <div class='player-page-container' id='playerPageContent'>
-    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Carregando player e dados...</div>
+    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Carregando...</div>
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE -->
   <nav class="bottom-nav">
     <a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i><span>Início</span></a>
     <a class="nav-item" href="index.html"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
@@ -244,7 +232,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
 
-    // Função para tratar links do PixelDrain para stream direto
+    // Converte links do PixelDrain para o player embutido oficial (/v/)
     function formatVideoUrl(url) {
       if (!url) return '';
       if (url.includes('pixeldrain.com')) {
@@ -253,9 +241,11 @@
           fileId = url.split('/u/')[1].split('?')[0];
         } else if (url.includes('/api/file/')) {
           fileId = url.split('/api/file/')[1].split('?')[0];
+        } else if (url.includes('/v/')) {
+          fileId = url.split('/v/')[1].split('?')[0];
         }
         if (fileId) {
-          return `https://pixeldrain.com/api/file/${fileId}`;
+          return `https://pixeldrain.com/v/${fileId}`;
         }
       }
       return url;
@@ -263,7 +253,7 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       if (!movieId) {
-        document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Nenhum filme selecionado. <a href="index.html" style="color:#e50914;">Voltar ao Início</a></div>';
+        document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Nenhum filme selecionado.</div>';
         return;
       }
 
@@ -274,7 +264,7 @@
         const container = document.getElementById('playerPageContent');
 
         if (!movie) {
-          container.innerHTML = '<div class="loading-msg">Filme não encontrado no catálogo. <a href="index.html" style="color:#e50914;">Voltar ao Início</a></div>';
+          container.innerHTML = '<div class="loading-msg">Filme não encontrado.</div>';
           return;
         }
 
@@ -284,46 +274,30 @@
         try {
           const apiKey = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
           const tmdbUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`;
-          
           const apiRes = await fetch(tmdbUrl);
           const apiData = await apiRes.json();
 
           if (apiData.results && apiData.results.length > 0) {
             const item = apiData.results[0];
-            if (item.poster_path) {
-              capaFinal = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-            }
-            if (item.overview) {
-              sinopseFinal = item.overview;
-            }
+            if (item.poster_path) capaFinal = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+            if (item.overview) sinopseFinal = item.overview;
           }
-        } catch (err) {
-          console.warn("Erro ao buscar na API do TMDB, utilizando dados locais.");
-        }
+        } catch (err) {}
 
-        if (!sinopseFinal || sinopseFinal === 'Carregando sinopse...') {
-          sinopseFinal = movie.sinopse || `Sinopse para "${movie.titulo}" indisponível no momento.`;
-        }
-
-        const formattedVideoUrl = formatVideoUrl(movie.videoUrl);
-        const isYouTube = formattedVideoUrl.includes('youtube.com') || formattedVideoUrl.includes('youtu.be') || formattedVideoUrl.includes('embed');
-        let ytEmbedUrl = '';
-
-        if (isYouTube) {
-          ytEmbedUrl = formattedVideoUrl;
-          if (ytEmbedUrl.includes('watch?v=')) {
-            ytEmbedUrl = ytEmbedUrl.replace('watch?v=', 'embed/');
-          }
-        }
+        const finalUrl = formatVideoUrl(movie.videoUrl);
+        const isYouTube = finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.includes('embed');
+        const isPixelDrain = finalUrl.includes('pixeldrain.com/v/');
 
         container.innerHTML = `
-          <div class="netflix-player-container" id="netflixContainer">
+          <div class="netflix-player-container">
             <div class="movie-title-player">${movie.titulo}</div>
 
             ${isYouTube ? `
-              <iframe class="youtube-iframe" src="${ytEmbedUrl + '?autoplay=1'}" allow="autoplay; encrypted-media" allowfullscreen style="display: block;"></iframe>
+              <iframe class="embedded-iframe" src="${finalUrl.replace('watch?v=', 'embed/') + '?autoplay=1'}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            ` : isPixelDrain ? `
+              <iframe class="embedded-iframe" src="${finalUrl}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
             ` : `
-              <video class="netflix-video" id="netflixVideo" controls autoplay playsinline src="${formattedVideoUrl}"></video>
+              <video class="netflix-video" controls autoplay playsinline src="${finalUrl}"></video>
             `}
           </div>
 
@@ -344,21 +318,15 @@
         `;
 
       } catch (err) {
-        document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Erro ao carregar o filme.</div>';
+        document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Erro ao carregar.</div>';
       }
     });
 
     function toggleSynopsis() {
       const synopsis = document.getElementById('movieSynopsis');
       const btn = document.getElementById('readMoreBtn');
-      
       synopsis.classList.toggle('expanded');
-      
-      if (synopsis.classList.contains('expanded')) {
-        btn.textContent = 'Mostrar menos';
-      } else {
-        btn.textContent = 'Ler mais';
-      }
+      btn.textContent = synopsis.classList.contains('expanded') ? 'Mostrar menos' : 'Ler mais';
     }
   </script>
 </body>
