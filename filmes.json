@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "titulo": "Avatar",
+    "categoria": "Filme",
+    "capa": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=500&q=80",
+    "sinopse": "Um suspense eletrizante onde um tubarão aterroriza a costa, forçando os moradores locais a uma luta desesperada pela sobrevivência.",
+    "videoUrl": "http://fcoidok.cisantkdh.com/vod/EE583EB961DD4ED4ADF86F6CC542E55C_media.mp4"
+  },
+  {
+    "id": "2",
+    "titulo": "Exemplo de Filme",
+    "categoria": "Filmes",
+    "capa": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=500&q=80",
+    "sinopse": "Uma jornada cinematográfica explorando os limites da tecnologia e da inteligência artificial em um futuro próximo.",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    "id": "3",
+    "titulo": "Avatar",
+    "categoria": "Series",
+    "capa": "",
+    "sinopse": "",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  }
+]
