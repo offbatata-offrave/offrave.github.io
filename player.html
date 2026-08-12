@@ -131,11 +131,34 @@
       text-transform: uppercase;
     }
 
+    /* SISTEMA DE "LER MAIS" */
     .movie-synopsis {
       font-size: 0.95rem;
       color: #cbd5e1;
       line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* Limita a 3 linhas inicialmente */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
+
+    .movie-synopsis.expanded {
+      -webkit-line-clamp: unset; /* Mostra o texto completo */
+    }
+
+    .btn-read-more {
+      background: none;
+      border: none;
+      color: #f59e0b;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: fit-content;
+      padding: 2px 0;
+      margin-top: -5px;
+    }
+    .btn-read-more:hover { text-decoration: underline; }
 
     .btn-party-sync {
       background: #6366f1;
@@ -284,7 +307,7 @@
   </header>
 
   <div class='player-page-container' id='playerPageContent'>
-    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Buscando dados em português...</div>
+    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Carregando player e dados...</div>
   </div>
 
   <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE -->
@@ -319,7 +342,6 @@
         let capaFinal = movie.capa || 'https://via.placeholder.com/110x160?text=Capa';
         let sinopseFinal = movie.sinopse || 'Carregando sinopse...';
 
-        // Busca automática utilizando a sua chave do TMDB em Português do Brasil (language=pt-BR)
         try {
           const apiKey = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
           const tmdbUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`;
@@ -413,7 +435,8 @@
               <div class='movie-info-text'>
                 <span class='movie-category-badge'>${movie.categoria}</span>
                 <h1 class='movie-main-title'>${movie.titulo}</h1>
-                <p class='movie-synopsis'>${sinopseFinal}</p>
+                <p class='movie-synopsis' id='movieSynopsis'>${sinopseFinal}</p>
+                <button class='btn-read-more' id='readMoreBtn' onclick='toggleSynopsis()'>Ler mais</button>
               </div>
             </div>
             <a href="party.html" class='btn-party-sync'>
@@ -430,6 +453,20 @@
         document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Erro ao carregar o filme.</div>';
       }
     });
+
+    // Função para expandir e recolher a sinopse
+    function toggleSynopsis() {
+      const synopsis = document.getElementById('movieSynopsis');
+      const btn = document.getElementById('readMoreBtn');
+      
+      synopsis.classList.toggle('expanded');
+      
+      if (synopsis.classList.contains('expanded')) {
+        btn.textContent = 'Mostrar menos';
+      } else {
+        btn.textContent = 'Ler mais';
+      }
+    }
 
     function initNativePlayer() {
       const video = document.getElementById('netflixVideo');
