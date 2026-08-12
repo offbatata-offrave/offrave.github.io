@@ -926,6 +926,7 @@
     let catalogPosts = [];
     let catalogTargetMode = 'create';
     let syncInterval = null;
+    const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
     // --- ELEMENTOS DO PLAYER ---
     const video = document.getElementById('netflixVideo');
@@ -1090,62 +1091,34 @@
       });
     }
 
-    // --- EXTRAÇÃO AUTOMÁTICA DO VÍDEO DO BLOGGER ---
-    function loadBloggerPostsForCatalog() {
-      fetch('filmes.json')
-        .then(res => res.json())
-        .then(data => {
-          catalogPosts = data.map(movie => ({
+    // --- EXTRAÇÃO AUTOMÁTICA DE CAPAS VIA TMDB PARA A PARTY ---
+    async function loadBloggerPostsForCatalog() {
+      try {
+        const res = await fetch('filmes.json');
+        const data = await res.json();
+        
+        catalogPosts = [];
+        for (let movie of data) {
+          let capa = movie.capa;
+          if (!capa || capa.includes('placeholder')) {
+            try {
+              const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`);
+              const tmdbData = await tmdbRes.json();
+              if (tmdbData.results && tmdbData.results.length > 0 && tmdbData.results[0].poster_path) {
+                capa = `https://image.tmdb.org/t/p/w500${tmdbData.results[0].poster_path}`;
+              }
+            } catch(e) {}
+          }
+          catalogPosts.push({
             title: movie.titulo,
-            img: movie.capa,
+            img: capa || 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa',
             category: movie.categoria,
             videoUrl: movie.videoUrl
-          }));
-        })
-        .catch(() => {
-          fetch('/feeds/posts/default?alt=json&max-results=50')
-            .then(res => res.json())
-            .then(data => {
-              if (data.feed && data.feed.entry) {
-                catalogPosts = data.feed.entry.map(entry => {
-                  let title = entry.title.$t;
-                  let img = 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa';
-                  if (entry.media$thumbnail) {
-                    img = entry.media$thumbnail.url.replace('/s72-c/', '/s300/');
-                  }
-                  let category = 'Filme / Série';
-                  if (entry.category && entry.category[0]) {
-                    category = entry.category[0].term;
-                  }
-
-                  let videoUrl = '';
-                  let content = entry.content ? entry.content.$t : (entry.summary ? entry.summary.$t : '');
-
-                  let mp4Match = content.match(/https?:\/\/[^\s"']+\.mp4/i);
-                  let ytMatch = content.match(/(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\/[^\s"']+)/i);
-                  let iframeSrcMatch = content.match(/src=["'](https?:\/\/[^"']+)["']/i);
-
-                  if (mp4Match) {
-                    videoUrl = mp4Match[0];
-                  } else if (ytMatch) {
-                    videoUrl = ytMatch[0];
-                  } else if (iframeSrcMatch) {
-                    videoUrl = iframeSrcMatch[1];
-                  } else {
-                    for (let i = 0; i < entry.link.length; i++) {
-                      if (entry.link[i].rel === 'alternate') {
-                        videoUrl = entry.link[i].href;
-                        break;
-                      }
-                    }
-                  }
-
-                  return { title, img, category, videoUrl };
-                });
-              }
-            })
-            .catch(() => {});
-        });
+          });
+        }
+      } catch (err) {
+        catalogPosts = [];
+      }
     }
 
     function renderCatalogList(posts) {
@@ -1161,7 +1134,7 @@
         const itemHTML = `
           <div class="catalog-item-card">
             <div class="catalog-item-left">
-              <img src="${post.img}" alt="${post.title}" class="catalog-item-thumb"/>
+              <img src="${post.img}" alt="${post.title}" class="catalog-item-thumb" onerror="this.src='https://via.placeholder.com/60x450?text=Capa'"/>
               <div>
                 <div class="catalog-item-title">${post.title}</div>
                 <div class="catalog-item-category">${post.category}</div>
