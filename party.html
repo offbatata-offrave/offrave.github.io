@@ -42,7 +42,6 @@
       gap: 15px;
     }
 
-    /* GLASS CARD COM O MESMO LIQUID GLASS TRANSPARENTE */
     .glass-card {
       background: rgba(18, 19, 26, 0.35);
       backdrop-filter: blur(14px);
@@ -293,7 +292,6 @@
     .label-title-green { color: #10b981; }
     .label-title-purple { color: #6366f1; }
 
-    /* PRIVACIDADE GRID */
     .privacy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
     .privacy-box {
@@ -331,7 +329,6 @@
     .icon-public { background: rgba(16, 185, 129, 0.2); color: #10b981; }
     .icon-private { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
-    /* CATÁLOGO LIST */
     .catalog-list-wrapper {
       display: flex;
       flex-direction: column;
@@ -399,7 +396,6 @@
       object-fit: cover;
     }
 
-    /* LAYOUT DA SALA */
     .room-container { display: none; flex-direction: column; gap: 12px; }
 
     .live-top-bar { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; }
@@ -438,7 +434,6 @@
       font-weight: 700;
     }
 
-    /* PLAYER */
     .netflix-player-container {
       position: relative;
       width: 100%;
@@ -498,7 +493,6 @@
 
     .movie-title { position: absolute; top: 15px; left: 18px; color: #fff; font-size: 15px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 5; pointer-events: none; }
 
-    /* CHAT & BARRA INFERIOR */
     .media-info-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .media-title-text { font-weight: 700; font-size: 0.95rem; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
     
@@ -588,7 +582,6 @@
     .btn-send-purple { background: #e50914; border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4); transition: transform 0.2s, background 0.2s; }
     .btn-send-purple:hover { background: #ff1f2a; transform: scale(1.05); }
 
-    /* PARTICIPANTES DA SALA */
     .participants-list { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; margin-top: 10px; }
 
     .participant-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); padding: 10px 14px; border-radius: 12px; gap: 10px; }
@@ -598,9 +591,37 @@
 
     .host-crown-badge { font-size: 0.7rem; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
     .btn-kick-user { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+    /* DIÁLOGO DE BLOQUEIO DE LOGIN (LIQUID GLASS) */
+    .login-lock-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 4000;
+      background: rgba(8, 8, 10, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .login-lock-overlay.active { display: flex; }
+    .login-lock-card {
+      width: 100%; max-width: 400px; background: rgba(18, 19, 26, 0.65); backdrop-filter: blur(20px);
+      border: 1px solid rgba(229, 9, 20, 0.4); border-radius: 24px; padding: 30px; text-align: center;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 15px;
+    }
+    .login-lock-icon { font-size: 3rem; color: #e50914; margin-bottom: 5px; }
+    .login-lock-title { font-family: 'Bebas Neue', cursive; font-size: 2.2rem; color: #fff; letter-spacing: 1px; }
+    .login-lock-desc { font-size: 0.9rem; color: #94a3b8; line-height: 1.4; }
   </style>
 </head>
 <body>
+
+  <!-- MODAL DE RESTRIÇÃO: VOCÊ AINDA NÃO LOGOU -->
+  <div class="login-lock-overlay" id="loginLockModal">
+    <div class="login-lock-card">
+      <div class="login-lock-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <h2 class="login-lock-title">VOCÊ AINDA NÃO LOGOU</h2>
+      <p class="login-lock-desc">Para participar ou criar salas na OFF Party, você precisa estar conectado com sua conta do Google na página inicial.</p>
+      <a href="index.html" class="btn-action btn-gold" style="margin-top: 10px; text-decoration: none;">
+        <i class="fa-solid fa-arrow-left"></i> VOLTAR E FAZER LOGIN
+      </a>
+    </div>
+  </div>
 
   <div class="party-container">
 
@@ -989,6 +1010,25 @@
     let syncInterval = null;
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
+    // --- VERIFICAÇÃO DE LOGIN AO ENTRAR NA PARTY ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const isProfileSelected = localStorage.getItem('offrave_profile_selected');
+      const activeProfileName = localStorage.getItem('offrave_active_profile');
+
+      // Se não escolheu perfil ou se estiver como "Anônimo", bloqueia e exibe o popup
+      if (!isProfileSelected || activeProfileName === 'Anônimo') {
+        document.getElementById('loginLockModal').classList.add('active');
+        return; // Impede o restante de carregar se não estiver logado
+      }
+
+      listenActiveRooms();
+      loadBloggerPostsForCatalog();
+      const savedRoom = localStorage.getItem('offparty_active_room');
+      if (savedRoom) {
+        autoReconnectRoom(savedRoom);
+      }
+    });
+
     // --- ELEMENTOS DO PLAYER ---
     const video = document.getElementById('netflixVideo');
     const container = document.getElementById('netflixContainer');
@@ -1096,15 +1136,6 @@
         container.requestFullscreen ? container.requestFullscreen() : container.webkitRequestFullscreen();
       } else {
         document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen();
-      }
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      listenActiveRooms();
-      loadBloggerPostsForCatalog();
-      const savedRoom = localStorage.getItem('offparty_active_room');
-      if (savedRoom) {
-        autoReconnectRoom(savedRoom);
       }
     });
 
