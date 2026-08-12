@@ -138,6 +138,29 @@
       color: #fff;
     }
 
+    /* BOTÃO DE SUPORTE INSTAGRAM */
+    .btn-support-instagram {
+      width: 100%;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: #fff;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .btn-support-instagram:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+
     .btn-action-danger {
       width: 100%;
       background: rgba(239, 68, 68, 0.15);
@@ -179,12 +202,12 @@
         <span class="info-value" id="infoName">-</span>
       </div>
 
-      <div class="info-group">
-        <span class="info-label">Status de Acesso à OFF Party</span>
-        <span class="info-value" style="color: #10b981;"><i class="fa-solid fa-circle-check"></i> Liberado (Conta Google Verificada)</span>
-      </div>
+      <!-- BOTÃO DE SUPORTE VIA INSTAGRAM -->
+      <a href="https://instagram.com/seu_usuario" target="_blank" class="btn-support-instagram">
+        <i class="fa-brands fa-instagram" style="font-size: 1.2rem;"></i> Suporte via Instagram
+      </a>
 
-      <button class="btn-action-danger" onclick="logoutProfile()" style="margin-top: 10px;">
+      <button class="btn-action-danger" onclick="logoutProfile()">
         <i class="fa-solid fa-right-from-bracket"></i> Trocar de Perfil / Sair
       </button>
     </div>
