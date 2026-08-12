@@ -185,8 +185,8 @@
       aspect-ratio: 16 / 9;
     }
 
-    .netflix-video, .embedded-iframe {
-      width: 100%; height: 100%; display: block; border: none; background: #000; object-fit: contain;
+    .embedded-iframe {
+      width: 100%; height: 100%; display: block; border: none; background: #000;
     }
 
     .movie-title-player {
@@ -232,6 +232,32 @@
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
 
+    // Transforma qualquer link do PixelDrain no player embutido oficial (/v/)
+    function getEmbedUrl(url) {
+      if (!url) return '';
+      if (url.includes('pixeldrain.com')) {
+        let fileId = '';
+        if (url.includes('/u/')) {
+          fileId = url.split('/u/')[1].split('?')[0];
+        } else if (url.includes('/api/file/')) {
+          fileId = url.split('/api/file/')[1].split('?')[0];
+        } else if (url.includes('/v/')) {
+          fileId = url.split('/v/')[1].split('?')[0];
+        }
+        if (fileId) {
+          return `https://pixeldrain.com/v/${fileId}`;
+        }
+      }
+      if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('embed')) {
+        let ytUrl = url;
+        if (ytUrl.includes('watch?v=')) {
+          ytUrl = ytUrl.replace('watch?v=', 'embed/');
+        }
+        return ytUrl + '?autoplay=1';
+      }
+      return url;
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
       if (!movieId) {
         document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Nenhum filme selecionado.</div>';
@@ -265,18 +291,12 @@
           }
         } catch (err) {}
 
-        const finalUrl = movie.videoUrl;
-        const isYouTube = finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.includes('embed');
+        const finalUrl = getEmbedUrl(movie.videoUrl);
 
         container.innerHTML = `
           <div class="netflix-player-container">
             <div class="movie-title-player">${movie.titulo}</div>
-
-            ${isYouTube ? `
-              <iframe class="embedded-iframe" src="${finalUrl.replace('watch?v=', 'embed/') + '?autoplay=1'}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            ` : `
-              <video class="netflix-video" controls autoplay playsinline src="${finalUrl}"></video>
-            `}
+            <iframe class="embedded-iframe" src="${finalUrl}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
           </div>
 
           <div class='movie-details-card'>
