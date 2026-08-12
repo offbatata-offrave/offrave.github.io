@@ -284,7 +284,7 @@
   </header>
 
   <div class='player-page-container' id='playerPageContent'>
-    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Buscando capa e sinopse em português...</div>
+    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Carregando player...</div>
   </div>
 
   <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE -->
@@ -316,36 +316,6 @@
           return;
         }
 
-        let capaFinal = movie.capa || 'https://via.placeholder.com/110x160?text=Capa';
-        let sinopseFinal = movie.sinopse || 'Carregando sinopse...';
-
-        // Busca automática na TMDB usando tradução em português do Brasil (language=pt-BR)
-        try {
-          const apiKey = 'c28a2a09c2c62c3e4492938814777d54';
-          const targetUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`;
-          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-
-          const tmdbRes = await fetch(proxyUrl);
-          const tmdbJson = await tmdbRes.json();
-          const tmdbData = JSON.parse(tmdbJson.contents);
-
-          if (tmdbData.results && tmdbData.results.length > 0) {
-            const tmdbMovie = tmdbData.results[0];
-            if (tmdbMovie.poster_path) {
-              capaFinal = `https://image.tmdb.org/t/p/w500${tmdbMovie.poster_path}`;
-            }
-            if (tmdbMovie.overview) {
-              sinopseFinal = tmdbMovie.overview; // Sinopse oficial em Português
-            }
-          }
-        } catch (e) {
-          console.warn("Usando dados locais.");
-        }
-
-        if (!sinopseFinal || sinopseFinal === 'Carregando sinopse...') {
-          sinopseFinal = movie.sinopse || `Sinopse para "${movie.titulo}" indisponível no momento.`;
-        }
-
         const isYouTube = movie.videoUrl.includes('youtube.com') || movie.videoUrl.includes('youtu.be') || movie.videoUrl.includes('embed');
         let ytEmbedUrl = '';
 
@@ -355,6 +325,9 @@
             ytEmbedUrl = ytEmbedUrl.replace('watch?v=', 'embed/');
           }
         }
+
+        const capaFilme = movie.capa || 'https://via.placeholder.com/110x160?text=Capa';
+        const sinopseFilme = movie.sinopse || 'Nenhuma sinopse cadastrada para este título.';
 
         container.innerHTML = `
           <div class="netflix-player-container ${isYouTube ? 'is-youtube' : ''}" id="netflixContainer">
@@ -411,11 +384,11 @@
 
           <div class='movie-details-card'>
             <div class='movie-info-header'>
-              <img src="${capaFinal}" alt="${movie.titulo}" class='movie-poster-thumb' onerror="this.src='https://via.placeholder.com/110x160?text=Capa'"/>
+              <img src="${capaFilme}" alt="${movie.titulo}" class='movie-poster-thumb' onerror="this.src='https://via.placeholder.com/110x160?text=Capa'"/>
               <div class='movie-info-text'>
                 <span class='movie-category-badge'>${movie.categoria}</span>
                 <h1 class='movie-main-title'>${movie.titulo}</h1>
-                <p class='movie-synopsis'>${sinopseFinal}</p>
+                <p class='movie-synopsis'>${sinopseFilme}</p>
               </div>
             </div>
             <a href="party.html" class='btn-party-sync'>
