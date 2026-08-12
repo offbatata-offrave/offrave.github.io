@@ -82,7 +82,7 @@
     .profile-name { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
     .profile-card:hover .profile-name { color: #ffffff; }
 
-    /* TOPO COM DEGRADÊ MAIS TRANSPARENTE */
+    /* TOPO COM DEGRADÊ TRANSPARENTE ESTILO NETFLIX */
     .top-header {
       position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 15px 20px;
       display: flex; flex-direction: column; gap: 12px;
@@ -122,6 +122,7 @@
       flex-direction: column;
       justify-content: flex-end;
       padding: 30px 20px 40px 20px;
+      transition: background-image 0.8s ease-in-out;
     }
 
     .hero-banner::after {
@@ -264,7 +265,7 @@
     .search-results-container::-webkit-scrollbar { display: none; }
     .search-status-title { font-size: 1.1rem; color: #94a3b8; margin-bottom: 15px; font-weight: 600; }
 
-    /* MENU LATERAL COM LIQUID GLASS BEM TRANSPARENTE */
+    /* MENU LATERAL COM LIQUID GLASS TRANSPARENTE */
     .side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; opacity: 0; visibility: hidden; transition: opacity 0.2s ease; }
     .side-menu-overlay.active { opacity: 1; visibility: visible; }
     
@@ -290,14 +291,14 @@
     .active-profile-footer {
       margin-top: auto; padding: 14px; border-radius: 16px;
       background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
-      display: flex; align-items: center; gap: 12px;
+      display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer;
     }
     .footer-profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 2px solid #e50914; }
     .footer-profile-info { display: flex; flex-direction: column; }
     .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
     .footer-profile-name { font-size: 0.9rem; font-weight: 700; color: #ffffff; }
 
-    /* BARRA INFERIOR COM MAIS TRANSPARÊNCIA */
+    /* BARRA INFERIOR LIQUID GLASS TRANSPARENTE */
     .bottom-nav {
       position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
@@ -378,13 +379,13 @@
       <li class='menu-option-item'><a href='javascript:void(0);' onclick='resetProfileSelection()'><i class='fa-solid fa-user-gear'></i><span>Trocar Perfil</span></a></li>
     </ul>
 
-    <div class='active-profile-footer'>
+    <a href="perfil.html" id="profileFooterLink" class='active-profile-footer'>
       <img class='footer-profile-avatar' id='footerProfileAvatar' src='https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'/>
       <div class='footer-profile-info'>
-        <span class='footer-profile-label'>Perfil Ativo</span>
+        <span class='footer-profile-label'>Perfil Ativo (Ver Perfil)</span>
         <span class='footer-profile-name' id='footerProfileName'>Principal</span>
       </div>
-    </div>
+    </a>
   </aside>
 
   <!-- HERO BANNER SLIDER AUTOMÁTICO (5s, 3 FILMES) -->
@@ -686,6 +687,11 @@
     if (openSideMenuBtn) openSideMenuBtn.addEventListener('click', openMenu);
     if (closeSideMenuBtn) closeSideMenuBtn.addEventListener('click', closeMenu);
     if (sideMenuOverlay) sideMenuOverlay.addEventListener('click', closeMenu);
+
+    document.getElementById('profileFooterLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'perfil.html';
+    });
   </script>
 </body>
 </html>
