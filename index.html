@@ -31,13 +31,6 @@
       overflow-x: hidden;
     }
 
-    .glass-panel {
-      background: rgba(18, 19, 26, 0.45);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
     .profile-selector-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -106,18 +99,21 @@
     }
     .tab-item:hover, .tab-item.active { background: rgba(229, 9, 20, 0.85); color: #ffffff; }
 
-    /* --- HERO BANNER MR. ROBOT --- */
+    /* --- HERO BANNER SLIDER --- */
     .hero-banner {
       position: relative;
       width: 100%;
       height: 65vh;
       min-height: 420px;
       margin-top: 0;
-      background: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       padding: 30px 20px 40px 20px;
+      transition: background-image 0.8s ease-in-out;
     }
 
     .hero-banner::after {
@@ -385,15 +381,15 @@
     </div>
   </aside>
 
-  <!-- HERO BANNER MR. ROBOT -->
-  <div class='hero-banner'>
+  <!-- HERO BANNER SLIDER AUTOMÁTICO (5s, 3 FILMES) -->
+  <div class='hero-banner' id='heroBanner' style="background-image: url('');">
     <div class='hero-content'>
-      <span class='hero-badge'>SÉRIE ORIGINAL OFFRAVE</span>
-      <h1 class='hero-title'>MR. ROBOT</h1>
-      <p class='hero-description'>Um jovem programador que sofre de transtorno de ansiedade social trabalha como engenheiro de segurança cibernética de dia e hacker vigilante à noite.</p>
+      <span class='hero-badge' id='heroBadge'>DESTAQUE OFFRAVE</span>
+      <h1 class='hero-title' id='heroTitle'>Carregando...</h1>
+      <p class='hero-description' id='heroDescription'>Buscando sinopse e detalhes automáticos...</p>
       <div class='hero-buttons'>
-        <a class='btn-play' href='player.html?id=1'><i class='fa-solid fa-play'></i> Assistir</a>
-        <a class='btn-more-info' href='player.html?id=1'><i class='fa-solid fa-circle-info'></i> Mais Informações</a>
+        <a class='btn-play' id='heroBtnPlay' href='#'><i class='fa-solid fa-play'></i> Assistir</a>
+        <a class='btn-more-info' id='heroBtnInfo' href='#'><i class='fa-solid fa-circle-info'></i> Mais Informações</a>
       </div>
     </div>
   </div>
@@ -445,6 +441,8 @@
     }
 
     let allMovies = [];
+    let heroSliderIndex = 0;
+    let heroSliderData = [];
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -469,27 +467,66 @@
         const res = await fetch('filmes.json');
         allMovies = await res.json();
 
-        // Puxa capas automáticas via TMDB para cada filme se necessário
+        // Puxa capas e sinopses automáticas via TMDB para cada filme
         for (let movie of allMovies) {
-          if (!movie.capa || movie.capa.includes('placeholder')) {
-            try {
-              const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`);
-              const tmdbData = await tmdbRes.json();
-              if (tmdbData.results && tmdbData.results.length > 0 && tmdbData.results[0].poster_path) {
-                movie.capa = `https://image.tmdb.org/t/p/w500${tmdbData.results[0].poster_path}`;
+          try {
+            const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`);
+            const tmdbData = await tmdbRes.json();
+            if (tmdbData.results && tmdbData.results.length > 0) {
+              const item = tmdbData.results[0];
+              if (item.poster_path && (!movie.capa || movie.capa.includes('placeholder'))) {
+                movie.capa = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
               }
-            } catch (err) {
-              console.log("Erro ao buscar capa automática");
+              if (item.backdrop_path) {
+                movie.banner = `https://image.tmdb.org/t/p/original${item.backdrop_path}`;
+              }
+              if (item.overview && !movie.sinopse) {
+                movie.sinopse = item.overview;
+              }
             }
+          } catch (err) {
+            console.log("Erro ao buscar dados TMDB");
           }
         }
 
         renderCatalog(allMovies);
         renderTrending(allMovies);
+
+        // Pega os 3 últimos (ou primeiros) filmes para o Banner Slider
+        heroSliderData = allMovies.slice(0, 3);
+        if (heroSliderData.length > 0) {
+          updateHeroBanner(0);
+          setInterval(() => {
+            heroSliderIndex = (heroSliderIndex + 1) % heroSliderData.length;
+            updateHeroBanner(heroSliderIndex);
+          }, 5000); // 5 segundos por filme
+        }
+
       } catch (err) {
         document.getElementById('catalogGrid').innerHTML = '<p style="color:#94a3b8;">Nenhum filme carregado. Adicione itens no filmes.json</p>';
       }
     });
+
+    function updateHeroBanner(index) {
+      const movie = heroSliderData[index];
+      if (!movie) return;
+
+      const banner = document.getElementById('heroBanner');
+      const badge = document.getElementById('heroBadge');
+      const title = document.getElementById('heroTitle');
+      const desc = document.getElementById('heroDescription');
+      const btnPlay = document.getElementById('heroBtnPlay');
+      const btnInfo = document.getElementById('heroBtnInfo');
+
+      const bgImg = movie.banner || movie.capa || 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1400&q=80';
+      
+      banner.style.backgroundImage = `url('${bgImg}')`;
+      badge.textContent = `DESTAQUE • ${movie.categoria || 'FILME'}`;
+      title.textContent = movie.titulo;
+      desc.textContent = movie.sinopse || 'Assista a este incrível título agora mesmo no OFFRAVE.';
+      btnPlay.href = `player.html?id=${movie.id}`;
+      btnInfo.href = `player.html?id=${movie.id}`;
+    }
 
     function selectProfile(profileName, avatarUrl) {
       localStorage.setItem('offrave_profile_selected', 'true');
