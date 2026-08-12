@@ -616,7 +616,7 @@
     <div class="login-lock-card">
       <div class="login-lock-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
       <h2 class="login-lock-title">VOCÊ AINDA NÃO LOGOU</h2>
-      <p class="login-lock-desc">Para participar ou criar salas na OFF Party, você precisa estar conectado com sua conta do Google na página inicial.</p>
+      <p class="login-lock-desc">Acesso restrito! Para entrar na OFF Party, é necessário entrar com uma conta do Google na página inicial.</p>
       <a href="index.html" class="btn-action btn-gold" style="margin-top: 10px; text-decoration: none;">
         <i class="fa-solid fa-arrow-left"></i> VOLTAR E FAZER LOGIN
       </a>
@@ -1010,25 +1010,6 @@
     let syncInterval = null;
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
-    // --- VERIFICAÇÃO DE LOGIN AO ENTRAR NA PARTY ---
-    document.addEventListener('DOMContentLoaded', () => {
-      const isProfileSelected = localStorage.getItem('offrave_profile_selected');
-      const activeProfileName = localStorage.getItem('offrave_active_profile');
-
-      // Se não escolheu perfil ou se estiver como "Anônimo", bloqueia e exibe o popup
-      if (!isProfileSelected || activeProfileName === 'Anônimo') {
-        document.getElementById('loginLockModal').classList.add('active');
-        return; // Impede o restante de carregar se não estiver logado
-      }
-
-      listenActiveRooms();
-      loadBloggerPostsForCatalog();
-      const savedRoom = localStorage.getItem('offparty_active_room');
-      if (savedRoom) {
-        autoReconnectRoom(savedRoom);
-      }
-    });
-
     // --- ELEMENTOS DO PLAYER ---
     const video = document.getElementById('netflixVideo');
     const container = document.getElementById('netflixContainer');
@@ -1136,6 +1117,33 @@
         container.requestFullscreen ? container.requestFullscreen() : container.webkitRequestFullscreen();
       } else {
         document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen();
+      }
+    });
+
+    // --- RESTRIÇÃO RIGOROSA: APENAS LOGIN DO GOOGLE ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const isProfileSelected = localStorage.getItem('offrave_profile_selected');
+      const activeAvatar = localStorage.getItem('offrave_active_avatar');
+      const activeProfileName = localStorage.getItem('offrave_active_profile');
+
+      // Se não houver perfil selecionado, se for "Principal", se for "Anônimo", ou se o avatar for o padrão de anônimo/principal
+      const isGoogleLogin = isProfileSelected === 'true' && 
+                            activeProfileName !== 'Principal' && 
+                            activeProfileName !== 'Anônimo' && 
+                            activeAvatar && 
+                            !activeAvatar.includes('Netflix-avatar.png') && 
+                            !activeAvatar.includes('3069172.png');
+
+      if (!isGoogleLogin) {
+        document.getElementById('loginLockModal').classList.add('active');
+        return; // Interrompe o carregamento da Party
+      }
+
+      listenActiveRooms();
+      loadBloggerPostsForCatalog();
+      const savedRoom = localStorage.getItem('offparty_active_room');
+      if (savedRoom) {
+        autoReconnectRoom(savedRoom);
       }
     });
 
