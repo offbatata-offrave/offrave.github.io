@@ -232,7 +232,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
 
-    // Transforma qualquer link do PixelDrain no player embutido oficial (/v/)
+    // Transforma o link do PixelDrain na rota pública correta de visualização web (/u/)
     function getEmbedUrl(url) {
       if (!url) return '';
       if (url.includes('pixeldrain.com')) {
@@ -245,7 +245,7 @@
           fileId = url.split('/v/')[1].split('?')[0];
         }
         if (fileId) {
-          return `https://pixeldrain.com/v/${fileId}`;
+          return `https://pixeldrain.com/u/${fileId}`;
         }
       }
       if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('embed')) {
