@@ -264,30 +264,38 @@
     .search-results-container::-webkit-scrollbar { display: none; }
     .search-status-title { font-size: 1.1rem; color: #94a3b8; margin-bottom: 15px; font-weight: 600; }
 
-    /* MENU LATERAL */
+    /* MENU LATERAL COM LIQUID GLASS TRANSPARENTE */
     .side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1500; opacity: 0; visibility: hidden; transition: opacity 0.2s ease; }
     .side-menu-overlay.active { opacity: 1; visibility: visible; }
+    
     .side-menu-popup {
-      position: fixed; top: 0; right: -300px; width: 280px; height: 100%; z-index: 1600;
-      background: rgba(18, 19, 26, 0.92); backdrop-filter: blur(15px);
-      border-left: 1px solid rgba(255, 255, 255, 0.12); padding: 30px 20px; display: flex; flex-direction: column; gap: 20px; transition: right 0.2s ease;
+      position: fixed; top: 0; right: -320px; width: 280px; height: 100%; z-index: 1600;
+      background: rgba(18, 19, 26, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+      padding: 30px 20px; display: flex; flex-direction: column; gap: 20px; transition: right 0.3s ease;
     }
     .side-menu-popup.active { right: 0; }
+    
     .side-menu-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-    .side-menu-title { font-family: 'Bebas Neue', cursive; font-size: 1.5rem; color: #e50914; }
-    .close-menu-btn { background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
+    .side-menu-title { font-family: 'Bebas Neue', cursive; font-size: 1.4rem; color: #e50914; letter-spacing: 1px; }
+    .close-menu-btn { background: rgba(255,255,255,0.08); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    
     .menu-options-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .menu-option-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); color: #fff; text-decoration: none; font-weight: 600; }
+    .menu-option-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: #fff; text-decoration: none; font-weight: 600; transition: background 0.2s; }
+    .menu-option-item a:hover { background: rgba(229, 9, 20, 0.2); border-color: rgba(229, 9, 20, 0.4); }
 
     .active-profile-footer {
-      margin-top: auto; padding: 12px; border-radius: 14px;
+      margin-top: auto; padding: 14px; border-radius: 16px;
       background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex; align-items: center; gap: 12px;
     }
-    .footer-profile-avatar { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 2px solid #e50914; }
+    .footer-profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 2px solid #e50914; }
     .footer-profile-info { display: flex; flex-direction: column; }
-    .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; }
-    .footer-profile-name { font-size: 0.85rem; font-weight: 700; color: #ffffff; }
+    .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+    .footer-profile-name { font-size: 0.9rem; font-weight: 700; color: #ffffff; }
 
     /* BARRA INFERIOR LIQUID GLASS TRANSPARENTE */
     .bottom-nav {
@@ -358,11 +366,11 @@
     </div>
   </div>
 
-  <!-- MENU LATERAL -->
+  <!-- MENU LATERAL COM LIQUID GLASS TRANSPARENTE -->
   <div class='side-menu-overlay' id='sideMenuOverlay'></div>
   <aside class='side-menu-popup' id='sideMenuPopup'>
     <div class='side-menu-header'>
-      <span class='side-menu-title'>Menu OFFRAVE by OFFBATATA</span>
+      <span class='side-menu-title'>MENU OFFRAVE</span>
       <button class='close-menu-btn' id='closeSideMenuBtn'><i class='fa-solid fa-xmark'></i></button>
     </div>
     <ul class='menu-options-list'>
