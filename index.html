@@ -31,7 +31,6 @@
       overflow-x: hidden;
     }
 
-    /* Painéis com Liquid Glass leve e otimizado */
     .glass-panel {
       background: rgba(18, 19, 26, 0.45);
       backdrop-filter: blur(12px);
@@ -83,18 +82,17 @@
     .profile-name { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
     .profile-card:hover .profile-name { color: #ffffff; }
 
-    /* TOPO COM LIQUID GLASS TRANSPARENTE */
+    /* TOPO COM DEGRADÊ ESTILO NETFLIX */
     .top-header {
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 12px 20px;
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 15px 20px;
       display: flex; flex-direction: column; gap: 12px;
-      background: rgba(8, 8, 10, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: linear-gradient(180deg, rgba(8, 8, 10, 0.9) 0%, rgba(8, 8, 10, 0.5) 60%, rgba(8, 8, 10, 0) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .header-top-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-    .brand-logo { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: #e50914; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; }
+    .brand-logo { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: #e50914; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
 
     .menu-toggle-btn {
       background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
@@ -105,8 +103,8 @@
     .netflix-tabs::-webkit-scrollbar { display: none; }
 
     .tab-item {
-      padding: 6px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; font-size: 0.85rem; font-weight: 600; text-decoration: none; white-space: nowrap; cursor: pointer;
+      padding: 6px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; font-size: 0.85rem; font-weight: 600; text-decoration: none; white-space: nowrap; cursor: pointer;
     }
     .tab-item:hover, .tab-item.active { background: rgba(229, 9, 20, 0.85); color: #ffffff; }
 
@@ -130,7 +128,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(180deg, rgba(8,8,10,0.2) 0%, rgba(8,8,10,0.75) 85%, #08080a 100%);
+      background: linear-gradient(180deg, rgba(8,8,10,0.1) 0%, rgba(8,8,10,0.75) 85%, #08080a 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -332,7 +330,7 @@
     </div>
   </div>
 
-  <!-- TOPO COM LIQUID GLASS TRANSPARENTE -->
+  <!-- TOPO COM DEGRADÊ ESTILO NETFLIX -->
   <header class='top-header'>
     <div class='header-top-row'>
       <a class='brand-logo' href='index.html'>OFFRAVE</a>
