@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Meu Perfil - OFFRAVE</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
+      background-attachment: fixed;
+      color: #ffffff;
+      min-height: 100vh;
+      padding-bottom: 120px;
+    }
+
+    .profile-page-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* TOPO HEADER */
+    .top-nav-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .brand-logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      color: #e50914;
+      text-decoration: none;
+      letter-spacing: 1.5px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-icon-top {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .btn-vip {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    /* CABEÇALHO DO PERFIL */
+    .profile-header-card {
+      background: rgba(18, 19, 26, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+    }
+
+    .profile-avatar-large {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #6366f1;
+      background: #6366f1;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .profile-name {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .profile-email {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .online-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #10b981;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+    .online-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+
+    /* BIOGRAFIA */
+    .bio-card {
+      background: rgba(18, 19, 26, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #f59e0b;
+      letter-spacing: 0.8px;
+    }
+
+    .bio-text {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .bio-edit-area {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .bio-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 10px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      resize: none;
+      height: 70px;
+    }
+
+    .btn-save-bio {
+      background: #10b981;
+      color: #000;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+
+    /* GRID DE ESTATÍSTICAS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: rgba(18, 19, 26, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* SEÇÃO DE AMIGOS */
+    .friends-card {
+      background: rgba(18, 19, 26, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .friends-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .friends-title-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .friends-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.2);
+      color: #6366f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .btn-add-friends {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #818cf8;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .friends-empty-box {
+      background: rgba(12, 13, 17, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .friends-empty-text {
+      font-size: 0.82rem;
+      color: #94a3b8;
+    }
+
+    .btn-explore-community {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    /* BOTÃO SUPORTE INSTAGRAM & SAIR */
+    .btn-support-instagram {
+      width: 100%;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: #fff;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(220, 39, 67, 0.3);
+    }
+
+    .btn-logout {
+      width: 100%;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    /* BARRA INFERIOR TRANSPARENTE */
+    .bottom-nav {
+      position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
+      display: flex; justify-content: space-around; align-items: center; z-index: 999;
+      background: rgba(18, 19, 26, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .nav-item { 
+      display: flex; flex-direction: column; align-items: center; gap: 4px; 
+      color: #94a3b8; text-decoration: none; font-size: 0.7rem; font-weight: 600; 
+      background: none; border: none; cursor: pointer; transition: color 0.2s;
+    }
+    .nav-item i { font-size: 1.15rem; }
+    .nav-item:hover, .nav-item.active { color: #f59e0b; }
+  </style>
+</head>
+<body>
+
+  <div class="profile-page-container">
+    
+    <!-- TOPO -->
+    <div class="top-nav-bar">
+      <a class="brand-logo" href="index.html">OFFRAVE</a>
+      <div class="top-actions">
+        <a href="party.html" class="btn-icon-top"><i class="fa-solid fa-users"></i></a>
+        <a href="#" class="btn-vip"><i class="fa-solid fa-crown"></i> VIP</a>
+        <a href="index.html" class="btn-icon-top"><i class="fa-solid fa-magnifying-glass"></i></a>
+      </div>
+    </div>
+
+    <!-- CABEÇALHO DO PERFIL -->
+    <div class="profile-header-card">
+      <div class="avatar-wrapper">
+        <div class="profile-avatar-large" id="avatarInitial">W</div>
+      </div>
+      <div>
+        <h1 class="profile-name" id="profileName">William</h1>
+        <p class="profile-email" id="profileEmail">anerosinw@gmail.com</p>
+      </div>
+
+      <div class="online-badge"><div class="online-dot"></div> Online</div>
+    </div>
+
+    <!-- BIOGRAFIA COM SISTEMA DE EDIÇÃO -->
+    <div class="bio-card">
+      <div class="bio-header">
+        <span><i class="fa-solid fa-quote-left"></i> BIOGRAFIA</span>
+        <span style="cursor: pointer; color: #fff;" onclick="toggleEditBio()"><i class="fa-solid fa-pen-to-square" id="editIconText"></i> <span id="editTextLabel">Editar</span></span>
+      </div>
+      <p class="bio-text" id="bioDisplay">Olá! Sou um fã de filmes no OFFRAVE.</p>
+      
+      <div class="bio-edit-area" id="bioEditArea">
+        <textarea class="bio-textarea" id="bioTextarea"></textarea>
+        <button class="btn-save-bio" onclick="saveBio()">Salvar Biografia</button>
+      </div>
+    </div>
+
+    <!-- GRID DE ESTATÍSTICAS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value">0</span>
+        <span class="stat-label">Continuar Assistindo</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" style="color: #f59e0b;">0h 0m</span>
+        <span class="stat-label">Tempo Assistido</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" style="color: #ef4444;">2d <i class="fa-solid fa-fire"></i></span>
+        <span class="stat-label">Sequência</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" style="color: #ec4899;"><i class="fa-solid fa-user"></i> Membro</span>
+        <span class="stat-label">Status OFFRAVE</span>
+      </div>
+    </div>
+
+    <!-- MEUS AMIGOS NO OFFRAVE -->
+    <div class="friends-card">
+      <div class="friends-top">
+        <div class="friends-title-box">
+          <div class="friends-icon"><i class="fa-solid fa-user-group"></i></div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">Meus Amigos no OFFRAVE</div>
+            <div style="font-size: 0.72rem; color: #94a3b8;">Amigos conectados com você na plataforma</div>
+          </div>
+        </div>
+        <button class="btn-add-friends"><i class="fa-solid fa-plus"></i> Adicionar</button>
+      </div>
+
+      <div class="friends-empty-box">
+        <span class="friends-empty-text">Você ainda não adicionou nenhum amigo.</span>
+        <button class="btn-explore-community">Explorar Comunidade</button>
+      </div>
+    </div>
+
+    <!-- BOTÃO SUPORTE INSTAGRAM -->
+    <a href="https://instagram.com/seu_usuario" target="_blank" class="btn-support-instagram">
+      <i class="fa-brands fa-instagram" style="font-size: 1.2rem;"></i> Suporte via Instagram
+    </a>
+
+    <!-- BOTÃO SAIR / TROCAR PERFIL -->
+    <button class="btn-logout" onclick="logoutProfile()">
+      <i class="fa-solid fa-right-from-bracket"></i> Trocar de Perfil / Sair
+    </button>
+
+  </div>
+
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Início</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-tv"></i>
+      <span>Séries</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Filmes</span>
+    </a>
+    <a class="nav-item" href="party.html">
+      <i class="fa-solid fa-users"></i>
+      <span>OFF Party</span>
+    </a>
+    <a class="nav-item active" href="perfil.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const name = localStorage.getItem('offrave_active_profile') || 'William';
+      const avatar = localStorage.getItem('offrave_active_avatar');
+      const savedBio = localStorage.getItem('offrave_user_bio') || 'Olá! Sou um fã de filmes no OFFRAVE.';
+
+      document.getElementById('profileName').textContent = name;
+      document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
+      document.getElementById('bioDisplay').textContent = savedBio;
+      document.getElementById('bioTextarea').value = savedBio;
+
+      if (avatar && !avatar.includes('Netflix-avatar.png') && !avatar.includes('3069172.png')) {
+        document.querySelector('.avatar-wrapper').innerHTML = `<img class="profile-avatar-large" src="${avatar}" alt="Avatar"/>`;
+      }
+    });
+
+    function toggleEditBio() {
+      const editArea = document.getElementById('bioEditArea');
+      const bioDisplay = document.getElementById('bioDisplay');
+      const editTextLabel = document.getElementById('editTextLabel');
+
+      if (editArea.style.display === 'flex') {
+        editArea.style.display = 'none';
+        bioDisplay.style.display = 'block';
+        editTextLabel.textContent = 'Editar';
+      } else {
+        editArea.style.display = 'flex';
+        bioDisplay.style.display = 'none';
+        editTextLabel.textContent = 'Cancelar';
+      }
+    }
+
+    function saveBio() {
+      const newBio = document.getElementById('bioTextarea').value.trim();
+      if (newBio) {
+        localStorage.setItem('offrave_user_bio', newBio);
+        document.getElementById('bioDisplay').textContent = newBio;
+        toggleEditBio();
+      }
+    }
+
+    function logoutProfile() {
+      localStorage.removeItem('offrave_profile_selected');
+      localStorage.removeItem('offrave_active_profile');
+      localStorage.removeItem('offrave_active_avatar');
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>
