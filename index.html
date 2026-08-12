@@ -762,7 +762,7 @@
     <button class="nav-item" onclick="alert('Use a busca')"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></button>
   </nav>
 
-  <script>
+<script>
     const firebaseConfig = {
       apiKey: "AIzaSyCfmD2-gmj8p4yVuWyNmjMLfIv7vgH_SMU",
       authDomain: "offrave-party.firebaseapp.com",
@@ -777,7 +777,6 @@
       firebase.initializeApp(firebaseConfig);
     }
 
-    const profileOverlay = document.getElementById('profileOverlay');
     const footerProfileName = document.getElementById('footerProfileName');
     const footerProfileAvatar = document.getElementById('footerProfileAvatar');
 
@@ -788,19 +787,39 @@
       if(footerProfileAvatar) footerProfileAvatar.src = savedAvatar;
     }
 
-    if (localStorage.getItem('offrave_profile_selected') === 'true') {
-      profileOverlay.classList.add('hide');
-      updateFooterProfile();
-    } else {
-      document.body.style.overflow = 'hidden';
-    }
+    // Executa assim que o documento carregar para evitar travamentos
+    document.addEventListener('DOMContentLoaded', () => {
+      const profileOverlay = document.getElementById('profileOverlay');
+      
+      if (localStorage.getItem('offrave_profile_selected') === 'true') {
+        if (profileOverlay) profileOverlay.classList.add('hide');
+        document.body.style.overflow = 'auto';
+        updateFooterProfile();
+      } else {
+        if (profileOverlay) profileOverlay.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+      }
+
+      fetch('filmes.json')
+        .then(res => res.json())
+        .then(data => {
+          allMovies = data;
+          renderCatalog(allMovies);
+          renderTrending(allMovies);
+        })
+        .catch(() => {
+          document.getElementById('catalogGrid').innerHTML = '<p style="color:#94a3b8;">Nenhum filme carregado. Adicione itens no filmes.json</p>';
+        });
+    });
 
     function selectProfile(profileName, avatarUrl) {
       localStorage.setItem('offrave_profile_selected', 'true');
       localStorage.setItem('offrave_active_profile', profileName);
       localStorage.setItem('offrave_active_avatar', avatarUrl);
       updateFooterProfile();
-      profileOverlay.classList.add('hide');
+      
+      const profileOverlay = document.getElementById('profileOverlay');
+      if (profileOverlay) profileOverlay.classList.add('hide');
       document.body.style.overflow = 'auto';
     }
 
@@ -830,28 +849,16 @@
     function resetProfileSelection() {
       localStorage.removeItem('offrave_profile_selected');
       closeMenu();
-      profileOverlay.classList.remove('hide');
+      const profileOverlay = document.getElementById('profileOverlay');
+      if (profileOverlay) profileOverlay.classList.remove('hide');
       document.body.style.overflow = 'hidden';
     }
 
     let allMovies = [];
 
-    document.addEventListener('DOMContentLoaded', () => {
-      updateFooterProfile();
-      fetch('filmes.json')
-        .then(res => res.json())
-        .then(data => {
-          allMovies = data;
-          renderCatalog(allMovies);
-          renderTrending(allMovies);
-        })
-        .catch(() => {
-          document.getElementById('catalogGrid').innerHTML = '<p style="color:#94a3b8;">Nenhum filme carregado. Adicione itens no filmes.json</p>';
-        });
-    });
-
     function renderCatalog(movies) {
       const grid = document.getElementById('catalogGrid');
+      if (!grid) return;
       grid.innerHTML = '';
       movies.forEach(movie => {
         grid.innerHTML += `
@@ -867,6 +874,7 @@
 
     function renderTrending(movies) {
       const slider = document.getElementById('trendingSlider');
+      if (!slider) return;
       slider.innerHTML = '';
       movies.slice(0, 10).forEach((movie, index) => {
         slider.innerHTML += `
@@ -882,7 +890,7 @@
 
     function filterCategory(category) {
       const title = document.getElementById('catalogCategoryTitle');
-      title.innerHTML = `<i class='fa-solid fa-layer-group'></i> ${category}`;
+      if (title) title.innerHTML = `<i class='fa-solid fa-layer-group'></i> ${category}`;
       const filtered = allMovies.filter(m => m.categoria.toLowerCase() === category.toLowerCase());
       renderCatalog(filtered);
     }
@@ -894,10 +902,13 @@
 
     function openMenu() { 
       updateFooterProfile();
-      sideMenuOverlay.classList.add('active'); 
-      sideMenuPopup.classList.add('active'); 
+      if (sideMenuOverlay) sideMenuOverlay.classList.add('active'); 
+      if (sideMenuPopup) sideMenuPopup.classList.add('active'); 
     }
-    function closeMenu() { sideMenuOverlay.classList.remove('active'); sideMenuPopup.classList.remove('active'); }
+    function closeMenu() { 
+      if (sideMenuOverlay) sideMenuOverlay.classList.remove('active'); 
+      if (sideMenuPopup) sideMenuPopup.classList.remove('active'); 
+    }
 
     if (openSideMenuBtn) openSideMenuBtn.addEventListener('click', openMenu);
     if (closeSideMenuBtn) closeSideMenuBtn.addEventListener('click', closeMenu);
