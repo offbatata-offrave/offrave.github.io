@@ -284,7 +284,7 @@
   </header>
 
   <div class='player-page-container' id='playerPageContent'>
-    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Buscando capa e sinopse automática...</div>
+    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Buscando capa e sinopse em português...</div>
   </div>
 
   <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE -->
@@ -316,29 +316,34 @@
           return;
         }
 
-        // Dados padrão do JSON
         let capaFinal = movie.capa || 'https://via.placeholder.com/110x160?text=Capa';
         let sinopseFinal = movie.sinopse || 'Carregando sinopse...';
 
-        // Busca automática na OMDB API (Livre de CORS para uso direto no front-end)
+        // Busca automática na TMDB usando tradução em português do Brasil (language=pt-BR)
         try {
-          const omdbRes = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(movie.titulo)}&apikey=trilogy`);
-          const omdbData = await omdbRes.json();
-          
-          if (omdbData.Response === "True") {
-            if (omdbData.Poster && omdbData.Poster !== "N/A") {
-              capaFinal = omdbData.Poster;
+          const apiKey = 'c28a2a09c2c62c3e4492938814777d54';
+          const targetUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`;
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+
+          const tmdbRes = await fetch(proxyUrl);
+          const tmdbJson = await tmdbRes.json();
+          const tmdbData = JSON.parse(tmdbJson.contents);
+
+          if (tmdbData.results && tmdbData.results.length > 0) {
+            const tmdbMovie = tmdbData.results[0];
+            if (tmdbMovie.poster_path) {
+              capaFinal = `https://image.tmdb.org/t/p/w500${tmdbMovie.poster_path}`;
             }
-            if (omdbData.Plot && omdbData.Plot !== "N/A") {
-              sinopseFinal = omdbData.Plot; // Traz a sinopse oficial
+            if (tmdbMovie.overview) {
+              sinopseFinal = tmdbMovie.overview; // Sinopse oficial em Português
             }
           }
         } catch (e) {
-          console.warn("Falha na API externa, usando dados locais.");
+          console.warn("Usando dados locais.");
         }
 
         if (!sinopseFinal || sinopseFinal === 'Carregando sinopse...') {
-          sinopseFinal = movie.sinopse || `Sinopse oficial para "${movie.titulo}" indisponível no momento.`;
+          sinopseFinal = movie.sinopse || `Sinopse para "${movie.titulo}" indisponível no momento.`;
         }
 
         const isYouTube = movie.videoUrl.includes('youtube.com') || movie.videoUrl.includes('youtu.be') || movie.videoUrl.includes('embed');
