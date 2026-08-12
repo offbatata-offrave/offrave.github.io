@@ -118,18 +118,73 @@
     .btn-secondary { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
 
+    /* POPUP MODAL (Criar Sala) */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+      display: none; justify-content: center; align-items: center; z-index: 1000;
+      padding: 15px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: #12131a; width: 100%; max-width: 480px;
+      border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+      display: flex; flex-direction: column; gap: 20px; animation: modalPop 0.3s ease;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;
+    }
+    .modal-close-btn {
+      background: rgba(255,255,255,0.08); border: none; color: #fff;
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+    }
+    .modal-close-btn:hover { background: #e50914; }
+
+    .privacy-options {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .privacy-card {
+      background: rgba(255, 255, 255, 0.03); border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px; padding: 15px; cursor: pointer; transition: all 0.2s;
+      display: flex; flex-direction: column; gap: 6px; position: relative;
+    }
+    .privacy-card.selected { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
+    .privacy-card input { display: none; }
+
+    /* LISTA DE SALAS PÚBLICAS */
+    .public-rooms-section {
+      margin-top: 25px; text-align: left;
+    }
+    .public-rooms-title {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #cbd5e1;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .public-rooms-grid {
+      display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto; padding-right: 4px;
+    }
+    .public-room-item {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;
+      transition: all 0.2s;
+    }
+    .public-room-item:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(229, 9, 20, 0.4); }
+
     /* Sala Ativa */
     .room-view { display: none; flex-direction: column; gap: 20px; }
     .room-view.active { display: flex; }
 
     .video-sync-box {
-      position: relative;
-      width: 100%;
-      padding-top: 56.25%;
-      background: #000;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      position: relative; width: 100%; padding-top: 56.25%; background: #000;
+      border-radius: 16px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
     .video-sync-box iframe, .video-sync-box video {
@@ -137,111 +192,55 @@
     }
 
     .room-header-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(18, 19, 26, 0.6);
-      padding: 15px 20px;
-      border-radius: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(18, 19, 26, 0.6); padding: 15px 20px; border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
-    .room-code-badge {
-      font-size: 0.9rem;
-      color: #94a3b8;
-    }
+    .room-code-badge { font-size: 0.9rem; color: #94a3b8; }
     .room-code-badge span { color: #fff; font-weight: bold; font-family: monospace; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 6px; }
 
-    /* Painel de Participantes Online & Chat */
     .room-grid-panels {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     }
     @media (max-width: 768px) {
       .room-grid-panels { grid-template-columns: 1fr; }
     }
 
     .panel-box {
-      background: rgba(18, 19, 26, 0.6);
-      border-radius: 14px;
-      padding: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      height: 300px;
+      background: rgba(18, 19, 26, 0.6); border-radius: 14px; padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; height: 300px;
     }
 
     .panel-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #cbd5e1;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding-bottom: 8px;
+      font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; display: flex;
+      align-items: center; gap: 8px; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;
     }
 
     .members-list {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
     }
 
     .member-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 8px;
-      font-size: 0.85rem;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 12px; background: rgba(255, 255, 255, 0.04); border-radius: 8px; font-size: 0.85rem;
     }
 
     .btn-kick {
-      background: rgba(229, 9, 20, 0.2);
-      color: #ff4d4f;
-      border: 1px solid rgba(229, 9, 20, 0.4);
-      padding: 4px 8px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.75rem;
-      font-weight: 600;
-      transition: all 0.2s;
+      background: rgba(229, 9, 20, 0.2); color: #ff4d4f; border: 1px solid rgba(229, 9, 20, 0.4);
+      padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: all 0.2s;
     }
     .btn-kick:hover { background: #e50914; color: #fff; }
 
-    /* Chat interno */
     .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.85rem;
-      padding-right: 4px;
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; padding-right: 4px;
     }
     .chat-msg { background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 6px; word-break: break-all; }
     .chat-msg b { color: #e50914; }
 
-    .chat-input-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
+    .chat-input-row { display: flex; gap: 8px; margin-top: 10px; }
     .chat-input {
-      flex: 1;
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
-      font-size: 0.85rem;
-      outline: none;
+      flex: 1; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15); color: #fff; font-size: 0.85rem; outline: none;
     }
 
     /* BARRA INFERIOR */
@@ -277,7 +276,7 @@
       <p style='color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;'>Crie uma sala sincronizada ou entre com o código de um amigo.</p>
       
       <div style='display: flex; flex-direction: column; gap: 15px; align-items: center;'>
-        <button class='btn-party' onclick='createRoom()'><i class='fa-solid fa-plus'></i> Criar Nova Sala (ADM)</button>
+        <button class='btn-party' onclick='openCreateModal()'><i class='fa-solid fa-plus'></i> Criar Nova Sala (ADM)</button>
         
         <div style='display: flex; align-items: center; width: 100%; max-width: 400px; gap: 10px; margin: 10px 0;'>
           <hr style='flex:1; border-color: rgba(255,255,255,0.1);'>
@@ -287,7 +286,15 @@
 
         <div class='input-group'>
           <input type='text' id='roomCodeInput' class='party-input' placeholder='Código da Sala...'/>
-          <button class='btn-party btn-secondary' onclick='joinRoom()'><i class='fa-solid fa-right-to-bracket'></i> Entrar</button>
+          <button class='btn-party btn-secondary' onclick='joinRoomByCode()'><i class='fa-solid fa-right-to-bracket'></i> Entrar</button>
+        </div>
+      </div>
+
+      <!-- SEÇÃO DE SALAS PÚBLICAS ONLINE -->
+      <div class="public-rooms-section">
+        <div class="public-rooms-title"><i class="fa-solid fa-globe" style="color: #22c55e;"></i> Salas Públicas Online</div>
+        <div class="public-rooms-grid" id="publicRoomsList">
+          <span style="font-size: 0.85rem; color: #64748b; text-align: center; padding: 10px;">Procurando salas ativas...</span>
         </div>
       </div>
     </div>
@@ -296,14 +303,13 @@
     <div class='room-view' id='roomView'>
       
       <div class='room-header-bar'>
-        <div class='room-code-badge'>Sala: <span id='currentRoomCode'>----</span></div>
+        <div class='room-code-badge'>Sala: <span id='currentRoomCode'>----</span> (<span id='roomNameDisplay'></span>)</div>
         <button class='btn-party btn-kick' style='background:rgba(229,9,20,0.8); color:#fff;' onclick='leaveOrCloseRoom()'>
           <i class='fa-solid fa-right-from-bracket'></i> <span id='leaveBtnText'>Sair da Sala</span>
         </button>
       </div>
 
       <div class='video-sync-box'>
-        <!-- Exemplo de player sincronizado ou iframe de vídeo -->
         <iframe id='syncVideoPlayer' src='https://www.youtube.com/embed/dQw4w9WgXcQ' allowfullscreen='true'></iframe>
       </div>
 
@@ -311,9 +317,7 @@
         <!-- Painel de Usuários Online -->
         <div class='panel-box'>
           <div class='panel-title'><i class='fa-solid fa-users'></i> Usuários Online (<span id='onlineCount'>0</span>)</div>
-          <div class='members-list' id='membersList'>
-            <!-- Preenchido via JS -->
-          </div>
+          <div class='members-list' id='membersList'></div>
         </div>
 
         <!-- Painel de Chat -->
@@ -331,6 +335,55 @@
 
   </div>
 
+  <!-- POPUP DE CRIAR SALA (MODAL) -->
+  <div class="modal-overlay" id="createRoomModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="background: rgba(229,9,20,0.2); padding: 8px 12px; border-radius: 10px; color: #e50914;"><i class="fa-solid fa-video"></i></div>
+          <div>
+            <h3 style="font-family: 'Bebas Neue'; font-size: 1.5rem; letter-spacing: 0.5px;">CRIAR NOVA SALA</h3>
+            <p style="font-size: 0.75rem; color: #94a3b8;">Pronto em 1 segundo para curtir com a galera</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeCreateModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">NOME DA SALA (OPCIONAL)</label>
+        <input type="text" id="modalRoomName" class="party-input" style="width: 100%;" placeholder="Ex: Maratona de Filmes 🍿"/>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">PRIVACIDADE DA SALA</label>
+        <div class="privacy-options">
+          <div class="privacy-card selected" id="cardPublic" onclick="setPrivacy('public')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <i class="fa-solid fa-globe" style="color: #22c55e; font-size: 1.1rem;"></i>
+              <i class="fa-solid fa-circle-check" style="color: #22c55e;" id="checkPublic"></i>
+            </div>
+            <span style="font-weight: 700; font-size: 0.9rem; margin-top: 4px;">Pública</span>
+            <span style="font-size: 0.7rem; color: #94a3b8;">Visível no painel</span>
+          </div>
+
+          <div class="privacy-card" id="cardPrivate" onclick="setPrivacy('private')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <i class="fa-solid fa-lock" style="color: #94a3b8; font-size: 1.1rem;"></i>
+              <i class="fa-solid fa-circle-check" style="color: transparent;" id="checkPrivate"></i>
+            </div>
+            <span style="font-weight: 700; font-size: 0.9rem; margin-top: 4px;">Privada</span>
+            <span style="font-size: 0.7rem; color: #94a3b8;">Apenas por código</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <button class="btn-party btn-secondary" style="flex: 1;" onclick="closeCreateModal()">Cancelar</button>
+        <button class="btn-party" style="flex: 1;" onclick="confirmCreateRoom()"><i class="fa-solid fa-play"></i> Criar e Entrar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- BARRA INFERIOR -->
   <nav class='bottom-nav glass-panel'>
     <a class='nav-item' href='index.html'><i class='fa-solid fa-house'></i><span>Início</span></a>
@@ -341,7 +394,6 @@
 
   <!-- LÓGICA DO PARTY COM FIREBASE -->
   <script>
-    // CONFIGURAÇÃO FIREBASE
     const firebaseConfig = {
       apiKey: "AIzaSyCfmD2-gmj8p4yVuWyNmjMLfIv7vgH_SMU",
       authDomain: "offrave-party.firebaseapp.com",
@@ -362,19 +414,43 @@
     let myUserName = localStorage.getItem('offrave_active_profile') || 'Visitante';
     let isHost = false;
     let roomRef = null;
+    let selectedPrivacy = 'public';
 
-    // Funções globais mapeadas para o objeto window
-    window.generateRoomCode = function() {
-      return Math.random().toString(36).substring(2, 8).toUpperCase();
+    // Gerenciar Modal
+    window.openCreateModal = function() {
+      document.getElementById('createRoomModal').classList.add('active');
     }
 
-    window.createRoom = function() {
-      const roomId = window.generateRoomCode();
+    window.closeCreateModal = function() {
+      document.getElementById('createRoomModal').classList.remove('active');
+    }
+
+    window.setPrivacy = function(type) {
+      selectedPrivacy = type;
+      if (type === 'public') {
+        document.getElementById('cardPublic').classList.add('selected');
+        document.getElementById('cardPrivate').classList.remove('selected');
+        document.getElementById('checkPublic').style.color = '#22c55e';
+        document.getElementById('checkPrivate').style.color = 'transparent';
+      } else {
+        document.getElementById('cardPrivate').classList.add('selected');
+        document.getElementById('cardPublic').classList.remove('selected');
+        document.getElementById('checkPrivate').style.color = '#22c55e';
+        document.getElementById('checkPublic').style.color = 'transparent';
+      }
+    }
+
+    window.confirmCreateRoom = function() {
+      const customName = document.getElementById('modalRoomName').value.trim();
+      const roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const roomName = customName || `Sala de ${myUserName}`;
+      
+      closeCreateModal();
       isHost = true;
-      setupRoomInFirebase(roomId, true);
+      setupRoomInFirebase(roomId, true, roomName, selectedPrivacy);
     }
 
-    window.joinRoom = function() {
+    window.joinRoomByCode = function() {
       const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
       if (!code) return alert('Digite o código da sala!');
       
@@ -388,7 +464,40 @@
       });
     }
 
-    function setupRoomInFirebase(roomId, asHost) {
+    window.joinPublicRoom = function(code) {
+      isHost = false;
+      setupRoomInFirebase(code, false);
+    }
+
+    // Carregar Salas Públicas em Tempo Real
+    db.ref('rooms').on('value', snapshot => {
+      const rooms = snapshot.val() || {};
+      const listEl = document.getElementById('publicRoomsList');
+      listEl.innerHTML = '';
+      let publicCount = 0;
+
+      Object.keys(rooms).forEach(id => {
+        const room = rooms[id];
+        if (room.status === 'active' && room.privacy === 'public') {
+          publicCount++;
+          listEl.innerHTML += `
+            <div class="public-room-item">
+              <div>
+                <div style="font-weight: 700; font-size: 0.9rem;">${room.name || 'Sala Pública'}</div>
+                <div style="font-size: 0.75rem; color: #94a3b8;">Código: ${id}</div>
+              </div>
+              <button class="btn-party" style="padding: 6px 12px; font-size: 0.8rem;" onclick="joinPublicRoom('${id}')">Entrar</button>
+            </div>
+          `;
+        }
+      });
+
+      if (publicCount === 0) {
+        listEl.innerHTML = '<span style="font-size: 0.85rem; color: #64748b; text-align: center; padding: 10px;">Nenhuma sala pública no momento. Crie uma!</span>';
+      }
+    });
+
+    function setupRoomInFirebase(roomId, asHost, roomName = 'Sala', privacy = 'public') {
       currentRoomId = roomId;
       roomRef = db.ref('rooms/' + roomId);
 
@@ -396,6 +505,8 @@
         roomRef.set({
           host: myUserId,
           status: 'active',
+          name: roomName,
+          privacy: privacy,
           videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
         });
       }
@@ -407,6 +518,7 @@
       document.getElementById('lobbyCard').style.display = 'none';
       document.getElementById('roomView').classList.add('active');
       document.getElementById('currentRoomCode').textContent = roomId;
+      document.getElementById('roomNameDisplay').textContent = roomName;
       
       if (isHost) {
         document.getElementById('leaveBtnText').textContent = 'Fechar Sala (ADM)';
