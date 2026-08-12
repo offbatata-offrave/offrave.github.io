@@ -101,7 +101,7 @@
       color: #fff;
       font-size: 1rem;
       outline: none;
-      width: 250px;
+      width: 100%;
     }
 
     .btn-party {
@@ -118,7 +118,7 @@
     .btn-secondary { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
 
-    /* POPUP MODAL (Criar Sala) */
+    /* POPUP MODAIS */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
@@ -132,6 +132,7 @@
       border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.12);
       padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
       display: flex; flex-direction: column; gap: 20px; animation: modalPop 0.3s ease;
+      max-height: 90vh; overflow-y: auto;
     }
     @keyframes modalPop {
       from { transform: scale(0.9); opacity: 0; }
@@ -158,9 +159,8 @@
       display: flex; flex-direction: column; gap: 6px; position: relative;
     }
     .privacy-card.selected { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
-    .privacy-card input { display: none; }
 
-    /* LISTA DE SALAS PÚBLICAS */
+    /* SEÇÃO DE SALAS PÚBLICAS */
     .public-rooms-section {
       margin-top: 25px; text-align: left;
     }
@@ -178,7 +178,7 @@
     }
     .public-room-item:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(229, 9, 20, 0.4); }
 
-    /* Sala Ativa */
+    /* SALA ATIVA */
     .room-view { display: none; flex-direction: column; gap: 20px; }
     .room-view.active { display: flex; }
 
@@ -188,27 +188,25 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
     .video-sync-box iframe, .video-sync-box video {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; object-fit: contain;
     }
 
     .room-header-bar {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
       background: rgba(18, 19, 26, 0.6); padding: 15px 20px; border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
     .room-code-badge { font-size: 0.9rem; color: #94a3b8; }
     .room-code-badge span { color: #fff; font-weight: bold; font-family: monospace; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 6px; }
 
-    .room-grid-panels {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-    }
-    @media (max-width: 768px) {
-      .room-grid-panels { grid-template-columns: 1fr; }
+    .room-controls-bar {
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
     }
 
+    /* Painel de Chat */
     .panel-box {
       background: rgba(18, 19, 26, 0.6); border-radius: 14px; padding: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; height: 300px;
+      border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; height: 320px;
     }
 
     .panel-title {
@@ -222,7 +220,7 @@
 
     .member-item {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 8px 12px; background: rgba(255, 255, 255, 0.04); border-radius: 8px; font-size: 0.85rem;
+      padding: 10px 14px; background: rgba(255, 255, 255, 0.04); border-radius: 10px; font-size: 0.9rem;
     }
 
     .btn-kick {
@@ -259,6 +257,13 @@
     }
     .nav-item i { font-size: 1.15rem; }
     .nav-item:hover, .nav-item.active { color: #ffffff; }
+
+    /* Estilo para lista de filmes do catálogo */
+    .catalog-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px; background: rgba(255,255,255,0.04);
+      border-radius: 8px; cursor: pointer; transition: background 0.2s;
+    }
+    .catalog-item:hover { background: rgba(229,9,20,0.15); }
   </style>
 </head>
 <body>
@@ -284,7 +289,7 @@
           <hr style='flex:1; border-color: rgba(255,255,255,0.1);'>
         </div>
 
-        <div class='input-group'>
+        <div class='input-group' style="max-width: 400px;">
           <input type='text' id='roomCodeInput' class='party-input' placeholder='Código da Sala...'/>
           <button class='btn-party btn-secondary' onclick='joinRoomByCode()'><i class='fa-solid fa-right-to-bracket'></i> Entrar</button>
         </div>
@@ -304,30 +309,35 @@
       
       <div class='room-header-bar'>
         <div class='room-code-badge'>Sala: <span id='currentRoomCode'>----</span> (<span id='roomNameDisplay'></span>)</div>
-        <button class='btn-party btn-kick' style='background:rgba(229,9,20,0.8); color:#fff;' onclick='leaveOrCloseRoom()'>
-          <i class='fa-solid fa-right-from-bracket'></i> <span id='leaveBtnText'>Sair da Sala</span>
-        </button>
+        
+        <div class="room-controls-bar">
+          <!-- Botão de Usuários Online (Abre Popup) -->
+          <button class='btn-party btn-secondary' style="padding: 8px 14px; font-size: 0.85rem;" onclick='openUsersModal()'>
+            <i class='fa-solid fa-users'></i> Online (<span id='onlineCount'>0</span>)
+          </button>
+
+          <!-- Botão de Alterar Mídia (Apenas ADM) -->
+          <button class='btn-party' id='btnChangeMedia' style="padding: 8px 14px; font-size: 0.85rem; display: none;" onclick='openMediaModal()'>
+            <i class='fa-solid fa-film'></i> Alterar Mídia
+          </button>
+
+          <button class='btn-party btn-kick' style='background:rgba(229,9,20,0.8); color:#fff; padding: 8px 14px; font-size: 0.85rem;' onclick='leaveOrCloseRoom()'>
+            <i class='fa-solid fa-right-from-bracket'></i> <span id='leaveBtnText'>Sair</span>
+          </button>
+        </div>
       </div>
 
       <div class='video-sync-box'>
-        <iframe id='syncVideoPlayer' src='https://www.youtube.com/embed/dQw4w9WgXcQ' allowfullscreen='true'></iframe>
+        <div id='playerContainer' style="width:100%; height:100%; position:absolute; top:0; left:0;"></div>
       </div>
 
-      <div class='room-grid-panels'>
-        <!-- Painel de Usuários Online -->
-        <div class='panel-box'>
-          <div class='panel-title'><i class='fa-solid fa-users'></i> Usuários Online (<span id='onlineCount'>0</span>)</div>
-          <div class='members-list' id='membersList'></div>
-        </div>
-
-        <!-- Painel de Chat -->
-        <div class='panel-box'>
-          <div class='panel-title'><i class='fa-solid fa-comments'></i> Chat da Sala</div>
-          <div class='chat-messages' id='chatMessages'></div>
-          <div class='chat-input-row'>
-            <input type='text' id='chatInput' class='chat-input' placeholder='Digite sua mensagem...' onkeypress='handleChatKey(event)'/>
-            <button class='btn-party' style='padding: 8px 14px;' onclick='sendChatMessage()'><i class='fa-solid fa-paper-plane'></i></button>
-          </div>
+      <!-- Painel de Chat -->
+      <div class='panel-box'>
+        <div class='panel-title'><i class='fa-solid fa-comments'></i> Chat da Sala</div>
+        <div class='chat-messages' id='chatMessages'></div>
+        <div class='chat-input-row'>
+          <input type='text' id='chatInput' class='chat-input' placeholder='Digite sua mensagem...' onkeypress='handleChatKey(event)'/>
+          <button class='btn-party' style='padding: 8px 14px;' onclick='sendChatMessage()'><i class='fa-solid fa-paper-plane'></i></button>
         </div>
       </div>
 
@@ -335,7 +345,7 @@
 
   </div>
 
-  <!-- POPUP DE CRIAR SALA (MODAL) -->
+  <!-- MODAL DE CRIAR SALA -->
   <div class="modal-overlay" id="createRoomModal">
     <div class="modal-card">
       <div class="modal-header">
@@ -349,37 +359,67 @@
         <button class="modal-close-btn" onclick="closeCreateModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;">
         <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">NOME DA SALA (OPCIONAL)</label>
-        <input type="text" id="modalRoomName" class="party-input" style="width: 100%;" placeholder="Ex: Maratona de Filmes 🍿"/>
+        <input type="text" id="modalRoomName" class="party-input" placeholder="Ex: Maratona de Filmes 🍿"/>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;">
         <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">PRIVACIDADE DA SALA</label>
         <div class="privacy-options">
           <div class="privacy-card selected" id="cardPublic" onclick="setPrivacy('public')">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <i class="fa-solid fa-globe" style="color: #22c55e; font-size: 1.1rem;"></i>
-              <i class="fa-solid fa-circle-check" style="color: #22c55e;" id="checkPublic"></i>
-            </div>
+            <i class="fa-solid fa-globe" style="color: #22c55e; font-size: 1.1rem;"></i>
             <span style="font-weight: 700; font-size: 0.9rem; margin-top: 4px;">Pública</span>
             <span style="font-size: 0.7rem; color: #94a3b8;">Visível no painel</span>
           </div>
-
           <div class="privacy-card" id="cardPrivate" onclick="setPrivacy('private')">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <i class="fa-solid fa-lock" style="color: #94a3b8; font-size: 1.1rem;"></i>
-              <i class="fa-solid fa-circle-check" style="color: transparent;" id="checkPrivate"></i>
-            </div>
+            <i class="fa-solid fa-lock" style="color: #94a3b8; font-size: 1.1rem;"></i>
             <span style="font-weight: 700; font-size: 0.9rem; margin-top: 4px;">Privada</span>
             <span style="font-size: 0.7rem; color: #94a3b8;">Apenas por código</span>
           </div>
         </div>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-top: 10px;">
+      <div style="display: flex; gap: 10px; margin-top: 5px;">
         <button class="btn-party btn-secondary" style="flex: 1;" onclick="closeCreateModal()">Cancelar</button>
         <button class="btn-party" style="flex: 1;" onclick="confirmCreateRoom()"><i class="fa-solid fa-play"></i> Criar e Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE USUÁRIOS ONLINE -->
+  <div class="modal-overlay" id="usersModal">
+    <div class="modal-card" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 style="font-family: 'Bebas Neue'; font-size: 1.4rem;"><i class="fa-solid fa-users"></i> Usuários na Sala</h3>
+        <button class="modal-close-btn" onclick="closeUsersModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="members-list" id="membersList" style="max-height: 250px;"></div>
+    </div>
+  </div>
+
+  <!-- MODAL DE ALTERAR / ESCOLHER MÍDIA -->
+  <div class="modal-overlay" id="mediaModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-family: 'Bebas Neue'; font-size: 1.4rem;"><i class="fa-solid fa-film"></i> Escolher Mídia / Filme</h3>
+        <button class="modal-close-btn" onclick="closeMediaModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: #cbd5e1;">LINK DO YOUTUBE OU MP4 DIRETO</label>
+          <div style="display: flex; gap: 8px; margin-top: 5px;">
+            <input type="text" id="mediaUrlInput" class="party-input" placeholder="https://youtube.com/watch?v=... ou .mp4"/>
+            <button class="btn-party" style="padding: 0 16px;" onclick="applyCustomMedia()">Aplicar</button>
+          </div>
+        </div>
+
+        <div style="text-align: center; color: #64748b; font-size: 0.8rem;">OU SELECIONE DO CATÁLOGO (filmes.json)</div>
+
+        <div style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;" id="catalogMoviesList">
+          <span style="font-size: 0.85rem; color: #64748b; text-align: center;">Carregando filmes.json...</span>
+        </div>
       </div>
     </div>
   </div>
@@ -416,27 +456,29 @@
     let roomRef = null;
     let selectedPrivacy = 'public';
 
-    // Gerenciar Modal
-    window.openCreateModal = function() {
-      document.getElementById('createRoomModal').classList.add('active');
-    }
+    // Modais de Criação
+    window.openCreateModal = () => document.getElementById('createRoomModal').classList.add('active');
+    window.closeCreateModal = () => document.getElementById('createRoomModal').classList.remove('active');
+    
+    // Modais de Usuários
+    window.openUsersModal = () => document.getElementById('usersModal').classList.add('active');
+    window.closeUsersModal = () => document.getElementById('usersModal').classList.remove('active');
 
-    window.closeCreateModal = function() {
-      document.getElementById('createRoomModal').classList.remove('active');
+    // Modales de Mídia
+    window.openMediaModal = () => {
+      document.getElementById('mediaModal').classList.add('active');
+      loadCatalogMovies();
     }
+    window.closeMediaModal = () => document.getElementById('mediaModal').classList.remove('active');
 
     window.setPrivacy = function(type) {
       selectedPrivacy = type;
       if (type === 'public') {
         document.getElementById('cardPublic').classList.add('selected');
         document.getElementById('cardPrivate').classList.remove('selected');
-        document.getElementById('checkPublic').style.color = '#22c55e';
-        document.getElementById('checkPrivate').style.color = 'transparent';
       } else {
         document.getElementById('cardPrivate').classList.add('selected');
         document.getElementById('cardPublic').classList.remove('selected');
-        document.getElementById('checkPrivate').style.color = '#22c55e';
-        document.getElementById('checkPublic').style.color = 'transparent';
       }
     }
 
@@ -464,22 +506,19 @@
       });
     }
 
-    window.joinPublicRoom = function(code) {
-      isHost = false;
-      setupRoomInFirebase(code, false);
-    }
+    window.joinPublicRoom = (code) => setupRoomInFirebase(code, false);
 
-    // Carregar Salas Públicas em Tempo Real
+    // Carregar salas públicas
     db.ref('rooms').on('value', snapshot => {
       const rooms = snapshot.val() || {};
       const listEl = document.getElementById('publicRoomsList');
       listEl.innerHTML = '';
-      let publicCount = 0;
+      let count = 0;
 
       Object.keys(rooms).forEach(id => {
         const room = rooms[id];
         if (room.status === 'active' && room.privacy === 'public') {
-          publicCount++;
+          count++;
           listEl.innerHTML += `
             <div class="public-room-item">
               <div>
@@ -491,10 +530,7 @@
           `;
         }
       });
-
-      if (publicCount === 0) {
-        listEl.innerHTML = '<span style="font-size: 0.85rem; color: #64748b; text-align: center; padding: 10px;">Nenhuma sala pública no momento. Crie uma!</span>';
-      }
+      if (count === 0) listEl.innerHTML = '<span style="font-size: 0.85rem; color: #64748b; text-align: center; padding: 10px;">Nenhuma sala pública no momento.</span>';
     });
 
     function setupRoomInFirebase(roomId, asHost, roomName = 'Sala', privacy = 'public') {
@@ -507,7 +543,7 @@
           status: 'active',
           name: roomName,
           privacy: privacy,
-          videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+          mediaUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
         });
       }
 
@@ -521,9 +557,11 @@
       document.getElementById('roomNameDisplay').textContent = roomName;
       
       if (isHost) {
-        document.getElementById('leaveBtnText').textContent = 'Fechar Sala (ADM)';
+        document.getElementById('leaveBtnText').textContent = 'Fechar Sala';
+        document.getElementById('btnChangeMedia').style.display = 'block';
       } else {
-        document.getElementById('leaveBtnText').textContent = 'Sair da Sala';
+        document.getElementById('leaveBtnText').textContent = 'Sair';
+        document.getElementById('btnChangeMedia').style.display = 'none';
       }
 
       roomRef.on('value', snapshot => {
@@ -533,13 +571,18 @@
           quitPartyClean();
           return;
         }
-
         if (data.members && !data.members[myUserId]) {
-          alert('Você foi expulso da sala pelo Administrador.');
+          alert('Você foi expulso da sala.');
           quitPartyClean();
+        }
+
+        // Atualizar Player de Mídia Sincronizado
+        if (data.mediaUrl) {
+          updatePlayerMedia(data.mediaUrl);
         }
       });
 
+      // Ouvir Membros Online
       roomRef.child('members').on('value', snapshot => {
         const members = snapshot.val() || {};
         const membersListEl = document.getElementById('membersList');
@@ -549,11 +592,7 @@
         Object.keys(members).forEach(uid => {
           count++;
           const member = members[uid];
-          let kickBtnHtml = '';
-
-          if (isHost && uid !== myUserId) {
-            kickBtnHtml = `<button class='btn-kick' onclick='kickMember("${uid}")'>Expulsar</button>`;
-          }
+          let kickBtnHtml = (isHost && uid !== myUserId) ? `<button class='btn-kick' onclick='kickMember("${uid}")'>Expulsar</button>` : '';
 
           membersListEl.innerHTML += `
             <div class='member-item'>
@@ -565,6 +604,7 @@
         document.getElementById('onlineCount').textContent = count;
       });
 
+      // Chat
       roomRef.child('chat').on('child_added', snapshot => {
         const msg = snapshot.val();
         const chatBox = document.getElementById('chatMessages');
@@ -573,28 +613,84 @@
       });
     }
 
-    window.kickMember = function(targetUserId) {
-      if (!isHost) return;
-      roomRef.child('members/' + targetUserId).remove();
+    function updatePlayerMedia(url) {
+      const container = document.getElementById('playerContainer');
+      let embedUrl = url;
+
+      // Conversor automático de links do YouTube para formato Embed
+      if (url.includes('watch?v=')) {
+        embedUrl = url.replace('watch?v=', 'embed/');
+      } else if (url.includes('youtu.be/')) {
+        embedUrl = url.replace('youtu.be/', 'www.youtube.com/embed/');
+      }
+
+      if (embedUrl.includes('youtube.com/embed') || embedUrl.includes('player')) {
+        container.innerHTML = `<iframe src="${embedUrl}" allowfullscreen="true" style="width:100%; height:100%; border:0;"></iframe>`;
+      } else {
+        container.innerHTML = `<video src="${embedUrl}" controls autoplay style="width:100%; height:100%; background:#000;"></video>`;
+      }
     }
+
+    window.applyCustomMedia = function() {
+      const url = document.getElementById('mediaUrlInput').value.trim();
+      if (!url) return alert('Insira um link válido!');
+      roomRef.update({ mediaUrl: url });
+      closeMediaModal();
+      document.getElementById('mediaUrlInput').value = '';
+    }
+
+    // Carregar filmes.json para seleção rápida
+    function loadCatalogMovies() {
+      const list = document.getElementById('catalogMoviesList');
+      list.innerHTML = '<span style="font-size: 0.85rem; color: #64748b; text-align: center;">Carregando...</span>';
+      
+      fetch('filmes.json')
+        .then(res => res.json())
+        .then(data => {
+          list.innerHTML = '';
+          const items = Array.isArray(data) ? data : (data.filmes || data.movies || []);
+          
+          if(items.length === 0) {
+            list.innerHTML = '<span style="font-size: 0.85rem; color: #64748b; text-align: center;">Nenhum item encontrado no filmes.json</span>';
+            return;
+          }
+
+          items.forEach(movie => {
+            const title = movie.titulo || movie.title || 'Filme sem nome';
+            const link = movie.link || movie.url || movie.video;
+            if(!link) return;
+
+            list.innerHTML += `
+              <div class="catalog-item" onclick="selectCatalogMedia('${link}')">
+                <i class="fa-solid fa-clapperboard" style="color: #e50914;"></i>
+                <span style="font-size: 0.85rem; font-weight: 600;">${title}</span>
+              </div>
+            `;
+          });
+        })
+        .catch(err => {
+          list.innerHTML = '<span style="font-size: 0.85rem; color: #e50914; text-align: center;">Erro ao carregar filmes.json (Verifique se o arquivo existe)</span>';
+        });
+    }
+
+    window.selectCatalogMedia = function(link) {
+      roomRef.update({ mediaUrl: link });
+      closeMediaModal();
+    }
+
+    window.kickMember = (targetUserId) => { if (isHost) roomRef.child('members/' + targetUserId).remove(); }
 
     window.leaveOrCloseRoom = function() {
       if (isHost) {
-        if (confirm('Tem certeza que deseja fechar a sala para todos?')) {
-          roomRef.update({ status: 'closed' });
-        }
+        if (confirm('Deseja fechar a sala para todos?')) roomRef.update({ status: 'closed' });
       } else {
-        if (roomRef) {
-          roomRef.child('members/' + myUserId).remove();
-        }
+        if (roomRef) roomRef.child('members/' + myUserId).remove();
         quitPartyClean();
       }
     }
 
     function quitPartyClean() {
-      if (roomRef) {
-        roomRef.off();
-      }
+      if (roomRef) roomRef.off();
       window.location.href = 'party.html';
     }
 
@@ -602,18 +698,11 @@
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text || !currentRoomId) return;
-
-      roomRef.child('chat').push({
-        user: myUserName,
-        text: text,
-        timestamp: Date.now()
-      });
+      roomRef.child('chat').push({ user: myUserName, text: text, timestamp: Date.now() });
       input.value = '';
     }
 
-    window.handleChatKey = function(e) {
-      if (e.key === 'Enter') window.sendChatMessage();
-    }
+    window.handleChatKey = (e) => { if (e.key === 'Enter') window.sendChatMessage(); }
   </script>
 </body>
 </html>
