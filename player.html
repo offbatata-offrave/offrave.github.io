@@ -7,7 +7,6 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
 
   <style>
     * {
@@ -37,7 +36,6 @@
       justify-content: space-between;
       background: linear-gradient(180deg, rgba(8, 8, 10, 0.98) 0%, rgba(8, 8, 10, 0.8) 70%, rgba(8, 8, 10, 0) 100%);
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
     }
 
     .brand-logo {
@@ -47,7 +45,6 @@
       text-decoration: none;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      text-shadow: 0 0 12px rgba(229, 9, 20, 0.4);
     }
 
     .btn-back {
@@ -62,10 +59,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: background 0.2s;
     }
-
-    .btn-back:hover { background: rgba(255, 255, 255, 0.2); }
 
     .player-page-container {
       max-width: 900px;
@@ -79,14 +73,12 @@
     .movie-details-card {
       background: rgba(18, 19, 26, 0.55);
       backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 24px;
       padding: 24px;
       display: flex;
       flex-direction: column;
       gap: 15px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     }
 
     .movie-info-header {
@@ -101,7 +93,6 @@
       border-radius: 12px;
       object-fit: cover;
       border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
       flex-shrink: 0;
     }
 
@@ -112,7 +103,7 @@
       flex: 1;
     }
 
-    .movie-main-title { font-size: 1.8rem; font-weight: 800; color: #fff; line-height: 1.1; }
+    .movie-main-title { font-size: 1.8rem; font-weight: 800; color: #fff; }
 
     .movie-category-badge {
       display: inline-block;
@@ -131,67 +122,7 @@
       font-size: 0.95rem;
       color: #cbd5e1;
       line-height: 1.5;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      transition: all 0.3s ease;
     }
-
-    .movie-synopsis.expanded {
-      -webkit-line-clamp: unset;
-    }
-
-    .btn-read-more {
-      background: none;
-      border: none;
-      color: #f59e0b;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      width: fit-content;
-      padding: 2px 0;
-      margin-top: -5px;
-    }
-    .btn-read-more:hover { text-decoration: underline; }
-
-    .btn-party-sync {
-      background: #6366f1;
-      color: #ffffff;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-decoration: none;
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .btn-party-sync:hover { background: #4f46e5; transform: scale(1.02); }
-
-    .btn-direct-watch {
-      background: #e50914;
-      color: #ffffff;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-decoration: none;
-      box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
-    }
-    .btn-direct-watch:hover { background: #b80710; }
 
     .netflix-player-container {
       position: relative;
@@ -201,15 +132,9 @@
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(0,0,0,0.8);
       aspect-ratio: 16 / 9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
     }
 
-    .embedded-iframe {
+    .embedded-iframe, .netflix-video {
       width: 100%; height: 100%; display: block; border: none; background: #000;
     }
 
@@ -222,11 +147,11 @@
       position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: calc(100% - 30px);
       max-width: 450px; height: 62px; border-radius: 35px; display: flex; justify-content: space-around;
       align-items: center; z-index: 2000; background: rgba(18, 19, 26, 0.85); backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     .nav-item {
       display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94a3b8; text-decoration: none;
-      font-size: 0.7rem; font-weight: 500; transition: color 0.3s; cursor: pointer; background: none; border: none;
+      font-size: 0.7rem; font-weight: 500;
     }
     .nav-item i { font-size: 1.15rem; }
     .nav-item:hover, .nav-item.active { color: #ffffff; }
@@ -242,7 +167,7 @@
   </header>
 
   <div class='player-page-container' id='playerPageContent'>
-    <div class='loading-msg' id='loadingMsg'><i class="fa-solid fa-spinner fa-spin"></i> Carregando...</div>
+    <div class='loading-msg'><i class="fa-solid fa-spinner fa-spin"></i> Carregando...</div>
   </div>
 
   <nav class="bottom-nav">
@@ -273,68 +198,38 @@
           return;
         }
 
-        let capaFinal = movie.capa || 'https://via.placeholder.com/110x160?text=Capa';
-        let sinopseFinal = movie.sinopse || 'Carregando sinopse...';
-
-        try {
-          const apiKey = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
-          const tmdbUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`;
-          const apiRes = await fetch(tmdbUrl);
-          const apiData = await apiRes.json();
-
-          if (apiData.results && apiData.results.length > 0) {
-            const item = apiData.results[0];
-            if (item.poster_path) capaFinal = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-            if (item.overview) sinopseFinal = item.overview;
-          }
-        } catch (err) {}
-
-        const finalUrl = movie.videoUrl;
-        const isYouTube = finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.includes('embed');
+        const videoUrl = movie.videoUrl;
+        const isEmbedOrIframe = videoUrl.includes('embed') || videoUrl.includes('mgeb.top') || videoUrl.includes('youtube.com');
 
         container.innerHTML = `
           <div class="netflix-player-container">
             <div class="movie-title-player">${movie.titulo}</div>
             
-            ${isYouTube ? `
-              <iframe class="embedded-iframe" src="${finalUrl.replace('watch?v=', 'embed/') + '?autoplay=1'}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            ${isEmbedOrIframe ? `
+              <iframe class="embedded-iframe" src="${videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
             ` : `
-              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; height: 100%; padding: 20px;">
-                <p style="color: #94a3b8; font-size: 0.9rem;">Este arquivo está hospedado no PixelDrain e requer abertura direta.</p>
-                <a href="${finalUrl}" target="_blank" class="btn-direct-watch">
-                  <i class="fa-solid fa-play"></i> Assistir / Baixar Vídeo
-                </a>
-              </div>
+              <video class="netflix-video" controls autoplay playsinline src="${videoUrl}"></video>
             `}
           </div>
 
           <div class='movie-details-card'>
             <div class='movie-info-header'>
-              <img src="${capaFinal}" alt="${movie.titulo}" class='movie-poster-thumb' onerror="this.src='https://via.placeholder.com/110x160?text=Capa'"/>
+              <img src="${movie.capa || 'https://via.placeholder.com/110x160?text=Capa'}" alt="${movie.titulo}" class='movie-poster-thumb'/>
               <div class='movie-info-text'>
-                <span class='movie-category-badge'>${movie.categoria}</span>
+                <span class='movie-category-badge'>${movie.categoria || 'Filme'}</span>
                 <h1 class='movie-main-title'>${movie.titulo}</h1>
-                <p class='movie-synopsis' id='movieSynopsis'>${sinopseFinal}</p>
-                <button class='btn-read-more' id='readMoreBtn' onclick='toggleSynopsis()'>Ler mais</button>
+                <p class='movie-synopsis'>${movie.sinopse || 'Sem sinopse cadastrada.'}</p>
               </div>
             </div>
-            <a href="party.html" class='btn-party-sync'>
+            <a href="party.html" class='btn-party-sync' style="background: #6366f1; color: #fff; padding: 12px; border-radius: 12px; text-align: center; text-decoration: none; font-weight: 700;">
               <i class='fa-solid fa-users-rectangle'></i> Assistir junto no OFF Party
             </a>
           </div>
         `;
-
       } catch (err) {
-        document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Erro ao carregar.</div>';
+        document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Erro ao carregar o player.</div>';
       }
     });
-
-    function toggleSynopsis() {
-      const synopsis = document.getElementById('movieSynopsis');
-      const btn = document.getElementById('readMoreBtn');
-      synopsis.classList.toggle('expanded');
-      btn.textContent = synopsis.classList.contains('expanded') ? 'Mostrar menos' : 'Ler mais';
-    }
   </script>
 </body>
 </html>
