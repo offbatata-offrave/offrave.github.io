@@ -404,7 +404,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE SELEÇÃO DE FILME DO CATÁLOGO (COM BUSCA) -->
+  <!-- MODAL DE SELEÇÃO DE FILME DO CATÁLOGO (COM BUSCA FLEXÍVEL) -->
   <div class="modal-overlay" id="catalogModal">
     <div class="modal-card" style="max-width: 520px;">
       <div class="modal-header">
@@ -465,7 +465,7 @@
     let roomRef = null;
     let selectedPrivacy = 'public';
     let selectedInitialMedia = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
-    let catalogSourceAction = 'create'; // 'create' ou 'player'
+    let catalogSourceAction = 'create'; 
     let allCatalogMovies = [];
 
     // Modais
@@ -637,7 +637,7 @@
       }
     }
 
-    // Buscar filmes.json
+    // Buscar filmes.json de forma flexível
     function fetchCatalogMovies() {
       const list = document.getElementById('catalogMoviesList');
       list.innerHTML = '<span style="font-size: 0.85rem; color: #64748b; text-align: center; padding: 20px;">Carregando catálogo...</span>';
@@ -645,10 +645,15 @@
       fetch('filmes.json')
         .then(res => res.json())
         .then(data => {
-          allCatalogMovies = Array.isArray(data) ? data : (data.filmes || data.movies || []);
+          if (Array.isArray(data)) {
+            allCatalogMovies = data;
+          } else {
+            allCatalogMovies = data.filmes || data.movies || data.lista || data.items || Object.values(data)[0] || [];
+          }
           renderCatalogList(allCatalogMovies);
         })
         .catch(err => {
+          console.error("Erro ao carregar JSON:", err);
           list.innerHTML = '<span style="font-size: 0.85rem; color: #e50914; text-align: center; padding: 20px;">Erro ao carregar filmes.json</span>';
         });
     }
@@ -657,16 +662,16 @@
       const list = document.getElementById('catalogMoviesList');
       list.innerHTML = '';
 
-      if (movies.length === 0) {
+      if (!Array.isArray(movies) || movies.length === 0) {
         list.innerHTML = '<span style="font-size: 0.85rem; color: #64748b; text-align: center; padding: 20px;">Nenhum filme encontrado</span>';
         return;
       }
 
       movies.forEach(movie => {
-        const title = movie.titulo || movie.title || 'Filme sem nome';
+        const title = movie.titulo || movie.title || movie.nome || 'Filme sem nome';
         const genre = movie.genero || movie.genre || movie.categoria || 'Geral';
-        const poster = movie.capa || movie.poster || 'https://via.placeholder.com/60x80?text=Sem+Capa';
-        const link = movie.link || movie.url || movie.video;
+        const poster = movie.capa || movie.poster || movie.imagem || 'https://via.placeholder.com/45x60?text=Sem+Capa';
+        const link = movie.link || movie.url || movie.video || movie.src;
 
         if (!link) return;
 
@@ -688,7 +693,7 @@
     window.filterCatalogMovies = function() {
       const query = document.getElementById('catalogSearchInput').value.toLowerCase();
       const filtered = allCatalogMovies.filter(m => {
-        const title = (m.titulo || m.title || '').toLowerCase();
+        const title = (m.titulo || m.title || m.nome || '').toLowerCase();
         return title.includes(query);
       });
       renderCatalogList(filtered);
