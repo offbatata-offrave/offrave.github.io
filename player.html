@@ -319,12 +319,19 @@
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
 
-    // Função que converte links do PixelDrain para o formato direto de API
+    // Função ajustada para PixelDrain com suporte a streaming direto (?download)
     function formatVideoUrl(url) {
       if (!url) return '';
-      if (url.includes('pixeldrain.com/u/')) {
-        const fileId = url.split('/u/')[1].split('?')[0];
-        return `https://pixeldrain.com/api/file/${fileId}`;
+      if (url.includes('pixeldrain.com')) {
+        let fileId = '';
+        if (url.includes('/u/')) {
+          fileId = url.split('/u/')[1].split('?')[0];
+        } else if (url.includes('/api/file/')) {
+          fileId = url.split('/api/file/')[1].split('?')[0];
+        }
+        if (fileId) {
+          return `https://pixeldrain.com/api/file/${fileId}?download`;
+        }
       }
       return url;
     }
