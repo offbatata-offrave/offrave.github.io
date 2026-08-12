@@ -181,7 +181,7 @@
     .btn-party-sync:hover { background: #4f46e5; transform: scale(1.02); }
 
     /* =========================================
-       NETFLIX PLAYER CUSTOMIZADO
+       CONTAINER DO PLAYER
        ========================================= */
     .netflix-player-container {
       position: relative;
@@ -195,86 +195,11 @@
       aspect-ratio: 16 / 9;
     }
 
-    .netflix-video { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .netflix-video { width: 100%; height: 100%; display: block; object-fit: contain; background: #000; }
     .youtube-iframe { width: 100%; height: 100%; border: none; display: none; }
 
-    .dots-loader {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      display: none; align-items: center; gap: 12px; z-index: 30; pointer-events: none;
-    }
-
-    .netflix-player-container.is-loading .dots-loader { display: flex !important; }
-
-    .dot {
-      width: 16px; height: 16px; background-color: #E50914; border-radius: 50%;
-      animation: dotPulse 1.4s infinite ease-in-out both;
-      box-shadow: 0 0 10px rgba(229, 9, 20, 0.6);
-    }
-    .dot:nth-child(1) { animation-delay: -0.32s; }
-    .dot:nth-child(2) { animation-delay: -0.16s; }
-    .dot:nth-child(3) { animation-delay: 0s; }
-
-    @keyframes dotPulse {
-      0%, 80%, 100% { transform: scale(0.3); opacity: 0.3; }
-      40% { transform: scale(1.2); opacity: 1; }
-    }
-
-    .central-play-button {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 80px; height: 80px; background-color: #E50914; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      z-index: 20; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      border: none; outline: none; opacity: 1; pointer-events: all;
-    }
-
-    .central-play-button:hover { background-color: #ff1f2a; transform: translate(-50%, -50%) scale(1.1); }
-    .central-play-button svg { fill: #fff; width: 40px; height: 40px; margin-left: 5px; }
-
-    .netflix-player-container.is-playing .central-play-button,
-    .netflix-player-container.is-loading .central-play-button,
-    .netflix-player-container.is-youtube .central-play-button {
-      opacity: 0 !important; pointer-events: none !important;
-    }
-
-    .netflix-controls {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
-      padding: 20px 20px 10px 20px; opacity: 0; transition: opacity 0.3s ease;
-      display: flex; flex-direction: column; gap: 8px; z-index: 10;
-    }
-
-    .netflix-player-container.is-youtube .netflix-controls { display: none !important; }
-    .netflix-player-container:hover .netflix-controls,
-    .netflix-player-container.show-controls .netflix-controls { opacity: 1; }
-
-    .progress-bar-container {
-      width: 100%; height: 6px; background: rgba(255, 255, 255, 0.25); cursor: pointer;
-      border-radius: 4px; position: relative; transition: height 0.15s ease;
-    }
-    .progress-bar-container:hover { height: 8px; }
-    .progress-bar-filled { height: 100%; background-color: #E50914; width: 0%; border-radius: 4px; position: relative; }
-    
-    .progress-bar-thumb {
-      position: absolute; right: -7px; top: 50%; transform: translateY(-50%);
-      width: 14px; height: 14px; background-color: #E50914; border-radius: 50%;
-      box-shadow: 0 0 8px rgba(229, 9, 20, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
-      transition: transform 0.15s ease, background-color 0.15s ease; pointer-events: none;
-    }
-
-    .controls-row { display: flex; justify-content: space-between; align-items: center; color: #fff; }
-    .controls-left, .controls-right { display: flex; align-items: center; gap: 15px; }
-
-    .netflix-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px; outline: none; }
-    .netflix-btn svg { fill: #fff; width: 20px; height: 20px; transition: fill 0.2s; }
-    .netflix-btn:hover svg { fill: #E50914; }
-
-    .speed-btn { color: #fff; font-size: 13px; font-weight: bold; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 2px 6px; }
-    .speed-btn:hover { border-color: #E50914; color: #E50914; }
-
-    .time-display { font-size: 14px; color: #ccc; user-select: none; }
-
     .movie-title-player {
-      position: absolute; top: 20px; left: 25px; color: #fff; font-size: 18px; font-weight: bold;
+      position: absolute; top: 15px; left: 20px; color: #fff; font-size: 16px; font-weight: bold;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 5; pointer-events: none;
     }
 
@@ -319,7 +244,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
 
-    // Função ajustada para PixelDrain com suporte a streaming direto (?download)
+    // Função para tratar links do PixelDrain para stream direto
     function formatVideoUrl(url) {
       if (!url) return '';
       if (url.includes('pixeldrain.com')) {
@@ -330,7 +255,7 @@
           fileId = url.split('/api/file/')[1].split('?')[0];
         }
         if (fileId) {
-          return `https://pixeldrain.com/api/file/${fileId}?download`;
+          return `https://pixeldrain.com/api/file/${fileId}`;
         }
       }
       return url;
@@ -392,56 +317,14 @@
         }
 
         container.innerHTML = `
-          <div class="netflix-player-container ${isYouTube ? 'is-youtube' : ''}" id="netflixContainer">
+          <div class="netflix-player-container" id="netflixContainer">
             <div class="movie-title-player">${movie.titulo}</div>
 
-            <video class="netflix-video" id="netflixVideo" playsinline preload="auto" style="display: ${isYouTube ? 'none' : 'block'};">
-              <source src="${!isYouTube ? formattedVideoUrl : ''}" type="video/mp4"></source>
-            </video>
-
-            <iframe class="youtube-iframe" id="ytIframe" src="${isYouTube ? ytEmbedUrl + '?autoplay=1' : 'about:blank'}" allow="autoplay; encrypted-media" allowfullscreen style="display: ${isYouTube ? 'block' : 'none'};"></iframe>
-
-            <div class="dots-loader" id="dotsLoader">
-              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-            </div>
-
-            <button aria-label="Play" class="central-play-button" id="centralPlayBtn" style="display: ${isYouTube ? 'none' : 'flex'};">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
-            </button>
-
-            <div class="netflix-controls">
-              <div class="progress-bar-container" id="progressContainer">
-                <div class="progress-bar-filled" id="progressBar">
-                  <div class="progress-bar-thumb"></div>
-                </div>
-              </div>
-
-              <div class="controls-row">
-                <div class="controls-left">
-                  <button aria-label="Play/Pause" class="netflix-btn" id="playBtn">
-                    <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
-                    <svg id="pauseIcon" style="display: none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
-                  </button>
-                  <button aria-label="Voltar 10s" class="netflix-btn" id="rewindBtn">
-                    <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"></path></svg>
-                  </button>
-                  <button aria-label="Avançar 10s" class="netflix-btn" id="forwardBtn">
-                    <svg viewBox="0 0 24 24"><path d="M11.5 8c2.65 0 5.05.99 6.9 2.6L22 7v9h-9l3.62-3.62c-1.39-1.16-3.16-1.88-5.12-1.88-3.54 0-6.55 2.31-7.6 5.5l-2.37-.78C2.92 11.03 6.85 8 11.5 8z"></path></svg>
-                  </button>
-                  <button aria-label="Mute/Unmute" class="netflix-btn" id="muteBtn">
-                    <svg id="volumeUpIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
-                    <svg id="volumeOffIcon" style="display: none;" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"></path></svg>
-                  </button>
-                  <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
-                </div>
-                <div class="controls-right">
-                  <button aria-label="Velocidade" class="netflix-btn speed-btn" id="speedBtn">1x</button>
-                  <button aria-label="Tela Cheia" class="netflix-btn" id="fullscreenBtn">
-                    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"></path></svg>
-                  </button>
-                </div>
-              </div>
-            </div>
+            ${isYouTube ? `
+              <iframe class="youtube-iframe" src="${ytEmbedUrl + '?autoplay=1'}" allow="autoplay; encrypted-media" allowfullscreen style="display: block;"></iframe>
+            ` : `
+              <video class="netflix-video" id="netflixVideo" controls autoplay playsinline src="${formattedVideoUrl}"></video>
+            `}
           </div>
 
           <div class='movie-details-card'>
@@ -460,10 +343,6 @@
           </div>
         `;
 
-        if (!isYouTube) {
-          initNativePlayer();
-        }
-
       } catch (err) {
         document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Erro ao carregar o filme.</div>';
       }
@@ -480,104 +359,6 @@
       } else {
         btn.textContent = 'Ler mais';
       }
-    }
-
-    function initNativePlayer() {
-      const video = document.getElementById('netflixVideo');
-      const container = document.getElementById('netflixContainer');
-      const centralPlayBtn = document.getElementById('centralPlayBtn');
-      const playBtn = document.getElementById('playBtn');
-      const playIcon = document.getElementById('playIcon');
-      const pauseIcon = document.getElementById('pauseIcon');
-      const muteBtn = document.getElementById('muteBtn');
-      const volumeUpIcon = document.getElementById('volumeUpIcon');
-      const volumeOffIcon = document.getElementById('volumeOffIcon');
-      const rewindBtn = document.getElementById('rewindBtn');
-      const forwardBtn = document.getElementById('forwardBtn');
-      const speedBtn = document.getElementById('speedBtn');
-      const fullscreenBtn = document.getElementById('fullscreenBtn');
-      const progressBar = document.getElementById('progressBar');
-      const progressContainer = document.getElementById('progressContainer');
-      const timeDisplay = document.getElementById('timeDisplay');
-
-      function showLoader() { container.classList.add('is-loading'); }
-      function hideLoader() { container.classList.remove('is-loading'); }
-
-      video.addEventListener('playing', hideLoader);
-      video.addEventListener('canplay', hideLoader);
-      video.addEventListener('pause', hideLoader);
-      video.addEventListener('waiting', showLoader);
-
-      function togglePlay() {
-        if (video.paused) { video.play(); } else { video.pause(); }
-      }
-
-      centralPlayBtn.addEventListener('click', togglePlay);
-      playBtn.addEventListener('click', togglePlay);
-      video.addEventListener('click', togglePlay);
-
-      video.addEventListener('play', () => {
-        container.classList.add('is-playing');
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-      });
-
-      video.addEventListener('pause', () => {
-        container.classList.remove('is-playing');
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
-      });
-
-      rewindBtn.addEventListener('click', () => { showLoader(); video.currentTime -= 10; });
-      forwardBtn.addEventListener('click', () => { showLoader(); video.currentTime += 10; });
-
-      progressContainer.addEventListener('click', (e) => {
-        showLoader();
-        const rect = progressContainer.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
-        video.currentTime = pos * video.duration;
-      });
-
-      const speeds = [0.5, 1, 1.25, 1.5, 2];
-      let currentSpeedIndex = 1;
-      speedBtn.addEventListener('click', () => {
-        currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
-        video.playbackRate = speeds[currentSpeedIndex];
-        speedBtn.innerText = `${speeds[currentSpeedIndex]}x`;
-      });
-
-      muteBtn.addEventListener('click', () => {
-        video.muted = !video.muted;
-        volumeUpIcon.style.display = video.muted ? 'none' : 'block';
-        volumeOffIcon.style.display = video.muted ? 'block' : 'none';
-      });
-
-      video.addEventListener('timeupdate', () => {
-        if (!video.duration) return;
-        const percentage = (video.currentTime / video.duration) * 100;
-        progressBar.style.width = `${percentage}%`;
-
-        let currentMin = Math.floor(video.currentTime / 60);
-        let currentSec = Math.floor(video.currentTime % 60);
-        let durationMin = Math.floor(video.duration / 60);
-        let durationSec = Math.floor(video.duration % 60);
-
-        if (currentSec < 10) currentSec = `0${currentSec}`;
-        if (durationSec < 10) durationSec = `0${durationSec}`;
-
-        timeDisplay.innerText = `${currentMin}:${currentSec} / ${durationMin}:${durationSec}`;
-      });
-
-      fullscreenBtn.addEventListener('click', () => {
-        if (video.webkitEnterFullscreen) { video.webkitEnterFullscreen(); return; }
-        if (!document.fullscreenElement) {
-          if (container.requestFullscreen) { container.requestFullscreen(); }
-          else if (container.webkitRequestFullscreen) { container.webkitRequestFullscreen(); }
-        } else {
-          if (document.exitFullscreen) { document.exitFullscreen(); }
-          else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-        }
-      });
     }
   </script>
 </body>
