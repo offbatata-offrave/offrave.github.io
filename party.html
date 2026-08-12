@@ -358,25 +358,23 @@
     const db = firebase.database();
 
     let currentRoomId = null;
-    let myUserId = 'user_' + Math.random().toString(36.substring(2, 9));
+    let myUserId = 'user_' + Math.random().toString(36).substring(2, 9);
     let myUserName = localStorage.getItem('offrave_active_profile') || 'Visitante';
     let isHost = false;
     let roomRef = null;
 
-    // Gerar código aleatório para a sala
-    function generateRoomCode() {
+    // Funções globais mapeadas para o objeto window
+    window.generateRoomCode = function() {
       return Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
-    // Criar Sala (O criador vira ADM)
-    function createRoom() {
-      const roomId = generateRoomCode();
+    window.createRoom = function() {
+      const roomId = window.generateRoomCode();
       isHost = true;
       setupRoomInFirebase(roomId, true);
     }
 
-    // Entrar em Sala Existente
-    function joinRoom() {
+    window.joinRoom = function() {
       const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
       if (!code) return alert('Digite o código da sala!');
       
@@ -390,7 +388,6 @@
       });
     }
 
-    // Configurar conexão com o Firebase Realtime Database
     function setupRoomInFirebase(roomId, asHost) {
       currentRoomId = roomId;
       roomRef = db.ref('rooms/' + roomId);
@@ -403,12 +400,10 @@
         });
       }
 
-      // Adicionar usuário à lista de membros online
       const memberRef = roomRef.child('members/' + myUserId);
       memberRef.set({ name: myUserName });
       memberRef.onDisconnect().remove();
 
-      // Atualizar interface
       document.getElementById('lobbyCard').style.display = 'none';
       document.getElementById('roomView').classList.add('active');
       document.getElementById('currentRoomCode').textContent = roomId;
@@ -419,7 +414,6 @@
         document.getElementById('leaveBtnText').textContent = 'Sair da Sala';
       }
 
-      // Ouvir se a sala foi fechada pelo ADM ou se fui expulso
       roomRef.on('value', snapshot => {
         const data = snapshot.val();
         if (!data || data.status === 'closed') {
@@ -428,14 +422,12 @@
           return;
         }
 
-        // Verificar se fui removido (expulso)
         if (data.members && !data.members[myUserId]) {
           alert('Você foi expulso da sala pelo Administrador.');
           quitPartyClean();
         }
       });
 
-      // Ouvir Membros Online
       roomRef.child('members').on('value', snapshot => {
         const members = snapshot.val() || {};
         const membersListEl = document.getElementById('membersList');
@@ -447,7 +439,6 @@
           const member = members[uid];
           let kickBtnHtml = '';
 
-          // Se eu sou o ADM e o usuário não sou eu, mostro o botão de expulsar
           if (isHost && uid !== myUserId) {
             kickBtnHtml = `<button class='btn-kick' onclick='kickMember("${uid}")'>Expulsar</button>`;
           }
@@ -462,7 +453,6 @@
         document.getElementById('onlineCount').textContent = count;
       });
 
-      // Ouvir Chat
       roomRef.child('chat').on('child_added', snapshot => {
         const msg = snapshot.val();
         const chatBox = document.getElementById('chatMessages');
@@ -471,21 +461,17 @@
       });
     }
 
-    // Ação de Expulsar Usuário (Apenas ADM)
-    function kickMember(targetUserId) {
+    window.kickMember = function(targetUserId) {
       if (!isHost) return;
       roomRef.child('members/' + targetUserId).remove();
     }
 
-    // Sair ou Fechar a Sala
-    function leaveOrCloseRoom() {
+    window.leaveOrCloseRoom = function() {
       if (isHost) {
-        // Se for o ADM, fecha a sala para todos definindo status como closed
         if (confirm('Tem certeza que deseja fechar a sala para todos?')) {
           roomRef.update({ status: 'closed' });
         }
       } else {
-        // Se for membro comum, apenas remove a si mesmo
         if (roomRef) {
           roomRef.child('members/' + myUserId).remove();
         }
@@ -500,8 +486,7 @@
       window.location.href = 'party.html';
     }
 
-    // Enviar Mensagem no Chat
-    function sendChatMessage() {
+    window.sendChatMessage = function() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text || !currentRoomId) return;
@@ -514,8 +499,8 @@
       input.value = '';
     }
 
-    function handleChatKey(e) {
-      if (e.key === 'Enter') sendChatMessage();
+    window.handleChatKey = function(e) {
+      if (e.key === 'Enter') window.sendChatMessage();
     }
   </script>
 </body>
