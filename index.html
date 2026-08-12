@@ -113,7 +113,7 @@
       height: 65vh;
       min-height: 420px;
       margin-top: 0;
-      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjNOeDXTiG_ysKBFAlHQ7HFKXVnBtF-NVC_KP3GPnkR8n825mT4sjZ6WVf&s=10') center/cover no-repeat;
+      background: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -291,7 +291,7 @@
     .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; }
     .footer-profile-name { font-size: 0.85rem; font-weight: 700; color: #ffffff; }
 
-    /* --- BARRA INFERIOR LIQUID GLASS BEM MAIS TRANSPARENTE --- */
+    /* --- BARRA INFERIOR LIQUID GLASS TRANSPARENTE --- */
     .bottom-nav {
       position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
@@ -444,7 +444,10 @@
       if(footerProfileAvatar) footerProfileAvatar.src = savedAvatar;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    let allMovies = [];
+    const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
+
+    document.addEventListener('DOMContentLoaded', async () => {
       const profileOverlay = document.getElementById('profileOverlay');
       
       if (localStorage.getItem('offrave_profile_selected') === 'true') {
@@ -462,16 +465,30 @@
         document.body.style.overflow = 'hidden';
       }
 
-      fetch('filmes.json')
-        .then(res => res.json())
-        .then(data => {
-          allMovies = data;
-          renderCatalog(allMovies);
-          renderTrending(allMovies);
-        })
-        .catch(() => {
-          document.getElementById('catalogGrid').innerHTML = '<p style="color:#94a3b8;">Nenhum filme carregado. Adicione itens no filmes.json</p>';
-        });
+      try {
+        const res = await fetch('filmes.json');
+        allMovies = await res.json();
+
+        // Puxa capas automáticas via TMDB para cada filme se necessário
+        for (let movie of allMovies) {
+          if (!movie.capa || movie.capa.includes('placeholder')) {
+            try {
+              const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`);
+              const tmdbData = await tmdbRes.json();
+              if (tmdbData.results && tmdbData.results.length > 0 && tmdbData.results[0].poster_path) {
+                movie.capa = `https://image.tmdb.org/t/p/w500${tmdbData.results[0].poster_path}`;
+              }
+            } catch (err) {
+              console.log("Erro ao buscar capa automática");
+            }
+          }
+        }
+
+        renderCatalog(allMovies);
+        renderTrending(allMovies);
+      } catch (err) {
+        document.getElementById('catalogGrid').innerHTML = '<p style="color:#94a3b8;">Nenhum filme carregado. Adicione itens no filmes.json</p>';
+      }
     });
 
     function selectProfile(profileName, avatarUrl) {
@@ -522,8 +539,6 @@
       document.body.style.overflow = 'hidden';
     }
 
-    let allMovies = [];
-
     function renderCatalog(movies) {
       const grid = document.getElementById('catalogGrid');
       if (!grid) return;
@@ -531,7 +546,7 @@
       movies.forEach(movie => {
         grid.innerHTML += `
           <a href="player.html?id=${movie.id}" class="poster-card">
-            <img src="${movie.capa}" alt="${movie.titulo}" class="poster-img"/>
+            <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" class="poster-img" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
             <div class="poster-overlay">
               <div class="poster-title">${movie.titulo}</div>
             </div>
@@ -549,7 +564,7 @@
           <a href="player.html?id=${movie.id}" class="trending-card">
             <span class="trending-number">${index + 1}</span>
             <div class="trending-poster-box">
-              <img src="${movie.capa}" alt="${movie.titulo}" class="trending-poster-img"/>
+              <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" class="trending-poster-img" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
             </div>
           </a>
         `;
@@ -606,7 +621,7 @@
       results.forEach(movie => {
         searchResultsGrid.innerHTML += `
           <a href="player.html?id=${movie.id}" class="poster-card">
-            <img src="${movie.capa}" alt="${movie.titulo}" class="poster-img"/>
+            <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" class="poster-img" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
             <div class="poster-overlay">
               <div class="poster-title">${movie.titulo}</div>
             </div>
