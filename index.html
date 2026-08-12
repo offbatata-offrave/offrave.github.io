@@ -31,11 +31,11 @@
       overflow-x: hidden;
     }
 
-    /* Liquid Glass Leve e Otimizado (Sem travamentos) */
+    /* Painéis com Liquid Glass leve e otimizado */
     .glass-panel {
-      background: rgba(18, 19, 26, 0.65);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(18, 19, 26, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -83,13 +83,14 @@
     .profile-name { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
     .profile-card:hover .profile-name { color: #ffffff; }
 
+    /* TOPO COM LIQUID GLASS TRANSPARENTE */
     .top-header {
       position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 12px 20px;
       display: flex; flex-direction: column; gap: 12px;
-      background: rgba(8, 8, 10, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(8, 8, 10, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .header-top-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
@@ -129,7 +130,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(180deg, rgba(8,8,10,0.3) 0%, rgba(8,8,10,0.85) 85%, #08080a 100%);
+      background: linear-gradient(180deg, rgba(8,8,10,0.2) 0%, rgba(8,8,10,0.75) 85%, #08080a 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -233,7 +234,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08); display: block; text-decoration: none;
     }
     .poster-img { width: 100%; height: 100%; object-fit: cover; }
-    .poster-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 6px; background: rgba(8, 8, 10, 0.9); }
+    .poster-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 6px; background: rgba(8, 8, 10, 0.85); }
     .poster-title { font-size: 0.78rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
 
     /* --- MODAL DE BUSCA --- */
@@ -290,16 +291,16 @@
     .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; }
     .footer-profile-name { font-size: 0.85rem; font-weight: 700; color: #ffffff; }
 
-    /* --- BARRA INFERIOR LIQUID GLASS LEVE --- */
+    /* BARRA INFERIOR LIQUID GLASS TRANSPARENTE */
     .bottom-nav {
       position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
       display: flex; justify-content: space-around; align-items: center; z-index: 999;
-      background: rgba(18, 19, 26, 0.75);
+      background: rgba(18, 19, 26, 0.45);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
     .nav-item { 
       display: flex; flex-direction: column; align-items: center; gap: 4px; 
@@ -331,7 +332,7 @@
     </div>
   </div>
 
-  <!-- TOPO -->
+  <!-- TOPO COM LIQUID GLASS TRANSPARENTE -->
   <header class='top-header'>
     <div class='header-top-row'>
       <a class='brand-logo' href='index.html'>OFFRAVE</a>
@@ -405,7 +406,7 @@
     <div class='movies-grid' id='catalogGrid'></div>
   </main>
 
-  <!-- BARRA INFERIOR -->
+  <!-- BARRA INFERIOR LIQUID GLASS TRANSPARENTE -->
   <nav class="bottom-nav">
     <a class="nav-item active" href="index.html"><i class="fa-solid fa-house"></i><span>Início</span></a>
     <a class="nav-item" href="index.html"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
