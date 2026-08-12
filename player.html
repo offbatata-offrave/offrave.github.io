@@ -175,6 +175,24 @@
 
     .btn-party-sync:hover { background: #4f46e5; transform: scale(1.02); }
 
+    .btn-direct-watch {
+      background: #e50914;
+      color: #ffffff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
+    }
+    .btn-direct-watch:hover { background: #b80710; }
+
     .netflix-player-container {
       position: relative;
       width: 100%;
@@ -183,6 +201,12 @@
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(0,0,0,0.8);
       aspect-ratio: 16 / 9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
     }
 
     .embedded-iframe {
@@ -232,32 +256,6 @@
     const urlParams = new URLSearchParams(window.location.search);
     const movieId = urlParams.get('id');
 
-    // Transforma o link do PixelDrain na rota pública correta de visualização web (/u/)
-    function getEmbedUrl(url) {
-      if (!url) return '';
-      if (url.includes('pixeldrain.com')) {
-        let fileId = '';
-        if (url.includes('/u/')) {
-          fileId = url.split('/u/')[1].split('?')[0];
-        } else if (url.includes('/api/file/')) {
-          fileId = url.split('/api/file/')[1].split('?')[0];
-        } else if (url.includes('/v/')) {
-          fileId = url.split('/v/')[1].split('?')[0];
-        }
-        if (fileId) {
-          return `https://pixeldrain.com/u/${fileId}`;
-        }
-      }
-      if (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('embed')) {
-        let ytUrl = url;
-        if (ytUrl.includes('watch?v=')) {
-          ytUrl = ytUrl.replace('watch?v=', 'embed/');
-        }
-        return ytUrl + '?autoplay=1';
-      }
-      return url;
-    }
-
     document.addEventListener('DOMContentLoaded', async () => {
       if (!movieId) {
         document.getElementById('playerPageContent').innerHTML = '<div class="loading-msg">Nenhum filme selecionado.</div>';
@@ -291,12 +289,23 @@
           }
         } catch (err) {}
 
-        const finalUrl = getEmbedUrl(movie.videoUrl);
+        const finalUrl = movie.videoUrl;
+        const isYouTube = finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.includes('embed');
 
         container.innerHTML = `
           <div class="netflix-player-container">
             <div class="movie-title-player">${movie.titulo}</div>
-            <iframe class="embedded-iframe" src="${finalUrl}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+            
+            ${isYouTube ? `
+              <iframe class="embedded-iframe" src="${finalUrl.replace('watch?v=', 'embed/') + '?autoplay=1'}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            ` : `
+              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; height: 100%; padding: 20px;">
+                <p style="color: #94a3b8; font-size: 0.9rem;">Este arquivo está hospedado no PixelDrain e requer abertura direta.</p>
+                <a href="${finalUrl}" target="_blank" class="btn-direct-watch">
+                  <i class="fa-solid fa-play"></i> Assistir / Baixar Vídeo
+                </a>
+              </div>
+            `}
           </div>
 
           <div class='movie-details-card'>
