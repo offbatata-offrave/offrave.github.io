@@ -128,7 +128,6 @@
       font-weight: 800;
       color: #fff;
       margin-bottom: 2px;
-      text-transform: capitalize;
     }
 
     .profile-email {
@@ -422,7 +421,7 @@
       </div>
     </div>
 
-    <!-- GRID DE ESTATÍSTICAS (DINÂMICO) -->
+    <!-- GRID DE ESTATÍSTICAS -->
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-value" id="statContinue">0</span>
@@ -499,12 +498,12 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Dados do Usuário
       const name = localStorage.getItem('offrave_active_profile') || 'William';
       const avatar = localStorage.getItem('offrave_active_avatar');
       const savedBio = localStorage.getItem('offrave_user_bio') || 'Olá! Sou um fã de filmes no OFFRAVE.';
 
       document.getElementById('profileName').textContent = name;
+      document.getElementById('profileEmail').textContent = name.toLowerCase().includes('willian') || name.toLowerCase().includes('william') ? 'anerosinw@gmail.com' : 'usuario@offrave.com';
       document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
       document.getElementById('bioDisplay').textContent = savedBio;
       document.getElementById('bioTextarea').value = savedBio;
@@ -513,45 +512,25 @@
         document.querySelector('.avatar-wrapper').innerHTML = `<img class="profile-avatar-large" src="${avatar}" alt="Avatar"/>`;
       }
 
-      // 2. Sistema de Estatísticas Automáticas
-      // Continuar Assistindo (busca do player/localStorage)
+      // Estatísticas
       const continueList = JSON.parse(localStorage.getItem('offrave_continue_watching') || '[]');
       document.getElementById('statContinue').textContent = continueList.length;
 
-      // Tempo Assistido (em minutos acumulados)
       const totalMinutes = parseInt(localStorage.getItem('offrave_total_minutes') || '0');
       const hours = Math.floor(totalMinutes / 60);
       const mins = totalMinutes % 60;
       document.getElementById('statWatchTime').textContent = `${hours}h ${mins}m`;
 
-      // Sequência de Dias (Streak)
-      const lastAccess = localStorage.getItem('offrave_last_access');
-      const today = new Date().toDateString();
-      let streak = parseInt(localStorage.getItem('offrave_streak') || '1');
-
-      if (lastAccess !== today) {
-        if (lastAccess) {
-          const lastDate = new Date(lastAccess);
-          const currentDate = new Date(today);
-          const diffTime = Math.abs(currentDate - lastDate);
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-          if (diffDays === 1) {
-            streak += 1; // Aumenta a sequência se acessou ontem
-          } else if (diffDays > 1) {
-            streak = 1; // Reseta se perdeu um dia
-          }
-        }
-        localStorage.setItem('offrave_last_access', today);
-        localStorage.setItem('offrave_streak', streak);
-      }
+      const streak = parseInt(localStorage.getItem('offrave_streak') || '1');
       document.getElementById('statStreak').innerHTML = `${streak}d <i class="fa-solid fa-fire"></i>`;
 
-      // Status OFFRAVE (Membro ou VIP)
-      const isVip = localStorage.getItem('offrave_is_vip') === 'true';
+      // VERIFICAÇÃO AUTOMÁTICA DE DONO / CRIADOR
       const statusElement = document.getElementById('statStatus');
-      if (isVip) {
-        statusElement.innerHTML = `<i class="fa-solid fa-crown" style="color:#f59e0b;"></i> VIP`;
+      const userEmail = document.getElementById('profileEmail').textContent.trim().toLowerCase();
+      const userName = name.trim().toLowerCase();
+
+      if (userEmail === 'anerosinw@gmail.com' || userName.includes('willian') || userName.includes('william')) {
+        statusElement.innerHTML = `<i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Dono`;
         statusElement.style.color = '#f59e0b';
       } else {
         statusElement.innerHTML = `<i class="fa-solid fa-user"></i> Membro`;
@@ -559,7 +538,6 @@
       }
     });
 
-    // Funções de Biografia
     function toggleEditBio() {
       const editArea = document.getElementById('bioEditArea');
       const bioDisplay = document.getElementById('bioDisplay');
