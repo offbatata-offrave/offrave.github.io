@@ -27,29 +27,30 @@
     }
 
     body {
-      background-color: #08080a;
+      background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
+      background-attachment: fixed;
       color: #ffffff;
-      padding-bottom: 370px; /* Espaço de sobra para a barra flutuante */
+      padding-bottom: 120px;
     }
 
     .party-container {
       max-width: 600px;
       margin: 0 auto;
-      padding: 15px 15px 40px 15px;
+      padding: 20px 15px 40px 15px;
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
 
-    /* GLASS CARD PADRÃO (LIQUID GLASS) */
+    /* GLASS CARD COM O MESMO LIQUID GLASS TRANSPARENTE */
     .glass-card {
-      background: rgba(18, 19, 26, 0.75);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(18, 19, 26, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 24px;
       padding: 22px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
 
     .card-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
@@ -59,8 +60,8 @@
       width: 100%;
       padding: 14px 18px;
       border-radius: 14px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: #fff;
       font-size: 0.95rem;
       outline: none;
@@ -97,8 +98,8 @@
     }
 
     .btn-catalog-select {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: #fff;
       padding: 12px;
       border-radius: 14px;
@@ -114,8 +115,8 @@
     .btn-catalog-select:hover { background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; }
 
     .btn-youtube-select {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
       color: #ff4d4d;
       padding: 12px;
       border-radius: 14px;
@@ -128,7 +129,7 @@
       gap: 8px;
       transition: all 0.2s;
     }
-    .btn-youtube-select:hover { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; }
+    .btn-youtube-select:hover { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; }
 
     /* SALAS ATIVAS */
     .active-rooms-list {
@@ -141,8 +142,8 @@
     }
 
     .room-item-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 14px;
       padding: 12px 16px;
       display: flex;
@@ -152,7 +153,7 @@
     }
 
     .room-item-card:hover {
-      background: rgba(99, 102, 241, 0.1);
+      background: rgba(99, 102, 241, 0.08);
       border-color: rgba(99, 102, 241, 0.3);
     }
 
@@ -174,7 +175,7 @@
 
     .no-rooms-msg { font-size: 0.85rem; color: #64748b; text-align: center; padding: 15px 0; font-style: italic; }
 
-    /* BARRA INFERIOR FLUTUANTE - LIQUID GLASS SÓLIDO ESCURO */
+    /* BARRA INFERIOR LIQUID GLASS TRANSPARENTE */
     .bottom-nav {
       position: fixed;
       bottom: 15px;
@@ -188,11 +189,11 @@
       justify-content: space-around;
       align-items: center;
       z-index: 2000;
-      background: rgba(18, 19, 26, 0.85);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      background: rgba(18, 19, 26, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .nav-item {
@@ -203,26 +204,26 @@
       color: #94a3b8;
       text-decoration: none;
       font-size: 0.7rem;
-      font-weight: 500;
-      transition: color 0.3s;
+      font-weight: 600;
+      transition: color 0.2s;
       cursor: pointer;
       background: none;
       border: none;
     }
 
     .nav-item i { font-size: 1.15rem; }
-    .nav-item:hover, .nav-item.active { color: #ffffff; }
+    .nav-item:hover, .nav-item.active { color: #f59e0b; }
 
-    /* MODAL POPUP */
+    /* MODAL POPUP COM LIQUID GLASS */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(8, 8, 10, 0.9);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(8, 8, 10, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
       z-index: 2500;
       display: none;
       align-items: center;
@@ -235,11 +236,13 @@
     .modal-card {
       width: 100%;
       max-width: 480px;
-      background: rgba(18, 19, 26, 0.95);
+      background: rgba(18, 19, 26, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(245, 158, 11, 0.3);
       border-radius: 24px;
       padding: 24px;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -268,7 +271,7 @@
     .modal-icon-red { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
     .modal-close-btn {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
       border: none;
       color: #94a3b8;
       width: 36px;
@@ -296,7 +299,7 @@
     .privacy-box {
       padding: 16px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       border: 2px solid rgba(255, 255, 255, 0.08);
       cursor: pointer;
       display: flex;
@@ -342,8 +345,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       padding: 10px 14px;
       border-radius: 14px;
       gap: 12px;
@@ -378,7 +381,7 @@
     .btn-select-movie:hover { background: #f59e0b; color: #000; }
 
     .yt-preview-card {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(239, 68, 68, 0.3);
       border-radius: 16px;
       padding: 12px;
@@ -403,7 +406,7 @@
     .live-top-left { display: flex; align-items: center; gap: 10px; }
 
     .btn-back-room {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border: none;
       color: #fff;
       width: 36px;
@@ -422,7 +425,7 @@
     .live-top-right { display: flex; align-items: center; gap: 10px; }
 
     .icon-top-btn {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border: none;
       color: #fff;
       padding: 8px 14px;
@@ -447,7 +450,7 @@
       font-family: 'Roboto', sans-serif;
       box-shadow: 0 10px 40px rgba(0,0,0,0.8);
       aspect-ratio: 16 / 9;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .netflix-player-container.guest-mode .central-play-button,
@@ -495,7 +498,7 @@
 
     .movie-title { position: absolute; top: 15px; left: 18px; color: #fff; font-size: 15px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 5; pointer-events: none; }
 
-    /* --- ESTILO DE CHAT ESTILO NETFLIX (IMERSIVO E CLEAN) --- */
+    /* CHAT & BARRA INFERIOR */
     .media-info-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .media-title-text { font-weight: 700; font-size: 0.95rem; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
     
@@ -504,7 +507,7 @@
     .btn-movie-purple { background: rgba(229, 9, 20, 0.15); color: #e50914; border: 1px solid rgba(229, 9, 20, 0.4); padding: 10px 18px; border-radius: 14px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s; }
     .btn-movie-purple:hover { background: rgba(229, 9, 20, 0.3); }
 
-    .security-notice-box { background: rgba(18, 19, 26, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; padding: 12px 16px; font-size: 0.75rem; color: #71717a; line-height: 1.4; text-align: center; }
+    .security-notice-box { background: rgba(18, 19, 26, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 12px 16px; font-size: 0.75rem; color: #71717a; line-height: 1.4; text-align: center; }
 
     .chat-stream-box { 
       display: flex; 
@@ -513,8 +516,8 @@
       max-height: 240px; 
       overflow-y: auto; 
       padding: 10px;
-      background: rgba(12, 13, 17, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(12, 13, 17, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 16px;
       scrollbar-width: thin;
       scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
@@ -524,7 +527,7 @@
     .chat-stream-box::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
 
     .system-chat-event { 
-      background: rgba(255, 255, 255, 0.04); 
+      background: rgba(255, 255, 255, 0.03); 
       border-radius: 10px; 
       padding: 6px 12px; 
       font-size: 0.75rem; 
@@ -537,7 +540,7 @@
       font-size: 0.88rem; 
       padding: 10px 14px; 
       border-radius: 12px; 
-      background: rgba(255, 255, 255, 0.06); 
+      background: rgba(255, 255, 255, 0.05); 
       border: 1px solid rgba(255, 255, 255, 0.04);
       width: fit-content; 
       max-width: 88%; 
@@ -559,7 +562,7 @@
     .reactions-row::-webkit-scrollbar { display: none; }
 
     .reaction-item-btn { 
-      background: rgba(255, 255, 255, 0.05); 
+      background: rgba(255, 255, 255, 0.04); 
       border: 1px solid rgba(255, 255, 255, 0.08); 
       width: 38px; 
       height: 38px; 
@@ -572,14 +575,14 @@
       flex-shrink: 0; 
       transition: transform 0.15s, background 0.15s;
     }
-    .reaction-item-btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.1); }
+    .reaction-item-btn:hover { background: rgba(255, 255, 255, 0.12); transform: scale(1.1); }
 
     .chat-input-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
 
-    .btn-chat-tool { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: #a1a1aa; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; flex-shrink: 0; }
+    .btn-chat-tool { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); color: #a1a1aa; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; flex-shrink: 0; }
     .btn-chat-tool:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
-    .input-msg-text { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 11px 18px; color: #fff; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
+    .input-msg-text { flex: 1; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 11px 18px; color: #fff; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
     .input-msg-text:focus { border-color: rgba(229, 9, 20, 0.6); }
 
     .btn-send-purple { background: #e50914; border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4); transition: transform 0.2s, background 0.2s; }
@@ -588,7 +591,7 @@
     /* PARTICIPANTES DA SALA */
     .participants-list { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; margin-top: 10px; }
 
-    .participant-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 12px; gap: 10px; }
+    .participant-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); padding: 10px 14px; border-radius: 12px; gap: 10px; }
     .participant-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
     .participant-avatar { width: 32px; height: 32px; border-radius: 50%; background: #10b981; color: #000; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .participant-name { font-weight: 700; font-size: 0.9rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -791,7 +794,7 @@
       </div>
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
-        <button class="btn-action" style="background: rgba(255,255,255,0.08); color: #fff; flex: 1;" onclick="closeCreateModal()">Cancelar</button>
+        <button class="btn-action" style="background: rgba(255,255,255,0.06); color: #fff; flex: 1;" onclick="closeCreateModal()">Cancelar</button>
         <button class="btn-action btn-gold" style="flex: 1.5;" onclick="confirmCreateRoom()">► CRIAR E ENTRAR</button>
       </div>
     </div>
@@ -829,7 +832,7 @@
       </div>
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
-        <button class="btn-action" style="background:rgba(255,255,255,0.1); color:#fff; flex: 1;" onclick="closeMediaModal()">Cancelar</button>
+        <button class="btn-action" style="background:rgba(255,255,255,0.06); color:#fff; flex: 1;" onclick="closeMediaModal()">Cancelar</button>
         <button class="btn-action btn-purple" style="flex: 1.5;" onclick="confirmNewMedia()">Atualizar Mídia</button>
       </div>
     </div>
@@ -857,7 +860,7 @@
         <div class="no-rooms-msg">Carregando filmes do catálogo...</div>
       </div>
 
-      <button class="btn-action" style="background: rgba(255,255,255,0.08); color: #fff;" onclick="closeCatalogSelectModal()">Cancelar</button>
+      <button class="btn-action" style="background: rgba(255,255,255,0.06); color: #fff;" onclick="closeCatalogSelectModal()">Cancelar</button>
     </div>
   </div>
 
@@ -888,7 +891,7 @@
       </div>
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
-        <button class="btn-action" style="background: rgba(255,255,255,0.08); color: #fff; flex: 1;" onclick="closeYouTubeSearchModal()">Cancelar</button>
+        <button class="btn-action" style="background: rgba(255,255,255,0.06); color: #fff; flex: 1;" onclick="closeYouTubeSearchModal()">Cancelar</button>
         <button class="btn-action btn-green" style="flex: 1.5;" onclick="confirmYouTubeSelection()">✓ USAR ESTE VÍDEO</button>
       </div>
     </div>
@@ -914,7 +917,7 @@
       </div>
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
-        <button class="btn-action" style="background: rgba(255,255,255,0.08); color: #fff; flex: 1;" onclick="closeJoinModal()">Cancelar</button>
+        <button class="btn-action" style="background: rgba(255,255,255,0.06); color: #fff; flex: 1;" onclick="closeJoinModal()">Cancelar</button>
         <button class="btn-action btn-green" style="flex: 1.5;" onclick="confirmJoinByCode()">► ENTRAR NA SALA</button>
       </div>
     </div>
@@ -930,11 +933,11 @@
 
       <div class="participants-list" id="participantsList"></div>
 
-      <button class="btn-action" style="background:rgba(255,255,255,0.1); color:#fff; margin-top: 10px;" onclick="closeMembersModal()">Fechar</button>
+      <button class="btn-action" style="background:rgba(255,255,255,0.06); color:#fff; margin-top: 10px;" onclick="closeMembersModal()">Fechar</button>
     </div>
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE (LIQUID GLASS) -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR TRANSPARENTE -->
   <nav class="bottom-nav">
     <a class="nav-item" href="index.html">
       <i class="fa-solid fa-house"></i>
@@ -966,7 +969,9 @@
       appId: "1:351490904436:web:fe43c11a9eb7de9b745c21"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database();
 
     let currentRoomId = null;
@@ -1094,7 +1099,6 @@
       }
     });
 
-    // --- RECONEXÃO AUTOMÁTICA & SALAS ATIVAS ---
     document.addEventListener('DOMContentLoaded', () => {
       listenActiveRooms();
       loadBloggerPostsForCatalog();
@@ -1147,7 +1151,6 @@
       });
     }
 
-    // --- EXTRAÇÃO AUTOMÁTICA DE CAPAS VIA TMDB PARA A PARTY ---
     async function loadBloggerPostsForCatalog() {
       try {
         const res = await fetch('filmes.json');
@@ -1236,7 +1239,6 @@
       closeCatalogSelectModal();
     }
 
-    // --- POPUP DO YOUTUBE ---
     function openYouTubeSearchModal(targetMode = 'create') {
       catalogTargetMode = targetMode;
       document.getElementById('ytUrlInput').value = '';
@@ -1307,7 +1309,6 @@
       });
     }
 
-    // --- POPUPS & MODAIS ---
     function openCreateModal() { document.getElementById('createRoomModal').classList.add('active'); }
     function closeCreateModal() { document.getElementById('createRoomModal').classList.remove('active'); }
 
@@ -1450,7 +1451,6 @@
         if (snapshot.val()) changeVideoSource(snapshot.val());
       });
 
-      // SINCRONIZAÇÃO EM TEMPO REAL CONTÍNUA
       db.ref('rooms/' + roomId + '/playerState').on('value', snapshot => {
         const state = snapshot.val();
         if (state) syncPlayerFromFirebase(state);
@@ -1473,7 +1473,6 @@
         chatBox.scrollTop = chatBox.scrollHeight;
       });
 
-      // SE FOR HOST, ENVIA HEARTBEAT DE TEMPO A CADA 1.5 SEGUNDOS
       if (isHost) {
         if (syncInterval) clearInterval(syncInterval);
         syncInterval = setInterval(() => {
@@ -1641,7 +1640,7 @@
     }
   </script>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR FLUTUANTE (LIQUID GLASS) -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR TRANSPARENTE -->
   <nav class="bottom-nav">
     <a class="nav-item" href="index.html">
       <i class="fa-solid fa-house"></i>
