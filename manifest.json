@@ -1,0 +1,15 @@
+{
+  "name": "OFFRAVE",
+  "short_name": "OFFRAVE",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#08080a",
+  "theme_color": "#08080a",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/512x512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
