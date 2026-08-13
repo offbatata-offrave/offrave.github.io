@@ -29,8 +29,13 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* REMOVE BORDAS PRETAS E INTEGRA COM A TELA INTEIRA */
-    html, body {
+    /* TRAVA O FUNDO PRETO ABSOLUTO EM TODA A TELA E BLOQUEIA O BRANCO DO OVERSCROLL */
+    html {
+      background-color: #08080a;
+      height: 100%;
+    }
+
+    body {
       background-color: #08080a;
       background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
       background-attachment: fixed;
@@ -39,8 +44,9 @@
       width: 100%;
       margin: 0;
       padding: 0;
-      padding-bottom: 120px;
+      padding-bottom: 140px;
       overflow-x: hidden;
+      position: relative;
     }
 
     .glass-panel {
