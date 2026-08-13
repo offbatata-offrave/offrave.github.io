@@ -5,270 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>OFFRAVE</title>
   
-  <!-- Configurações PWA para o Safari / Tela de Início -->
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="OFFRAVE">
-  <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/e50914/ffffff?text=O">
 
-  <!-- Fontes Google & Ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 
-  <!-- SDKs do Firebase Auth -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* TRAVA O FUNDO PRETO ABSOLUTO EM TODA A TELA E BLOQUEIA O BRANCO DO OVERSCROLL */
-    html {
-      background-color: #08080a;
-      height: 100%;
-    }
-
-    body {
-      background-color: #08080a;
-      background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
-      background-attachment: fixed;
-      color: #ffffff;
-      min-height: 100vh;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      padding-bottom: 140px;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    .glass-panel {
-      background: rgba(18, 19, 26, 0.25);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+    html { background-color: #08080a; height: 100%; }
+    body { background-color: #08080a; background: radial-gradient(circle at top, #13151f 0%, #08080a 70%); background-attachment: fixed; color: #ffffff; min-height: 100vh; width: 100%; padding-bottom: 140px; overflow-x: hidden; position: relative; }
 
     .profile-selector-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 3000;
-      background: rgba(8, 8, 10, 0.92);
-      backdrop-filter: blur(15px);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      padding: 20px;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3000;
+      background: rgba(8, 8, 10, 0.92); backdrop-filter: blur(15px);
+      display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
     }
-
-    .profile-selector-overlay.hide {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      display: none !important;
-    }
-
-    .profile-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 2.8rem; letter-spacing: 1.5px; margin-bottom: 30px; text-align: center; color: #ffffff;
-    }
-
-    .profiles-container {
-      display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; max-width: 650px;
-    }
-
-    .profile-card {
-      display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; text-decoration: none;
-    }
-    .profile-card:hover { transform: scale(1.05); }
-
-    .profile-avatar {
-      width: 100px; height: 100px; border-radius: 16px; object-fit: cover; border: 3px solid transparent; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .login-avatar-box {
-      width: 100px; height: 100px; border-radius: 16px; background: rgba(229, 9, 20, 0.15);
-      border: 2px solid rgba(229, 9, 20, 0.4); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #e50914;
-      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
-    }
-
+    .profile-selector-overlay.hide { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; display: none !important; }
+    .profile-title { font-family: 'Bebas Neue', cursive; font-size: 2.8rem; letter-spacing: 1.5px; margin-bottom: 30px; text-align: center; color: #ffffff; }
+    .profiles-container { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; max-width: 650px; }
+    .profile-card { display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
+    .profile-avatar { width: 100px; height: 100px; border-radius: 16px; object-fit: cover; border: 3px solid transparent; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+    .login-avatar-box { width: 100px; height: 100px; border-radius: 16px; background: rgba(229, 9, 20, 0.15); border: 2px solid rgba(229, 9, 20, 0.4); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #e50914; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); }
     .profile-name { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
-    .profile-card:hover .profile-name { color: #ffffff; }
 
-    /* TOPO FLUTUANTE SOBREPOSTO AO BANNER */
     .top-header {
       position: absolute; top: 0; left: 0; width: 100%; z-index: 100; 
       padding: max(25px, env(safe-area-inset-top)) 20px 15px 20px;
       display: flex; flex-direction: column; gap: 12px;
       background: linear-gradient(180deg, rgba(8, 8, 10, 0.85) 0%, rgba(8, 8, 10, 0.4) 60%, rgba(8, 8, 10, 0) 100%);
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
     }
-
-    .header-top-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-    .brand-logo { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: #e50914; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
-
-    .menu-toggle-btn {
-      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #ffffff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
-    }
-
+    .header-top-row { display: flex; align-items: center; justify-content: space-width; width: 100%; justify-content: space-between; }
+    .brand-logo { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: #e50914; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; }
+    .menu-toggle-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: #ffffff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    
     .netflix-tabs { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
     .netflix-tabs::-webkit-scrollbar { display: none; }
-
-    .tab-item {
-      padding: 6px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; font-size: 0.85rem; font-weight: 600; text-decoration: none; white-space: nowrap; cursor: pointer;
-    }
+    .tab-item { padding: 6px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; font-size: 0.85rem; font-weight: 600; text-decoration: none; white-space: nowrap; cursor: pointer; }
     .tab-item:hover, .tab-item.active { background: rgba(229, 9, 20, 0.85); color: #ffffff; }
 
-    /* --- HERO BANNER SLIDER OCUPA O TOPO ABSOLUTO DA TELA --- */
     .hero-banner {
-      position: relative;
-      width: 100%;
-      height: 72vh;
-      min-height: 480px;
-      margin-top: 0;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 30px 20px 40px 20px;
-      transition: background-image 0.8s ease-in-out;
+      position: relative; width: 100%; height: 72vh; min-height: 480px; background-size: cover; background-position: center;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 30px 20px 40px 20px;
     }
-
     .hero-banner::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       background: linear-gradient(180deg, rgba(8,8,10,0.4) 0%, rgba(8,8,10,0.2) 40%, rgba(8,8,10,0.8) 85%, #08080a 100%);
-      z-index: 1;
-      pointer-events: none;
+      z-index: 1; pointer-events: none;
     }
+    .hero-content { position: relative; z-index: 2; width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+    .hero-badge { font-size: 0.75rem; font-weight: 800; letter-spacing: 3px; color: #e50914; text-transform: uppercase; margin-bottom: 8px; }
+    .hero-title { font-family: 'Bebas Neue', cursive; font-size: 3.8rem; letter-spacing: 2px; line-height: 0.95; margin-bottom: 12px; color: #fff; }
+    .hero-description { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .hero-buttons { display: flex; gap: 12px; width: 100%; }
+    .btn-play { background: #ffffff; color: #000000; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+    .btn-more-info { background: rgba(109, 109, 110, 0.5); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; backdrop-filter: blur(8px); }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 600px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    .hero-badge {
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 3px;
-      color: #e50914;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .hero-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 3.8rem;
-      letter-spacing: 2px;
-      line-height: 0.95;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-
-    .hero-description {
-      font-size: 0.9rem;
-      color: #cbd5e1;
-      line-height: 1.4;
-      margin-bottom: 20px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-      width: 100%;
-    }
-
-    .btn-play {
-      background: #ffffff;
-      color: #000000;
-      padding: 12px 28px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .btn-play:hover { background: rgba(255,255,255,0.85); }
-
-    .btn-more-info {
-      background: rgba(109, 109, 110, 0.5);
-      color: #ffffff;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(8px);
-    }
-    .btn-more-info:hover { background: rgba(109, 109, 110, 0.3); }
-
-    /* --- SLIDER EM ALTA --- */
     .trending-section { max-width: 1200px; margin: 15px auto 10px auto; padding: 0 15px; }
     .trending-scroll { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
     .trending-scroll::-webkit-scrollbar { display: none; }
     .trending-card { position: relative; flex: 0 0 auto; width: 180px; height: 220px; display: flex; align-items: flex-end; text-decoration: none; }
-    .trending-number {
-      font-size: 7.5rem; font-weight: 900; line-height: 0.8; color: #08080a;
-      -webkit-text-stroke: 3px #52525b; position: absolute; left: -10px; bottom: -5px; z-index: 1; user-select: none;
-    }
-    .trending-poster-box {
-      position: absolute; right: 0; top: 0; width: 130px; height: 100%; border-radius: 12px; overflow: hidden; z-index: 2;
-      border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(18, 19, 26, 0.5);
-    }
+    .trending-number { font-size: 7.5rem; font-weight: 900; line-height: 0.8; color: #08080a; -webkit-text-stroke: 3px #52525b; position: absolute; left: -10px; bottom: -5px; z-index: 1; }
+    .trending-poster-box { position: absolute; right: 0; top: 0; width: 130px; height: 100%; border-radius: 12px; overflow: hidden; z-index: 2; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(18, 19, 26, 0.5); }
     .trending-poster-img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* --- ESTILO DE LINHAS DO CATÁLOGO ESTILO NETFLIX COM SETAS LATERAIS --- */
+    /* CATÁLOGO EM SLIDER COM TAMANHO TRAVADO E CORRETO */
     .section-container { padding: 15px 20px; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
     .row-section { display: flex; flex-direction: column; gap: 12px; }
     .section-title { font-size: 1.3rem; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px; }
 
-    .slider-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .slider-container {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-      padding: 5px 2px;
-      width: 100%;
-    }
+    .slider-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+    .slider-container { display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 5px 2px; width: 100%; }
     .slider-container::-webkit-scrollbar { display: none; }
 
+    /* TAMANHO FIXO E EXATO PARA AS CAPAS NUNCA ESTICAREM */
     .movie-card {
-      min-width: 150px;
-      height: 220px;
+      min-width: 130px !important;
+      width: 130px !important;
+      height: 190px !important;
+      max-height: 190px !important;
       background: #18181b;
       border-radius: 12px;
       overflow: hidden;
@@ -279,123 +100,83 @@
       transition: transform 0.3s ease;
       border: 1px solid rgba(255,255,255,0.08);
       text-decoration: none;
+      display: flex;
+      flex-direction: column;
     }
-    .movie-card:hover {
-      transform: scale(1.05);
-      border-color: rgba(229, 9, 20, 0.6);
+    .movie-card:hover { transform: scale(1.05); border-color: rgba(229, 9, 20, 0.6); }
+    .movie-card img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
     }
-    .movie-card img { width: 100%; height: 100%; object-fit: cover; }
     .movie-card-title {
-      position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 8px;
-      background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
-      font-size: 0.8rem; font-weight: 700; text-align: center; color: #fff;
+      position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px 6px;
+      background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, transparent 100%);
+      font-size: 0.75rem; font-weight: 700; text-align: center; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* BOTÕES DE NAVEGAÇÃO LATERAL (SETAS DO SLIDER) */
     .slider-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      width: 40px;
-      height: 60px;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-      border-radius: 4px;
-      transition: background 0.2s, transform 0.2s;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.7); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 38px; height: 58px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10; border-radius: 4px; transition: background 0.2s;
     }
-    .slider-btn:hover {
-      background: rgba(229, 9, 20, 0.9);
-      border-color: #e50914;
-    }
+    .slider-btn:hover { background: rgba(229, 9, 20, 0.9); border-color: #e50914; }
     .slider-btn.left { left: -15px; }
     .slider-btn.right { right: -15px; }
 
-    /* --- MODAL DE BUSCA --- */
+    /* BUSCA */
     .search-modal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2500;
-      background: rgba(8, 8, 10, 0.9);
-      backdrop-filter: blur(15px);
+      background: rgba(8, 8, 10, 0.9); backdrop-filter: blur(15px);
       display: flex; flex-direction: column; padding: max(20px, env(safe-area-inset-top)) 20px 20px 20px;
       opacity: 0; visibility: hidden; transition: all 0.2s ease;
     }
     .search-modal.active { opacity: 1; visibility: visible; }
     .search-header { display: flex; align-items: center; gap: 15px; max-width: 800px; width: 100%; margin: 10px auto 20px auto; }
-    .search-input-wrapper {
-      position: relative; flex: 1; display: flex; align-items: center;
-      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 30px; padding: 12px 20px;
-    }
+    .search-input-wrapper { position: relative; flex: 1; display: flex; align-items: center; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 30px; padding: 12px 20px; }
     .search-input-wrapper i { color: #94a3b8; font-size: 1.1rem; margin-right: 12px; }
-    .search-input {
-      background: none; border: none; outline: none; color: #fff; font-size: 1rem; width: 100%;
-    }
-    .search-close-btn {
-      background: rgba(255, 255, 255, 0.06); border: none; color: #fff; width: 42px; height: 42px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem;
-    }
-    .search-results-container {
-      flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; overflow-y: auto; padding-bottom: 80px; scrollbar-width: none;
-    }
+    .search-input { background: none; border: none; outline: none; color: #fff; font-size: 1rem; width: 100%; }
+    .search-close-btn { background: rgba(255, 255, 255, 0.06); border: none; color: #fff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .search-results-container { flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; overflow-y: auto; padding-bottom: 80px; scrollbar-width: none; }
     .search-results-container::-webkit-scrollbar { display: none; }
     .search-status-title { font-size: 1.1rem; color: #94a3b8; margin-bottom: 15px; font-weight: 600; }
-    .movies-grid-search { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+    .movies-grid-search { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
 
-    /* MENU LATERAL COM LIQUID GLASS TRANSPARENTE */
+    /* MENU LATERAL */
     .side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; opacity: 0; visibility: hidden; transition: opacity 0.2s ease; }
     .side-menu-overlay.active { opacity: 1; visibility: visible; }
-    
     .side-menu-popup {
       position: fixed; top: 0; right: -320px; width: 280px; height: 100%; z-index: 1600;
-      background: rgba(18, 19, 26, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(18, 19, 26, 0.4); backdrop-filter: blur(16px);
       border-left: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: -10px 0 40px rgba(0,0,0,0.6);
       padding: max(30px, env(safe-area-inset-top)) 20px 30px 20px; display: flex; flex-direction: column; gap: 20px; transition: right 0.3s ease;
     }
     .side-menu-popup.active { right: 0; }
-    
-    .side-menu-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
-    .side-menu-title { font-family: 'Bebas Neue', cursive; font-size: 1.4rem; color: #e50914; letter-spacing: 1px; }
+    .side-menu-header { display: flex; justify-content: space-width; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
+    .side-menu-title { font-family: 'Bebas Neue', cursive; font-size: 1.4rem; color: #e50914; }
     .close-menu-btn { background: rgba(255,255,255,0.06); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    
     .menu-options-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .menu-option-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); color: #fff; text-decoration: none; font-weight: 600; transition: background 0.2s; }
-    .menu-option-item a:hover { background: rgba(229, 9, 20, 0.2); border-color: rgba(229, 9, 20, 0.4); }
-
+    .menu-option-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); color: #fff; text-decoration: none; font-weight: 600; }
     .active-profile-footer {
-      margin-top: auto; padding: 14px; border-radius: 16px;
-      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-top: auto; padding: 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
       display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer;
     }
     .footer-profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 2px solid #e50914; }
     .footer-profile-info { display: flex; flex-direction: column; }
-    .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+    .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; }
     .footer-profile-name { font-size: 0.9rem; font-weight: 700; color: #ffffff; }
 
-    /* BARRA INFERIOR LIQUID GLASS TRANSPARENTE COM BOTÃO ATIVO EM VERMELHO NETFLIX */
+    /* BARRA INFERIOR */
     .bottom-nav {
       position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
       display: flex; justify-content: space-around; align-items: center; z-index: 999;
-      background: rgba(18, 19, 26, 0.25);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      background: rgba(18, 19, 26, 0.25); backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    .nav-item { 
-      display: flex; flex-direction: column; align-items: center; gap: 4px; 
-      color: #94a3b8; text-decoration: none; font-size: 0.7rem; font-weight: 600; 
-      background: none; border: none; cursor: pointer; transition: color 0.2s;
-    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94a3b8; text-decoration: none; font-size: 0.7rem; font-weight: 600; background: none; border: none; cursor: pointer; }
     .nav-item i { font-size: 1.15rem; }
     .nav-item:hover, .nav-item.active { color: #e50914; }
   </style>
@@ -406,8 +187,6 @@
   <div class='profile-selector-overlay' id='profileOverlay'>
     <h1 class='profile-title'>QUEM ESTÁ ASSISTINDO?</h1>
     <div class='profiles-container'>
-    
-      <!-- BOTÃO DE LOGIN QUE ABRE A TELA login.html -->
       <a href='login.html' class='profile-card'>
         <div class='login-avatar-box'><i class='fa-solid fa-right-to-bracket'></i></div>
         <span class='profile-name'>Login / Cadastro</span>
@@ -419,7 +198,7 @@
     </div>
   </div>
 
-  <!-- HERO BANNER SLIDER -->
+  <!-- HERO BANNER -->
   <div class='hero-banner' id='heroBanner' style="background-image: url('');">
     <div class='hero-content'>
       <span class='hero-badge' id='heroBadge'>DESTAQUE OFFRAVE</span>
@@ -432,7 +211,7 @@
     </div>
   </div>
 
-  <!-- TOPO FLUTUANTE SOBREPOSTO AO BANNER -->
+  <!-- TOPO FLUTUANTE -->
   <header class='top-header'>
     <div class='header-top-row'>
       <a class='brand-logo' href='index.html'>OFFRAVE</a>
@@ -445,7 +224,7 @@
     </div>
   </header>
 
-  <!-- MODAL DE BUSCA -->
+  <!-- BUSCA -->
   <div class="search-modal" id="searchModal">
     <div class="search-header">
       <div class="search-input-wrapper">
@@ -460,7 +239,7 @@
     </div>
   </div>
 
-  <!-- MENU LATERAL COM LIQUID GLASS TRANSPARENTE -->
+  <!-- MENU LATERAL -->
   <div class='side-menu-overlay' id='sideMenuOverlay'></div>
   <aside class='side-menu-popup' id='sideMenuPopup'>
     <div class='side-menu-header'>
@@ -471,7 +250,6 @@
       <li class='menu-option-item'><a href='party.html'><i class='fa-solid fa-users'></i><span>OFF Party</span></a></li>
       <li class='menu-option-item'><a href='javascript:void(0);' onclick='resetProfileSelection()'><i class='fa-solid fa-user-gear'></i><span>Trocar Perfil</span></a></li>
     </ul>
-
     <a href="perfil.html" id="profileFooterLink" class='active-profile-footer'>
       <img class='footer-profile-avatar' id='footerProfileAvatar' src='https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png'/>
       <div class='footer-profile-info'>
@@ -487,11 +265,10 @@
     <div class='trending-scroll' id='trendingSlider'></div>
   </section>
 
-  <!-- CATÁLOGO ESTILO NETFLIX (EM LINHAS COM SETAS LATERAIS) -->
+  <!-- CATÁLOGO -->
   <main class='section-container' id='catalogContainer'>
     <h2 class='section-title' id='catalogCategoryTitle'><i class='fa-solid fa-layer-group'></i> Catálogo</h2>
     
-    <!-- Linha 1: Lançamentos / Todos -->
     <div class="row-section">
       <div class="row-title" style="font-size: 1.1rem; font-weight: 700; color: #fff;">Lançamentos em Destaque <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i></div>
       <div class="slider-wrapper">
@@ -501,7 +278,6 @@
       </div>
     </div>
 
-    <!-- Linha 2: Séries / Filmes -->
     <div class="row-section" id="rowSection2" style="margin-top: 15px;">
       <div class="row-title" style="font-size: 1.1rem; font-weight: 700; color: #fff;">Populares na Netflix <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i></div>
       <div class="slider-wrapper">
@@ -512,7 +288,7 @@
     </div>
   </main>
 
-  <!-- BARRA INFERIOR TRANSPARENTE COM BOTÃO ATIVO EM VERMELHO -->
+  <!-- BARRA INFERIOR -->
   <nav class="bottom-nav">
     <a class="nav-item active" href="index.html"><i class="fa-solid fa-house"></i><span>Início</span></a>
     <a class="nav-item" href="index.html"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
@@ -579,8 +355,9 @@
             const tmdbData = await tmdbRes.json();
             if (tmdbData.results && tmdbData.results.length > 0) {
               const item = tmdbData.results[0];
-              if (item.poster_path && (!movie.capa || movie.capa.includes('placeholder'))) {
-                movie.capa = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+              // Garante que pega sempre a capa vertical padrão (w342)
+              if (item.poster_path) {
+                movie.capa = `https://image.tmdb.org/t/p/w342${item.poster_path}`;
               }
               if (item.backdrop_path) {
                 movie.banner = `https://image.tmdb.org/t/p/original${item.backdrop_path}`;
@@ -605,7 +382,7 @@
         }
 
       } catch (err) {
-        document.getElementById('sliderCatalog1').innerHTML = '<p style="color:#94a3b8; padding: 10px;">Nenhum filme carregado no filmes.json</p>';
+        document.getElementById('sliderCatalog1').innerHTML = '<p style="color:#94a3b8; padding: 10px;">Nenhum filme carregado</p>';
       }
     });
 
@@ -663,7 +440,6 @@
       slider1.innerHTML = '';
       slider2.innerHTML = '';
 
-      // Divide os filmes nas duas linhas do slider
       const midpoint = Math.ceil(movies.length / 2);
       const row1 = movies.slice(0, midpoint);
       const row2 = movies.slice(midpoint);
@@ -671,7 +447,7 @@
       row1.forEach(movie => {
         slider1.innerHTML += `
           <a href="player.html?id=${movie.id}" class="movie-card">
-            <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
+            <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
             <div class="movie-card-title">${movie.titulo}</div>
           </a>
         `;
@@ -681,17 +457,16 @@
         row2.forEach(movie => {
           slider2.innerHTML += `
             <a href="player.html?id=${movie.id}" class="movie-card">
-              <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
+              <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
               <div class="movie-card-title">${movie.titulo}</div>
             </a>
           `;
         });
       } else {
-        // Se houver poucos filmes, duplica para preencher o visual do slider
         row1.forEach(movie => {
           slider2.innerHTML += `
             <a href="player.html?id=${movie.id}" class="movie-card">
-              <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
+              <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
               <div class="movie-card-title">${movie.titulo}</div>
             </a>
           `;
@@ -708,7 +483,7 @@
           <a href="player.html?id=${movie.id}" class="trending-card">
             <span class="trending-number">${index + 1}</span>
             <div class="trending-poster-box">
-              <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" class="trending-poster-img" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
+              <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" class="trending-poster-img" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
             </div>
           </a>
         `;
@@ -770,8 +545,8 @@
       searchStatusTitle.textContent = `Resultados para "${q}":`;
       results.forEach(movie => {
         searchResultsGrid.innerHTML += `
-          <a href="player.html?id=${movie.id}" class="movie-card" style="width: 100%; min-width: unset;">
-            <img src="${movie.capa || 'https://via.placeholder.com/180x270?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=Capa'"/>
+          <a href="player.html?id=${movie.id}" class="movie-card">
+            <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
             <div class="movie-card-title">${movie.titulo}</div>
           </a>
         `;
