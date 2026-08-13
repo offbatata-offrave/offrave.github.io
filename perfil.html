@@ -410,8 +410,8 @@
         <div class="profile-avatar-large" id="avatarInitial">W</div>
       </div>
       <div>
-        <h1 class="profile-name" id="profileName">William</h1>
-        <p class="profile-email" id="profileEmail">anerosinw@gmail.com</p>
+        <h1 class="profile-name" id="profileName">Carregando...</h1>
+        <p class="profile-email" id="profileEmail">usuario@offrave.com</p>
       </div>
 
       <div class="online-badge"><div class="online-dot"></div> Online</div>
@@ -509,10 +509,18 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let name = localStorage.getItem('offrave_active_profile') || 'William';
-      let email = localStorage.getItem('offrave_user_email') || 'anerosinw@gmail.com';
+      
+      // Pega o email salvo no localStorage ou tenta pegar do firebase atual
+      let email = localStorage.getItem('offrave_user_email');
+      if (!email && typeof firebase !== 'undefined' && firebase.auth().currentUser) {
+        email = firebase.auth().currentUser.email;
+      }
+      if (!email) {
+        email = 'anerosinw@gmail.com'; // fallback para o criador se não achar
+      }
 
       if (!name || name === 'Carregando...') {
-        name = 'William';
+        name = email.split('@')[0];
       }
 
       const avatar = localStorage.getItem('offrave_active_avatar');
