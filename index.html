@@ -87,7 +87,7 @@
     .profile-name { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
     .profile-card:hover .profile-name { color: #ffffff; }
 
-    /* TOPO AGORA FLUTUA DIRETAMENTE SOB A BARRA DE STATUS DO CELULAR */
+    /* TOPO FLUTUANTE SOBREPOSTO AO BANNER */
     .top-header {
       position: absolute; top: 0; left: 0; width: 100%; z-index: 100; 
       padding: max(25px, env(safe-area-inset-top)) 20px 15px 20px;
@@ -656,7 +656,7 @@
         searchStatusTitle.textContent = 'Digite para começar a buscar...';
         return;
       }
-      The results = allMovies.filter(m => m.titulo.toLowerCase().includes(q));
+      const results = allMovies.filter(m => m.titulo.toLowerCase().includes(q));
       searchResultsGrid.innerHTML = '';
       if (results.length === 0) {
         searchStatusTitle.textContent = `Nenhum resultado para "${q}"`;
