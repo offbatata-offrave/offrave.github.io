@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>OFF Party - Assistir Junto</title>
   
   <!-- Fontes & Ícones -->
@@ -29,7 +29,7 @@
     body {
       background-color: #08080a;
       color: #ffffff;
-      padding-bottom: 90px;
+      padding-bottom: 120px;
     }
 
     .party-container {
@@ -501,6 +501,25 @@
 
     .host-crown-badge { font-size: 0.7rem; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
     .btn-kick-user { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+    /* BARRA INFERIOR IGUAL DO INDEX (LIQUID GLASS TRANSPARENTE COM BOTÃO ATIVO EM VERMELHO) */
+    .bottom-nav {
+      position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
+      width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
+      display: flex; justify-content: space-around; align-items: center; z-index: 2000;
+      background: rgba(18, 19, 26, 0.25);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .nav-item { 
+      display: flex; flex-direction: column; align-items: center; gap: 4px; 
+      color: #94a3b8; text-decoration: none; font-size: 0.7rem; font-weight: 600; 
+      background: none; border: none; cursor: pointer; transition: color 0.2s;
+    }
+    .nav-item i { font-size: 1.15rem; }
+    .nav-item:hover, .nav-item.active { color: #e50914; }
   </style>
 </head>
 <body>
@@ -647,6 +666,30 @@
     </div>
 
   </div>
+
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR IGUAL DO INDEX -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Início</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-tv"></i>
+      <span>Séries</span>
+    </a>
+    <a class="nav-item" href="index.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Filmes</span>
+    </a>
+    <a class="nav-item active" href="party.html">
+      <i class="fa-solid fa-users"></i>
+      <span>OFF Party</span>
+    </a>
+    <a class="nav-item" href="perfil.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Perfil</span>
+    </a>
+  </nav>
 
   <!-- POPUP MODAL CRIAR SALA -->
   <div class="modal-overlay" id="createRoomModal">
