@@ -366,25 +366,27 @@
     .host-crown-badge { font-size: 0.7rem; background: rgba(229, 9, 20, 0.2); color: #e50914; border: 1px solid rgba(229, 9, 20, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
     .btn-kick-user { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-    /* BARRA DE NAVEGAÇÃO INFERIOR ALINHADA COM O INDEX */
+    /* BARRA DE NAVEGAÇÃO INFERIOR ESTENDIDA ATÉ O FIM DA TELA */
     .bottom-nav {
       position: fixed; 
-      bottom: env(safe-area-inset-bottom, 15px); 
-      left: 50%; 
-      transform: translateX(-50%);
-      width: calc(100% - 30px); 
-      max-width: 450px; 
-      height: 62px; 
-      border-radius: 35px;
+      bottom: 0; 
+      left: 0; 
+      right: 0;
+      width: 100%; 
+      max-width: none; 
+      height: calc(65px + env(safe-area-inset-bottom, 0px));
+      border-radius: 0;
       display: flex; 
       justify-content: space-around; 
-      align-items: center; 
+      align-items: flex-start; 
+      padding-top: 10px;
+      padding-bottom: env(safe-area-inset-bottom, 15px);
       z-index: 2000;
-      background: rgba(18, 19, 26, 0.25);
+      background: rgba(18, 19, 26, 0.85);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4);
     }
     .nav-item { 
       display: flex; flex-direction: column; align-items: center; gap: 4px; 
@@ -554,7 +556,7 @@
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR ALINHADA COM O INDEX -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR ESTENDIDA ATÉ O FIM DA TELA -->
   <nav class="bottom-nav">
     <a class="nav-item" href="index.html">
       <i class="fa-solid fa-house"></i>
