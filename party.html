@@ -35,7 +35,11 @@
     .party-container {
       max-width: 600px;
       margin: 0 auto;
-      padding: 15px;
+      /* CORREÇÃO DO CORTE NO TOPO (PWA / SAFE AREA) */
+      padding-top: calc(15px + env(safe-area-inset-top, 20px));
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-bottom: 15px;
       display: flex;
       flex-direction: column;
       gap: 15px;
@@ -184,6 +188,7 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      padding-top: calc(20px + env(safe-area-inset-top, 20px));
     }
     .login-lock-overlay.active { display: flex; }
     .login-lock-card {
@@ -216,6 +221,7 @@
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px);
       z-index: 2500; display: none; align-items: center; justify-content: center; padding: 20px;
+      padding-top: calc(20px + env(safe-area-inset-top, 20px));
     }
     .modal-overlay.active { display: flex; }
     .modal-card {
@@ -360,7 +366,7 @@
     .host-crown-badge { font-size: 0.7rem; background: rgba(229, 9, 20, 0.2); color: #e50914; border: 1px solid rgba(229, 9, 20, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
     .btn-kick-user { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-    /* BARRA INFERIOR IGUAL DO INDEX */
+    /* BARRA DE NAVEGAÇÃO INFERIOR IGUAL DO INDEX */
     .bottom-nav {
       position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
@@ -967,7 +973,6 @@
           for (let movie of data) {
             let posterImg = movie.capa || 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa';
             
-            // Busca capa via TMDB igual à index
             try {
               const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`);
               const tmdbData = await tmdbRes.json();
@@ -1266,7 +1271,6 @@
         if (snapshot.val()) changeVideoSource(snapshot.val());
       });
 
-      // SINCRONIZAÇÃO EM TEMPO REAL CONTÍNUA
       db.ref('rooms/' + roomId + '/playerState').on('value', snapshot => {
         const state = snapshot.val();
         if (state) syncPlayerFromFirebase(state);
@@ -1288,7 +1292,6 @@
         chatBox.scrollTop = chatBox.scrollHeight;
       });
 
-      // SE FOR HOST, ENVIA HEARTBEAT DE TEMPO A CADA 2 SEGUNDOS
       if (isHost) {
         if (hostHeartbeatInterval) clearInterval(hostHeartbeatInterval);
         hostHeartbeatInterval = setInterval(() => {
@@ -1370,7 +1373,7 @@
     }
 
     function syncPlayerFromFirebase(state) {
-      if (isHost) return; // Host não se auto-sincroniza
+      if (isHost) return;
       isRemoteAction = true;
 
       if (isYouTubeMode && ytPlayer && ytPlayer.getCurrentTime) {
