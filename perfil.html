@@ -2,11 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Meu Perfil - OFFRAVE</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+  <!-- SDKs do Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
   <style>
     * {
@@ -17,12 +21,18 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      background-color: #08080a;
+      height: 100%;
+    }
+
     body {
+      background-color: #08080a;
       background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
       background-attachment: fixed;
       color: #ffffff;
       min-height: 100vh;
-      padding-bottom: 120px;
+      padding-bottom: 140px;
     }
 
     .profile-page-container {
@@ -362,7 +372,7 @@
 
     /* BARRA INFERIOR TRANSPARENTE */
     .bottom-nav {
-      position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+      position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
       display: flex; justify-content: space-around; align-items: center; z-index: 999;
       background: rgba(18, 19, 26, 0.45);
@@ -396,12 +406,12 @@
 
     <!-- CABEÇALHO DO PERFIL -->
     <div class="profile-header-card">
-      <div class="avatar-wrapper">
+      <div class="avatar-wrapper" id="avatarBoxContainer">
         <div class="profile-avatar-large" id="avatarInitial">W</div>
       </div>
       <div>
-        <h1 class="profile-name" id="profileName">William</h1>
-        <p class="profile-email" id="profileEmail">anerosinw@gmail.com</p>
+        <h1 class="profile-name" id="profileName">Carregando...</h1>
+        <p class="profile-email" id="profileEmail">usuario@offrave.com</p>
       </div>
 
       <div class="online-badge"><div class="online-dot"></div> Online</div>
@@ -498,18 +508,37 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const name = localStorage.getItem('offrave_active_profile') || 'William';
+      // Pega o nome e email do login atual (Firebase ou localStorage)
+      let name = localStorage.getItem('offrave_active_profile') || 'Usuário';
+      let email = 'usuario@offrave.com';
+
+      if (typeof firebase !== 'undefined' && firebase.auth().currentUser) {
+        const user = firebase.auth().currentUser;
+        if (user.displayName) name = user.displayName;
+        if (user.email) email = user.email;
+      } else {
+        // Fallback inteligente se foi salvo no registro por email
+        const savedEmail = localStorage.getItem('offrave_user_email');
+        if (savedEmail) {
+          email = savedEmail;
+        } else if (name.toLowerCase().includes('willian') || name.toLowerCase().includes('william')) {
+          email = 'anerosinw@gmail.com';
+        } else {
+          email = name.toLowerCase().replace(/\s+/g, '') + '@offrave.com';
+        }
+      }
+
       const avatar = localStorage.getItem('offrave_active_avatar');
       const savedBio = localStorage.getItem('offrave_user_bio') || 'Olá! Sou um fã de filmes no OFFRAVE.';
 
       document.getElementById('profileName').textContent = name;
-      document.getElementById('profileEmail').textContent = name.toLowerCase().includes('willian') || name.toLowerCase().includes('william') ? 'anerosinw@gmail.com' : 'usuario@offrave.com';
+      document.getElementById('profileEmail').textContent = email;
       document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
       document.getElementById('bioDisplay').textContent = savedBio;
       document.getElementById('bioTextarea').value = savedBio;
 
       if (avatar && !avatar.includes('Netflix-avatar.png') && !avatar.includes('3069172.png')) {
-        document.querySelector('.avatar-wrapper').innerHTML = `<img class="profile-avatar-large" src="${avatar}" alt="Avatar"/>`;
+        document.getElementById('avatarBoxContainer').innerHTML = `<img class="profile-avatar-large" src="${avatar}" alt="Avatar"/>`;
       }
 
       // Estatísticas
@@ -526,10 +555,10 @@
 
       // VERIFICAÇÃO AUTOMÁTICA DE DONO / CRIADOR
       const statusElement = document.getElementById('statStatus');
-      const userEmail = document.getElementById('profileEmail').textContent.trim().toLowerCase();
-      const userName = name.trim().toLowerCase();
+      const userEmailLower = email.toLowerCase();
+      const userNameLower = name.toLowerCase();
 
-      if (userEmail === 'anerosinw@gmail.com' || userName.includes('willian') || userName.includes('william')) {
+      if (userEmailLower === 'anerosinw@gmail.com' || userNameLower.includes('willian') || userNameLower.includes('william')) {
         statusElement.innerHTML = `<i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Dono`;
         statusElement.style.color = '#f59e0b';
       } else {
@@ -568,9 +597,13 @@
     }
 
     function logoutProfile() {
+      if (typeof firebase !== 'undefined') {
+        firebase.auth().signOut().catch(() => {});
+      }
       localStorage.removeItem('offrave_profile_selected');
       localStorage.removeItem('offrave_active_profile');
       localStorage.removeItem('offrave_active_avatar');
+      localStorage.removeItem('offrave_user_email');
       window.location.href = 'index.html';
     }
   </script>
