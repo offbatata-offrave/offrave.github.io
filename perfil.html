@@ -5,304 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Meu Perfil - OFFRAVE</title>
   
-  <!-- Fontes & Ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 
-  <!-- SDKs do Firebase Auth -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+    html { background-color: #08080a; height: 100%; }
+    body { background-color: #08080a; background: radial-gradient(circle at top, #13151f 0%, #08080a 70%); background-attachment: fixed; color: #ffffff; min-height: 100vh; padding-bottom: 140px; }
+    .profile-page-container { width: 100%; max-width: 500px; margin: 20px auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
 
-    html {
-      background-color: #08080a;
-      height: 100%;
-    }
+    .top-nav-bar { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
+    .brand-logo { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: #e50914; text-decoration: none; letter-spacing: 1.5px; }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-icon-top { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.9rem; }
+    .btn-vip { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; text-decoration: none; }
 
-    body {
-      background-color: #08080a;
-      background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
-      background-attachment: fixed;
-      color: #ffffff;
-      min-height: 100vh;
-      padding-bottom: 140px;
-    }
+    .profile-header-card { background: rgba(18, 19, 26, 0.45); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); }
+    .profile-avatar-large { width: 110px; height: 110px; border-radius: 18px; object-fit: cover; border: 3px solid rgba(229, 9, 20, 0.6); background: rgba(229, 9, 20, 0.2); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4); }
+    .profile-name { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
+    .profile-email { font-size: 0.88rem; color: #94a3b8; }
+    .online-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-top: 5px; }
+    .online-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; }
 
-    .profile-page-container {
-      width: 100%;
-      max-width: 500px;
-      margin: 20px auto;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
+    .bio-card { background: rgba(18, 19, 26, 0.35); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+    .bio-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 800; color: #f59e0b; }
+    .bio-text { font-size: 0.9rem; color: #cbd5e1; font-style: italic; }
+    .bio-edit-area { display: none; flex-direction: column; gap: 10px; margin-top: 5px; }
+    .bio-textarea { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 10px; color: #fff; font-size: 0.9rem; outline: none; height: 70px; resize: none; }
+    .btn-save-bio { background: #10b981; color: #000; border: none; padding: 8px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; align-self: flex-end; }
 
-    /* TOPO HEADER */
-    .top-nav-bar {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-    }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-card { background: rgba(18, 19, 26, 0.35); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; }
+    .stat-value { font-size: 1.4rem; font-weight: 800; color: #fff; }
+    .stat-label { font-size: 0.7rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; }
 
-    .brand-logo {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 2rem;
-      color: #e50914;
-      text-decoration: none;
-      letter-spacing: 1.5px;
-    }
+    .btn-logout { width: 100%; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-logout:hover { background: rgba(239, 68, 68, 0.3); }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-icon-top {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    .btn-vip {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: #000;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 800;
-      font-size: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      text-decoration: none;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-    }
-
-    /* CABEÇALHO DO PERFIL ESTILO NETFLIX */
-    .profile-header-card {
-      background: rgba(18, 19, 26, 0.45);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 15px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    .avatar-wrapper {
-      position: relative;
-    }
-
-    .profile-avatar-large {
-      width: 110px;
-      height: 110px;
-      border-radius: 18px;
-      object-fit: cover;
-      border: 3px solid rgba(229, 9, 20, 0.6);
-      background: rgba(229, 9, 20, 0.2);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      font-weight: 800;
-      box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
-    }
-
-    .profile-name {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 2px;
-      letter-spacing: 0.5px;
-    }
-
-    .profile-email {
-      font-size: 0.88rem;
-      color: #94a3b8;
-    }
-
-    .online-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #10b981;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-top: 5px;
-    }
-    .online-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
-
-    /* BIOGRAFIA */
-    .bio-card {
-      background: rgba(18, 19, 26, 0.35);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .bio-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: #f59e0b;
-      letter-spacing: 0.8px;
-    }
-
-    .bio-text {
-      font-size: 0.9rem;
-      color: #cbd5e1;
-      font-style: italic;
-      line-height: 1.4;
-    }
-
-    .bio-edit-area {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 5px;
-    }
-
-    .bio-textarea {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 10px;
-      color: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      resize: none;
-      height: 70px;
-    }
-
-    .btn-save-bio {
-      background: #10b981;
-      color: #000;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.8rem;
-      cursor: pointer;
-      align-self: flex-end;
-    }
-
-    /* GRID DE ESTATÍSTICAS */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .stat-card {
-      background: rgba(18, 19, 26, 0.35);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 6px;
-    }
-
-    .stat-value {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .stat-label {
-      font-size: 0.7rem;
-      color: #94a3b8;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* BOTÃO SAIR */
-    .btn-logout {
-      width: 100%;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #ef4444;
-      padding: 14px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-    .btn-logout:hover { background: rgba(239, 68, 68, 0.25); }
-
-    /* BARRA INFERIOR TRANSPARENTE */
-    .bottom-nav {
-      position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
-      width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
-      display: flex; justify-content: space-around; align-items: center; z-index: 999;
-      background: rgba(18, 19, 26, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-    .nav-item { 
-      display: flex; flex-direction: column; align-items: center; gap: 4px; 
-      color: #94a3b8; text-decoration: none; font-size: 0.7rem; font-weight: 600; 
-      background: none; border: none; cursor: pointer; transition: color 0.2s;
-    }
-    .nav-item i { font-size: 1.15rem; }
-    .nav-item:hover, .nav-item.active { color: #f59e0b; }
+    .bottom-nav { position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 999; background: rgba(18, 19, 26, 0.45); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94a3b8; text-decoration: none; font-size: 0.7rem; font-weight: 600; cursor: pointer; background: none; border: none; }
+    .nav-item.active { color: #f59e0b; }
   </style>
 </head>
 <body>
 
   <div class="profile-page-container">
     
-    <!-- TOPO -->
     <div class="top-nav-bar">
       <a class="brand-logo" href="index.html">OFFRAVE</a>
       <div class="top-actions">
@@ -311,19 +59,17 @@
       </div>
     </div>
 
-    <!-- CABEÇALHO DO PERFIL COM AVATAR -->
     <div class="profile-header-card">
       <div class="avatar-wrapper" id="avatarBoxContainer">
         <div class="profile-avatar-large" id="avatarInitial">W</div>
       </div>
       <div>
-        <h1 class="profile-name" id="profileName">Carregando...</h1>
-        <p class="profile-email" id="profileEmail">carregando@offrave.com</p>
+        <h1 class="profile-name" id="profileName">William</h1>
+        <p class="profile-email" id="profileEmail">anerosinw@gmail.com</p>
       </div>
       <div class="online-badge"><div class="online-dot"></div> Online</div>
     </div>
 
-    <!-- BIOGRAFIA -->
     <div class="bio-card">
       <div class="bio-header">
         <span><i class="fa-solid fa-quote-left"></i> BIOGRAFIA</span>
@@ -332,77 +78,50 @@
       <p class="bio-text" id="bioDisplay">Olá! Sou um fã de filmes no OFFRAVE.</p>
       <div class="bio-edit-area" id="bioEditArea">
         <textarea class="bio-textarea" id="bioTextarea"></textarea>
-        <button class="btn-save-bio" onclick="saveBio()">Salvar Biografia</button>
+        <button class="btn-save-bio" onclick="saveBio()">Salvar</button>
       </div>
     </div>
 
-    <!-- ESTATÍSTICAS -->
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-value" id="statContinue">0</span>
-        <span class="stat-label">Continuar Assistindo</span>
+        <span class="stat-label">Continuar</span>
       </div>
       <div class="stat-card">
         <span class="stat-value" id="statWatchTime" style="color: #f59e0b;">0h 0m</span>
-        <span class="stat-label">Tempo Assistido</span>
+        <span class="stat-label">Assistido</span>
       </div>
     </div>
 
-    <!-- BOTÃO SAIR -->
     <button class="btn-logout" onclick="logoutProfile()">
       <i class="fa-solid fa-right-from-bracket"></i> Sair / Trocar Perfil
     </button>
-
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
   <nav class="bottom-nav">
-    <a class="nav-item" href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Início</span>
-    </a>
-    <a class="nav-item" href="index.html">
-      <i class="fa-solid fa-tv"></i>
-      <span>Séries</span>
-    </a>
-    <a class="nav-item" href="index.html">
-      <i class="fa-solid fa-film"></i>
-      <span>Filmes</span>
-    </a>
-    <a class="nav-item" href="party.html">
-      <i class="fa-solid fa-users"></i>
-      <span>OFF Party</span>
-    </a>
-    <a class="nav-item active" href="perfil.html">
-      <i class="fa-solid fa-user"></i>
-      <span>Perfil</span>
-    </a>
+    <a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i><span>Início</span></a>
+    <a class="nav-item active" href="perfil.html"><i class="fa-solid fa-user"></i><span>Perfil</span></a>
   </nav>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      let name = localStorage.getItem('offrave_active_profile') || 'William';
-      let email = localStorage.getItem('offrave_user_email') || 'anerosinw@gmail.com';
-
-      if (typeof firebase !== 'undefined' && firebase.auth().currentUser) {
-        const user = firebase.auth().currentUser;
-        if (user.displayName) name = user.displayName;
-        if (user.email) email = user.email;
-      }
+    window.onload = function() {
+      // Pega direto do localStorage sem depender de conexões externas lentas
+      const name = localStorage.getItem('offrave_active_profile') || 'anerosin20';
+      const email = localStorage.getItem('offrave_user_email') || 'anerosin20@gmail.com';
+      const avatar = localStorage.getItem('offrave_active_avatar');
 
       document.getElementById('profileName').textContent = name;
       document.getElementById('profileEmail').textContent = email;
       document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
 
+      if (avatar && avatar !== 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png' && !avatar.includes('3069172.png')) {
+        document.getElementById('avatarBoxContainer').innerHTML = `<img class="profile-avatar-large" src="${avatar}" alt="Avatar"/>`;
+      }
+
       const savedBio = localStorage.getItem('offrave_user_bio') || 'Olá! Sou um fã de filmes no OFFRAVE.';
       document.getElementById('bioDisplay').textContent = savedBio;
       document.getElementById('bioTextarea').value = savedBio;
-
-      const avatar = localStorage.getItem('offrave_active_avatar');
-      if (avatar && avatar !== 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png') {
-        document.getElementById('avatarBoxContainer').innerHTML = `<img class="profile-avatar-large" src="${avatar}" alt="Avatar"/>`;
-      }
-    });
+    };
 
     function toggleEditBio() {
       const editArea = document.getElementById('bioEditArea');
@@ -423,13 +142,13 @@
     }
 
     function logoutProfile() {
+      // Remove os dados do perfil ativo para forçar a tela "Quem está assistindo?" na index
       localStorage.removeItem('offrave_profile_selected');
       localStorage.removeItem('offrave_active_profile');
       localStorage.removeItem('offrave_user_email');
+      localStorage.removeItem('offrave_active_avatar');
       
-      if (typeof firebase !== 'undefined' && firebase.auth()) {
-        firebase.auth().signOut().catch(() => {});
-      }
+      // Redireciona imediatamente para a index
       window.location.href = 'index.html';
     }
   </script>
