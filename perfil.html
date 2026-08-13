@@ -1,0 +1,102 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Puxa diretamente do localStorage o que foi salvo no login ou na escolha de perfil
+      let name = localStorage.getItem('offrave_active_profile') || 'William';
+      let email = localStorage.getItem('offrave_user_email');
+
+      // Se não houver e-mail salvo, gera um com base no nome do perfil ou usa o seu
+      if (!email || email === 'usuario@offrave.com') {
+        if (name.toLowerCase().includes('willian') || name.toLowerCase().includes('william') || name.toLowerCase().includes('anerosin')) {
+          email = 'anerosinw@gmail.com';
+        } else {
+          email = name.toLowerCase().replace(/\s+/g, '') + '@offrave.com';
+        }
+      }
+
+      if (!name || name === 'Carregando...') {
+        name = 'William';
+      }
+
+      const avatar = localStorage.getItem('offrave_active_avatar');
+      const savedBio = localStorage.getItem('offrave_user_bio') || 'Olá! Sou um fã de filmes no OFFRAVE.';
+
+      // Preenche os campos na tela imediatamente
+      document.getElementById('profileName').textContent = name;
+      document.getElementById('profileEmail').textContent = email;
+      document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
+      document.getElementById('bioDisplay').textContent = savedBio;
+      document.getElementById('bioTextarea').value = savedBio;
+
+      if (avatar && !avatar.includes('Netflix-avatar.png') && !avatar.includes('3069172.png')) {
+        document.getElementById('avatarBoxContainer').innerHTML = `<img class="profile-avatar-large" src="${avatar}" alt="Avatar"/>`;
+      }
+
+      // Estatísticas
+      const continueList = JSON.parse(localStorage.getItem('offrave_continue_watching') || '[]');
+      document.getElementById('statContinue').textContent = continueList.length;
+
+      const totalMinutes = parseInt(localStorage.getItem('offrave_total_minutes') || '0');
+      const hours = Math.floor(totalMinutes / 60);
+      const mins = totalMinutes % 60;
+      document.getElementById('statWatchTime').textContent = `${hours}h ${mins}m`;
+
+      const streak = parseInt(localStorage.getItem('offrave_streak') || '1');
+      document.getElementById('statStreak').innerHTML = `${streak}d <i class="fa-solid fa-fire"></i>`;
+
+      // VERIFICAÇÃO AUTOMÁTICA DE DONO / CRIADOR
+      const statusElement = document.getElementById('statStatus');
+      const userEmailLower = email.toLowerCase();
+      const userNameLower = name.toLowerCase();
+
+      if (userEmailLower === 'anerosinw@gmail.com' || userNameLower.includes('willian') || userNameLower.includes('william') || userNameLower.includes('anerosin')) {
+        statusElement.innerHTML = `<i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Dono`;
+        statusElement.style.color = '#f59e0b';
+      } else {
+        statusElement.innerHTML = `<i class="fa-solid fa-user"></i> Membro`;
+        statusElement.style.color = '#ec4899';
+      }
+    });
+
+    function toggleEditBio() {
+      const editArea = document.getElementById('bioEditArea');
+      const bioDisplay = document.getElementById('bioDisplay');
+      const editTextLabel = document.getElementById('editTextLabel');
+
+      if (editArea.style.display === 'flex') {
+        editArea.style.display = 'none';
+        bioDisplay.style.display = 'block';
+        editTextLabel.textContent = 'Editar';
+      } else {
+        editArea.style.display = 'flex';
+        bioDisplay.style.display = 'none';
+        editTextLabel.textContent = 'Cancelar';
+      }
+    }
+
+    function saveBio() {
+      const textArea = document.getElementById('bioTextarea');
+      const newBio = textArea.value.trim();
+      
+      if (newBio !== "") {
+        localStorage.setItem('offrave_user_bio', newBio);
+        document.getElementById('bioDisplay').textContent = newBio;
+        toggleEditBio();
+      } else {
+        alert("A biografia não pode estar vazia!");
+      }
+    }
+
+    function logoutProfile() {
+      localStorage.removeItem('offrave_profile_selected');
+      localStorage.removeItem('offrave_active_profile');
+      localStorage.removeItem('offrave_active_avatar');
+      localStorage.removeItem('offrave_user_email');
+      localStorage.removeItem('offparty_active_room');
+
+      if (typeof firebase !== 'undefined' && firebase.auth()) {
+        firebase.auth().signOut().catch(() => {});
+      }
+
+      window.location.href = 'index.html';
+    }
+  </script>
