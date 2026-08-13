@@ -605,8 +605,8 @@
         firebase.auth().signOut().catch(() => {});
       }
 
-      // Redireciona imediatamente para a index
-      window.location.replace('index.html');
+      // Redireciona forçando o recarregamento completo para abrir o modal de perfis
+      window.location.href = 'index.html';
     }
   </script>
 
