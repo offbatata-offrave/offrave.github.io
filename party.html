@@ -366,11 +366,20 @@
     .host-crown-badge { font-size: 0.7rem; background: rgba(229, 9, 20, 0.2); color: #e50914; border: 1px solid rgba(229, 9, 20, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
     .btn-kick-user { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-    /* BARRA DE NAVEGAÇÃO INFERIOR IGUAL DO INDEX */
+    /* BARRA DE NAVEGAÇÃO INFERIOR ALINHADA COM O INDEX */
     .bottom-nav {
-      position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
-      width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
-      display: flex; justify-content: space-around; align-items: center; z-index: 2000;
+      position: fixed; 
+      bottom: env(safe-area-inset-bottom, 15px); 
+      left: 50%; 
+      transform: translateX(-50%);
+      width: calc(100% - 30px); 
+      max-width: 450px; 
+      height: 62px; 
+      border-radius: 35px;
+      display: flex; 
+      justify-content: space-around; 
+      align-items: center; 
+      z-index: 2000;
       background: rgba(18, 19, 26, 0.25);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -545,7 +554,7 @@
 
   </div>
 
-  <!-- BARRA DE NAVEGAÇÃO INFERIOR IGUAL DO INDEX -->
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR ALINHADA COM O INDEX -->
   <nav class="bottom-nav">
     <a class="nav-item" href="index.html">
       <i class="fa-solid fa-house"></i>
