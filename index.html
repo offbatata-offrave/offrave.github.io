@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-
-  <!-- Configurações para PWA / App no iOS (Barra de status translúcida preta) -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#08080a">
-  <meta name="apple-mobile-web-app-title" content="OFFRAVE">
-
   <title>OFFRAVE</title>
   
+  <!-- Configurações PWA para o Safari / Tela de Início -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OFFRAVE">
+  <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/e50914/ffffff?text=O">
+
   <!-- Fontes Google & Ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
@@ -466,6 +466,19 @@
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
     document.addEventListener('DOMContentLoaded', async () => {
+      // Trata o retorno do login via Redirecionamento do Google em PWA
+      if (typeof firebase !== 'undefined') {
+        try {
+          const result = await firebase.auth().getRedirectResult();
+          if (result && result.user) {
+            const user = result.user;
+            selectProfile(user.displayName, user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
+          }
+        } catch (redirectErr) {
+          console.error("Erro no resultado do redirect:", redirectErr);
+        }
+      }
+
       const profileOverlay = document.getElementById('profileOverlay');
       
       if (localStorage.getItem('offrave_profile_selected') === 'true') {
@@ -567,18 +580,12 @@
       }
       isLoggingIn = true;
       const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
-        .then(result => {
-          isLoggingIn = false;
-          const user = result.user;
-          selectProfile(user.displayName, user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
-        })
-        .catch(err => {
-          isLoggingIn = false;
-          if (err.code !== 'auth/cancelled-popup-request') {
-            alert('Erro no login do Google: ' + err.message);
-          }
-        });
+      
+      // Utiliza redirecionamento para evitar erros de pop-up inválido no modo PWA/App instalado
+      firebase.auth().signInWithRedirect(provider).catch(err => {
+        isLoggingIn = false;
+        alert('Erro no login do Google: ' + err.message);
+      });
     }
 
     function resetProfileSelection() {
