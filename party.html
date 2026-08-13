@@ -66,6 +66,7 @@
       outline: none;
       margin-bottom: 12px;
     }
+    .party-input:focus { border-color: #e50914; }
 
     .btn-action-row { display: flex; gap: 10px; }
 
@@ -84,10 +85,24 @@
       transition: all 0.2s;
     }
 
-    .btn-gold { background: #f59e0b; color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
-    .btn-green { background: #10b981; color: #000; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+    /* BOTÕES EM VERMELHO NETFLIX */
+    .btn-netflix-red {
+      background: #e50914;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
+    }
+    .btn-netflix-red:hover { background: #ff1f2a; transform: scale(1.02); }
+
+    .btn-netflix-dark {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .btn-netflix-dark:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.02); }
+
     .btn-purple { background: #6366f1; color: #fff; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-    .btn-action:hover { transform: scale(1.02); }
 
     .media-picker-grid {
       display: grid;
@@ -111,7 +126,7 @@
       gap: 8px;
       transition: all 0.2s;
     }
-    .btn-catalog-select:hover { background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; }
+    .btn-catalog-select:hover { background: rgba(229, 9, 20, 0.15); border-color: #e50914; }
 
     .btn-youtube-select {
       background: rgba(239, 68, 68, 0.12);
@@ -154,11 +169,11 @@
     .room-item-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
     .room-item-name { font-weight: 700; font-size: 0.95rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .room-item-meta { font-size: 0.75rem; color: #94a3b8; display: flex; align-items: center; gap: 8px; }
-    .room-item-code { color: #f59e0b; font-weight: 700; }
+    .room-item-code { color: #e50914; font-weight: 700; }
 
     .btn-join-direct {
-      background: #10b981;
-      color: #000;
+      background: #e50914;
+      color: #fff;
       border: none;
       padding: 8px 14px;
       border-radius: 10px;
@@ -169,7 +184,7 @@
 
     .no-rooms-msg { font-size: 0.85rem; color: #64748b; text-align: center; padding: 15px 0; font-style: italic; }
 
-    /* MODAL POPUP - LIQUID GLASS */
+    /* MODAL POPUP - NETFLIX THEME */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -191,24 +206,14 @@
     .modal-card {
       width: 100%;
       max-width: 480px;
-      background: rgba(15, 16, 21, 0.92);
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      background: rgba(15, 16, 21, 0.95);
+      border: 1px solid rgba(229, 9, 20, 0.4);
       border-radius: 24px;
       padding: 24px;
-      box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
+      box-shadow: 0 0 50px rgba(229, 9, 20, 0.2);
       display: flex;
       flex-direction: column;
       gap: 18px;
-    }
-
-    .modal-card-green {
-      border-color: rgba(16, 185, 129, 0.3);
-      box-shadow: 0 0 40px rgba(16, 185, 129, 0.15);
-    }
-
-    .modal-card-purple {
-      border-color: rgba(99, 102, 241, 0.3);
-      box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
     }
 
     .modal-header { display: flex; align-items: center; justify-content: space-between; }
@@ -218,17 +223,13 @@
       width: 42px;
       height: 42px;
       border-radius: 12px;
-      background: rgba(245, 158, 11, 0.2);
-      color: #f59e0b;
+      background: rgba(229, 9, 20, 0.2);
+      color: #e50914;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.1rem;
     }
-
-    .modal-icon-green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-    .modal-icon-purple { background: rgba(99, 102, 241, 0.2); color: #6366f1; }
-    .modal-icon-red { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
     .modal-close-btn {
       background: rgba(255, 255, 255, 0.08);
@@ -244,14 +245,11 @@
     .label-title {
       font-size: 0.75rem;
       font-weight: 800;
-      color: #f59e0b;
+      color: #e50914;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       margin-bottom: 8px;
     }
-
-    .label-title-green { color: #10b981; }
-    .label-title-purple { color: #6366f1; }
 
     /* PRIVACIDADE GRID */
     .privacy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -268,15 +266,15 @@
       position: relative;
     }
 
-    .privacy-box.selected { border-color: #10b981; background: rgba(16, 185, 129, 0.08); }
+    .privacy-box.selected { border-color: #e50914; background: rgba(229, 9, 20, 0.08); }
 
     .privacy-box-check {
       display: none;
       position: absolute;
       top: 10px;
       right: 12px;
-      background: #10b981;
-      color: #000;
+      background: #e50914;
+      color: #fff;
       width: 18px;
       height: 18px;
       border-radius: 50%;
@@ -288,7 +286,7 @@
     .privacy-box.selected .privacy-box-check { display: flex; }
 
     .privacy-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
-    .icon-public { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .icon-public { background: rgba(229, 9, 20, 0.2); color: #e50914; }
     .icon-private { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
     /* CATÁLOGO LIST */
@@ -327,9 +325,9 @@
     .catalog-item-category { font-size: 0.75rem; color: #94a3b8; }
 
     .btn-select-movie {
-      background: rgba(245, 158, 11, 0.15);
-      color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: rgba(229, 9, 20, 0.15);
+      color: #e50914;
+      border: 1px solid rgba(229, 9, 20, 0.4);
       padding: 8px 14px;
       border-radius: 10px;
       font-weight: 700;
@@ -338,7 +336,7 @@
       flex-shrink: 0;
     }
 
-    .btn-select-movie:hover { background: #f59e0b; color: #000; }
+    .btn-select-movie:hover { background: #e50914; color: #fff; }
 
     /* CARD DE PRÉVIA YOUTUBE NO POPUP */
     .yt-preview-card {
@@ -381,8 +379,8 @@
 
     .badge-live { background: #e50914; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
     .room-name-title { font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
-    .user-avatar-badge { width: 26px; height: 26px; border-radius: 50%; background: #10b981; color: #000; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; }
-    .room-code-badge { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); font-size: 0.75rem; font-weight: 800; padding: 3px 8px; border-radius: 8px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px; }
+    .user-avatar-badge { width: 26px; height: 26px; border-radius: 50%; background: #e50914; color: #fff; font-weight: 800; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; }
+    .room-code-badge { background: rgba(229, 9, 20, 0.2); color: #e50914; border: 1px solid rgba(229, 9, 20, 0.4); font-size: 0.75rem; font-weight: 800; padding: 3px 8px; border-radius: 8px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px; }
     .live-top-right { display: flex; align-items: center; gap: 10px; }
 
     .icon-top-btn {
@@ -496,10 +494,10 @@
 
     .participant-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 12px; gap: 10px; }
     .participant-info { display: flex; align-items: center; gap: 10px; overflow: hidden; }
-    .participant-avatar { width: 32px; height: 32px; border-radius: 50%; background: #10b981; color: #000; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .participant-avatar { width: 32px; height: 32px; border-radius: 50%; background: #e50914; color: #fff; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .participant-name { font-weight: 700; font-size: 0.9rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .host-crown-badge { font-size: 0.7rem; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+    .host-crown-badge { font-size: 0.7rem; background: rgba(229, 9, 20, 0.2); color: #e50914; border: 1px solid rgba(229, 9, 20, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
     .btn-kick-user { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
     /* BARRA INFERIOR IGUAL DO INDEX (LIQUID GLASS TRANSPARENTE COM BOTÃO ATIVO EM VERMELHO) */
@@ -536,12 +534,12 @@
       </div>
     </div>
 
-    <!-- BOTÕES DE AÇÃO PRINCIPAIS -->
+    <!-- BOTÕES DE AÇÃO PRINCIPAIS (AGORA EM VERMELHO NETFLIX) -->
     <div class="btn-action-row" id="mainActionBtns">
-      <button class="btn-action btn-gold" onclick="openCreateModal()">
+      <button class="btn-action btn-netflix-red" onclick="openCreateModal()">
         <i class="fa-solid fa-plus-circle"></i> CRIAR SALA
       </button>
-      <button class="btn-action btn-green" onclick="openJoinModal()">
+      <button class="btn-action btn-netflix-dark" onclick="openJoinModal()">
         <i class="fa-solid fa-key"></i> ENTRAR COM CÓDIGO
       </button>
     </div>
@@ -732,7 +730,7 @@
         <div class="label-title">FILME INICIAL (OPCIONAL)</div>
         <div class="media-picker-grid">
           <button class="btn-catalog-select" onclick="openCatalogSelectModal('create')">
-            <i class="fa-solid fa-film" style="color:#f59e0b;"></i> <span id="selectedCatalogTitle">Do Catálogo</span>
+            <i class="fa-solid fa-film" style="color:#e50914;"></i> <span id="selectedCatalogTitle">Do Catálogo</span>
           </button>
           <button class="btn-youtube-select" onclick="openYouTubeSearchModal('create')">
             <i class="fa-brands fa-youtube"></i> <span>Do YouTube</span>
@@ -743,17 +741,17 @@
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
         <button class="btn-action" style="background: rgba(255,255,255,0.08); color: #fff; flex: 1;" onclick="closeCreateModal()">Cancelar</button>
-        <button class="btn-action btn-gold" style="flex: 1.5;" onclick="confirmCreateRoom()">► CRIAR E ENTRAR</button>
+        <button class="btn-action btn-netflix-red" style="flex: 1.5;" onclick="confirmCreateRoom()">► CRIAR E ENTRAR</button>
       </div>
     </div>
   </div>
 
   <!-- POPUP MODAL ALTERAR MÍDIA (HOST NA SALA) -->
   <div class="modal-overlay" id="mediaModal">
-    <div class="modal-card modal-card-purple">
+    <div class="modal-card">
       <div class="modal-header">
         <div class="modal-header-left">
-          <div class="modal-icon-badge modal-icon-purple"><i class="fa-solid fa-clapperboard"></i></div>
+          <div class="modal-icon-badge"><i class="fa-solid fa-clapperboard"></i></div>
           <div>
             <div style="font-weight: 800; font-size: 1.1rem; color: #fff;">ALTERAR MÍDIA DA SALA</div>
             <div style="font-size: 0.75rem; color: #94a3b8;">Sincroniza o novo filme para todos na hora</div>
@@ -763,10 +761,10 @@
       </div>
 
       <div>
-        <div class="label-title label-title-purple">SELECIONAR DE UMA FONTE</div>
+        <div class="label-title">SELECIONAR DE UMA FONTE</div>
         <div class="media-picker-grid">
           <button class="btn-catalog-select" onclick="openCatalogSelectModal('change')">
-            <i class="fa-solid fa-film" style="color:#6366f1;"></i> <span id="selectedChangeCatalogTitle">Do Catálogo</span>
+            <i class="fa-solid fa-film" style="color:#e50914;"></i> <span id="selectedChangeCatalogTitle">Do Catálogo</span>
           </button>
           <button class="btn-youtube-select" onclick="openYouTubeSearchModal('change')">
             <i class="fa-brands fa-youtube"></i> <span>Do YouTube</span>
@@ -775,13 +773,13 @@
       </div>
 
       <div>
-        <div class="label-title label-title-purple">OU LINK EXTERNO (MP4 / YOUTUBE)</div>
+        <div class="label-title">OU LINK EXTERNO (MP4 / YOUTUBE)</div>
         <input type="text" id="newMediaInput" class="party-input" placeholder="Cole o link do MP4 ou do YouTube" style="margin:0;"/>
       </div>
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
         <button class="btn-action" style="background:rgba(255,255,255,0.1); color:#fff; flex: 1;" onclick="closeMediaModal()">Cancelar</button>
-        <button class="btn-action btn-purple" style="flex: 1.5;" onclick="confirmNewMedia()">Atualizar Mídia</button>
+        <button class="btn-action btn-netflix-red" style="flex: 1.5;" onclick="confirmNewMedia()">Atualizar Mídia</button>
       </div>
     </div>
   </div>
@@ -817,7 +815,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <div class="modal-header-left">
-          <div class="modal-icon-badge modal-icon-red"><i class="fa-brands fa-youtube"></i></div>
+          <div class="modal-icon-badge" style="background:rgba(239,68,68,0.2); color:#ef4444;"><i class="fa-brands fa-youtube"></i></div>
           <div>
             <div style="font-weight: 800; font-size: 1.1rem; color: #fff;">SELECIONAR DO YOUTUBE</div>
             <div style="font-size: 0.75rem; color: #94a3b8;">Cole o link ou busque por nome</div>
@@ -840,17 +838,17 @@
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
         <button class="btn-action" style="background: rgba(255,255,255,0.08); color: #fff; flex: 1;" onclick="closeYouTubeSearchModal()">Cancelar</button>
-        <button class="btn-action btn-green" style="flex: 1.5;" onclick="confirmYouTubeSelection()">✓ USAR ESTE VÍDEO</button>
+        <button class="btn-action btn-netflix-red" style="flex: 1.5;" onclick="confirmYouTubeSelection()">✓ USAR ESTE VÍDEO</button>
       </div>
     </div>
   </div>
 
   <!-- POPUP MODAL ENTRAR COM CÓDIGO -->
   <div class="modal-overlay" id="joinRoomModal">
-    <div class="modal-card modal-card-green">
+    <div class="modal-card">
       <div class="modal-header">
         <div class="modal-header-left">
-          <div class="modal-icon-badge modal-icon-green"><i class="fa-solid fa-key"></i></div>
+          <div class="modal-icon-badge"><i class="fa-solid fa-key"></i></div>
           <div>
             <div style="font-weight: 800; font-size: 1.1rem; color: #fff;">ENTRAR COM CÓDIGO</div>
             <div style="font-size: 0.75rem; color: #94a3b8;">Digite o código da Watch Party para se juntar</div>
@@ -860,13 +858,13 @@
       </div>
 
       <div>
-        <div class="label-title label-title-green">CÓDIGO DA SALA</div>
+        <div class="label-title">CÓDIGO DA SALA</div>
         <input type="text" id="modalRoomCodeInput" class="party-input" placeholder="Ex: OFF-A7B8" style="margin:0; text-transform: uppercase;"/>
       </div>
 
       <div style="display: flex; gap: 10px; margin-top: 5px;">
         <button class="btn-action" style="background: rgba(255,255,255,0.08); color: #fff; flex: 1;" onclick="closeJoinModal()">Cancelar</button>
-        <button class="btn-action btn-green" style="flex: 1.5;" onclick="confirmJoinByCode()">► ENTRAR NA SALA</button>
+        <button class="btn-action btn-netflix-red" style="flex: 1.5;" onclick="confirmJoinByCode()">► ENTRAR NA SALA</button>
       </div>
     </div>
   </div>
@@ -875,7 +873,7 @@
   <div class="modal-overlay" id="membersModal">
     <div class="modal-card">
       <div style="display: flex; align-items: center; justify-content: space-between;">
-        <h3 style="font-weight: 800; color: #fff;"><i class="fa-solid fa-users" style="color: #10b981;"></i> Pessoas na Sala</h3>
+        <h3 style="font-weight: 800; color: #fff;"><i class="fa-solid fa-users" style="color: #e50914;"></i> Pessoas na Sala</h3>
         <button onclick="closeMembersModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
@@ -996,7 +994,7 @@
     muteBtn.addEventListener('click', () => {
       video.muted = !video.muted;
       volumeUpIcon.style.display = video.muted ? 'none' : 'block';
-      volumeOffIcon.style.display = video.muted ? 'block' : 'none';
+      volumeOffIcon.style.display = video.muted ? 'black' : 'none';
     });
 
     video.addEventListener('timeupdate', () => {
