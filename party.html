@@ -255,7 +255,18 @@
     .catalog-list-wrapper { display: flex; flex-direction: column; gap: 10px; max-height: 320px; overflow-y: auto; padding-right: 4px; }
     .catalog-item-card { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 14px; gap: 12px; }
     .catalog-item-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
-    .catalog-item-thumb { width: 60px; height: 45px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #000; }
+    
+    /* TAMANHO FIXO E EXATO PARA AS CAPAS DO MODAL */
+    .catalog-item-thumb {
+      width: 50px !important;
+      height: 75px !important;
+      border-radius: 8px;
+      object-fit: cover !important;
+      flex-shrink: 0;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
     .catalog-item-title { font-weight: 700; font-size: 0.88rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .catalog-item-category { font-size: 0.75rem; color: #94a3b8; }
     .btn-select-movie { background: rgba(229, 9, 20, 0.15); color: #e50914; border: 1px solid rgba(229, 9, 20, 0.4); padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; cursor: pointer; flex-shrink: 0; }
@@ -791,6 +802,7 @@
     let catalogPosts = [];
     let catalogTargetMode = 'create';
     let hostHeartbeatInterval = null;
+    const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
     // --- ELEMENTOS DO PLAYER ---
     const video = document.getElementById('netflixVideo');
@@ -945,28 +957,42 @@
       });
     }
 
-    // --- CARREGAR FILMES DO FILMES.JSON PARA O CATÁLOGO DA PARTY ---
-    function loadBloggerPostsForCatalog() {
-      fetch('filmes.json')
-        .then(res => res.json())
-        .then(data => {
-          if (data && Array.isArray(data)) {
-            catalogPosts = data.map(movie => {
-              return {
-                title: movie.titulo || 'Filme sem título',
-                img: movie.capa || 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa',
-                category: movie.categoria || 'Filme / Série',
-                videoUrl: movie.link || movie.videoUrl || 'https://lhcfadq3.sssrr.org/sora/718831616/dG8rdDhwL2cweHhETFdlMDQ2SzdLQW1NM3EvcVdTUlVNNVhqNEVvbVZ6Y1Z2dExmUUE'
-              };
+    // --- CARREGAR FILMES DO FILMES.JSON COM CAPAS DA API TMDB ---
+    async function loadBloggerPostsForCatalog() {
+      try {
+        const res = await fetch('filmes.json');
+        const data = await res.json();
+        if (data && Array.isArray(data)) {
+          catalogPosts = [];
+          for (let movie of data) {
+            let posterImg = movie.capa || 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa';
+            
+            // Busca capa via TMDB igual à index
+            try {
+              const tmdbRes = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&language=pt-BR&query=${encodeURIComponent(movie.titulo)}`);
+              const tmdbData = await tmdbRes.json();
+              if (tmdbData.results && tmdbData.results.length > 0) {
+                const item = tmdbData.results[0];
+                if (item.poster_path) {
+                  posterImg = `https://image.tmdb.org/t/p/w342${item.poster_path}`;
+                }
+              }
+            } catch(e) {}
+
+            catalogPosts.push({
+              title: movie.titulo || 'Filme sem título',
+              img: posterImg,
+              category: movie.categoria || 'Filme / Série',
+              videoUrl: movie.link || movie.videoUrl || 'https://lhcfadq3.sssrr.org/sora/718831616/dG8rdDhwL2cweHhETFdlMDQ2SzdLQW1NM3EvcVdTUlVNNVhqNEVvbVZ6Y1Z2dExmUUE'
             });
-            renderCatalogList(catalogPosts);
           }
-        })
-        .catch(err => {
-          console.error("Erro ao carregar filmes.json:", err);
-          const wrapper = document.getElementById('catalogListWrapper');
-          if(wrapper) wrapper.innerHTML = '<div class="no-rooms-msg">Erro ao carregar filmes.json</div>';
-        });
+          renderCatalogList(catalogPosts);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar filmes.json:", err);
+        const wrapper = document.getElementById('catalogListWrapper');
+        if(wrapper) wrapper.innerHTML = '<div class="no-rooms-msg">Erro ao carregar filmes.json</div>';
+      }
     }
 
     function renderCatalogList(posts) {
@@ -982,7 +1008,7 @@
         const itemHTML = `
           <div class="catalog-item-card">
             <div class="catalog-item-left">
-              <img src="${post.img}" alt="${post.title}" class="catalog-item-thumb"/>
+              <img src="${post.img}" alt="${post.title}" class="catalog-item-thumb" onerror="this.src='https://via.placeholder.com/50x75?text=Capa'"/>
               <div>
                 <div class="catalog-item-title">${post.title}</div>
                 <div class="catalog-item-category">${post.category}</div>
