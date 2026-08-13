@@ -315,9 +315,9 @@
 
     async function handleAuth(event) {
       event.preventDefault();
-      const email = document.getElementById('emailInput').value;
+      const email = document.getElementById('emailInput').value.trim();
       const password = document.getElementById('passwordInput').value;
-      const name = document.getElementById('nameInput').value;
+      const name = document.getElementById('nameInput').value.trim();
       const msg = document.getElementById('authMessage');
 
       msg.style.color = '#f87171';
@@ -332,6 +332,7 @@
           const profileName = name || user.email.split('@')[0];
           localStorage.setItem('offrave_profile_selected', 'true');
           localStorage.setItem('offrave_active_profile', profileName);
+          localStorage.setItem('offrave_user_email', email); // SALVA O E-MAIL DO CADASTRO
           localStorage.setItem('offrave_active_avatar', 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
 
           window.location.href = 'index.html';
@@ -341,7 +342,8 @@
           const user = userCredential.user;
 
           localStorage.setItem('offrave_profile_selected', 'true');
-          localStorage.setItem('offrave_active_profile', user.displayName || user.email.split('@')[0]);
+          localStorage.setItem('offrave_active_profile', user.displayName || email.split('@')[0]);
+          localStorage.setItem('offrave_user_email', email); // SALVA O E-MAIL DO LOGIN
           localStorage.setItem('offrave_active_avatar', user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
 
           window.location.href = 'index.html';
@@ -367,6 +369,7 @@
 
         localStorage.setItem('offrave_profile_selected', 'true');
         localStorage.setItem('offrave_active_profile', user.displayName || 'Usuário Google');
+        localStorage.setItem('offrave_user_email', user.email); // SALVA O E-MAIL DO GOOGLE
         localStorage.setItem('offrave_active_avatar', user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
 
         window.location.href = 'index.html';
