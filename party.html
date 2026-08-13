@@ -101,6 +101,38 @@
     }
     .btn-netflix-dark:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.02); }
 
+    /* ESTILO LIQUID GLASS PARA OS BOTÕES DE SELEÇÃO DE MÍDIA */
+    .media-picker-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .btn-liquid-glass {
+      background: rgba(18, 19, 26, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    .btn-liquid-glass:hover {
+      background: rgba(229, 9, 20, 0.15);
+      border-color: rgba(229, 9, 20, 0.5);
+      transform: scale(1.02);
+    }
+
     /* SALAS ATIVAS */
     .active-rooms-list {
       display: flex;
@@ -560,11 +592,11 @@
       <div>
         <div class="label-title">FILME INICIAL (OPCIONAL)</div>
         <div class="media-picker-grid">
-          <button class="btn-catalog-select" onclick="openCatalogSelectModal('create')">
+          <button class="btn-liquid-glass" onclick="openCatalogSelectModal('create')">
             <i class="fa-solid fa-film" style="color:#e50914;"></i> <span id="selectedCatalogTitle">Do Catálogo</span>
           </button>
-          <button class="btn-youtube-select" onclick="openYouTubeSearchModal('create')">
-            <i class="fa-brands fa-youtube"></i> <span>Do YouTube</span>
+          <button class="btn-liquid-glass" onclick="openYouTubeSearchModal('create')">
+            <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> <span style="color:#fff;">Do YouTube</span>
           </button>
         </div>
         <input type="text" id="modalVideoUrl" class="party-input" placeholder="Ou cole a URL direta (MP4 / YouTube)" style="margin:0;"/>
@@ -594,11 +626,11 @@
       <div>
         <div class="label-title">SELECIONAR DE UMA FONTE</div>
         <div class="media-picker-grid">
-          <button class="btn-catalog-select" onclick="openCatalogSelectModal('change')">
+          <button class="btn-liquid-glass" onclick="openCatalogSelectModal('change')">
             <i class="fa-solid fa-film" style="color:#e50914;"></i> <span id="selectedChangeCatalogTitle">Do Catálogo</span>
           </button>
-          <button class="btn-youtube-select" onclick="openYouTubeSearchModal('change')">
-            <i class="fa-brands fa-youtube"></i> <span>Do YouTube</span>
+          <button class="btn-liquid-glass" onclick="openYouTubeSearchModal('change')">
+            <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> <span style="color:#fff;">Do YouTube</span>
           </button>
         </div>
       </div>
@@ -720,7 +752,6 @@
       const isProfileSelected = localStorage.getItem('offrave_profile_selected') === 'true';
       const activeProfile = localStorage.getItem('offrave_active_profile');
       
-      // Se não houver perfil selecionado ou se o perfil ativo for Anônimo, exibe o bloqueio
       if (!isProfileSelected || !activeProfile || activeProfile.toLowerCase() === 'anônimo' || activeProfile.toLowerCase() === 'anonimo') {
         document.getElementById('loginLockModal').classList.add('active');
       } else {
