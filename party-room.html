@@ -205,10 +205,9 @@
       align-items: center;
       gap: 6px;
       box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-      text-decoration: none;
     }
 
-    /* AVISO DE SEGURANÇA (CRIPTOGRAFIA) */
+    /* AVISO DE SEGURANÇA */
     .security-notice-card {
       background: rgba(229, 9, 20, 0.06);
       border: 1px solid rgba(229, 9, 20, 0.2);
@@ -223,7 +222,6 @@
     }
     .security-notice-card i { color: #e50914; font-size: 0.95rem; margin-top: 2px; }
 
-    /* MENSAGEM DE ENTRADA DO USUÁRIO */
     .system-log-pill {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -235,67 +233,76 @@
       font-style: italic;
     }
 
-    /* PAINEL DE REAÇÕES & CHAT INFERIOR FIXO */
+    /* --- POPUP / MODAL DE CATÁLOGO (ESTILO SEGUNDA FOTO) --- */
+    .catalog-modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3500;
+      background: rgba(8, 8, 10, 0.88); backdrop-filter: blur(15px);
+      display: none; align-items: center; justify-content: center; padding: 15px;
+    }
+    .catalog-modal-overlay.active { display: flex; }
+
+    .catalog-modal-card {
+      width: 100%; max-width: 480px; max-height: 85vh; background: rgba(18, 19, 26, 0.95);
+      backdrop-filter: blur(25px); border: 1px solid rgba(229, 9, 20, 0.3); border-radius: 24px;
+      padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 15px;
+    }
+
+    .catalog-modal-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
+    .catalog-modal-title { font-family: 'Bebas Neue', cursive; font-size: 1.3rem; color: #fff; letter-spacing: 0.8px; display: flex; align-items: center; gap: 8px; }
+    .catalog-modal-title i { color: #e50914; }
+
+    .catalog-search-input {
+      width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px; padding: 12px 16px; color: #fff; font-size: 0.9rem; outline: none;
+    }
+    .catalog-search-input:focus { border-color: #e50914; }
+
+    .catalog-movies-list {
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; max-height: 50vh; scrollbar-width: none;
+    }
+    .catalog-movies-list::-webkit-scrollbar { display: none; }
+
+    .catalog-movie-item {
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .catalog-movie-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
+    .catalog-movie-poster { width: 45px; height: 62px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .catalog-movie-info { display: flex; flex-direction: column; gap: 3px; overflow: hidden; }
+    .catalog-movie-name { font-weight: 700; font-size: 0.88rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .catalog-movie-cat { font-size: 0.72rem; color: #94a3b8; }
+
+    .btn-select-movie {
+      background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b;
+      padding: 7px 14px; border-radius: 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-select-movie:hover { background: #f59e0b; color: #000; }
+
+    /* CHAT DOCK */
     .chat-reaction-dock {
-      position: fixed;
-      bottom: 75px; left: 50%; transform: translateX(-50%);
-      width: calc(100% - 30px); max-width: 600px;
-      display: flex; flex-direction: column; gap: 8px; z-index: 1500;
+      position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 30px); max-width: 600px; display: flex; flex-direction: column; gap: 8px; z-index: 1500;
     }
-
     .reactions-bar {
-      background: rgba(18, 19, 26, 0.75);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      overflow-x: auto;
-      scrollbar-width: none;
+      background: rgba(18, 19, 26, 0.75); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;
     }
-    .reactions-bar::-webkit-scrollbar { display: none; }
-
-    .reactions-list {
-      display: flex; gap: 12px; align-items: center; font-size: 1.2rem; cursor: pointer;
-    }
-
+    .reactions-list { display: flex; gap: 12px; align-items: center; font-size: 1.2rem; cursor: pointer; }
+    
     .chat-input-row {
-      display: flex;
-      align-items: center;
-      background: rgba(18, 19, 26, 0.85);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 24px;
-      padding: 6px 8px 6px 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      display: flex; align-items: center; background: rgba(18, 19, 26, 0.85); backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 6px 8px 6px 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
     }
+    .chat-input-field { flex: 1; background: none; border: none; outline: none; color: #fff; font-size: 0.9rem; }
+    .chat-action-btn { background: none; border: none; color: #94a3b8; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .chat-send-btn { background: #e50914; color: #fff; border: none; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(229, 9, 20, 0.5); }
 
-    .chat-input-field {
-      flex: 1; background: none; border: none; outline: none; color: #fff; font-size: 0.9rem;
-    }
-
-    .chat-action-btn {
-      background: none; border: none; color: #94a3b8; width: 34px; height: 34px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.95rem;
-    }
-    .chat-action-btn:hover { color: #fff; }
-
-    .chat-send-btn {
-      background: #e50914; color: #fff; border: none; width: 38px; height: 38px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem;
-      box-shadow: 0 2px 10px rgba(229, 9, 20, 0.5);
-    }
-
-    /* BARRA INFERIOR LIQUID GLASS */
+    /* BARRA INFERIOR */
     .bottom-nav {
       position: fixed; bottom: max(10px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 58px; border-radius: 35px;
       display: flex; justify-content: space-around; align-items: center; z-index: 2000;
-      background: rgba(18, 19, 26, 0.4); backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      background: rgba(18, 19, 26, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #94a3b8; text-decoration: none; font-size: 0.65rem; font-weight: 600; cursor: pointer; background: none; border: none; }
     .nav-item i { font-size: 1.05rem; }
@@ -317,42 +324,54 @@
     </div>
   </header>
 
+  <!-- POPUP DE ESCOLHER FILME DO CATÁLOGO -->
+  <div class="catalog-modal-overlay" id="catalogModal">
+    <div class="catalog-modal-card">
+      <div class="catalog-modal-header">
+        <h3 class="catalog-modal-title"><i class="fa-solid fa-clapperboard"></i> ESCOLHER FILME INICIAL DA SALA</h3>
+        <button class="btn-icon-room" onclick="closeCatalogModal()" style="width:30px; height:30px; font-size:0.8rem;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <input type="text" class="catalog-search-input" id="catalogSearchInput" placeholder="Buscar filme ou série..." oninput="filterCatalogModal(this.value)"/>
+
+      <div class="catalog-movies-list" id="catalogMoviesList">
+        <div style="text-align: center; color: #94a3b8; padding: 20px;">Carregando filmes...</div>
+      </div>
+    </div>
+  </div>
+
   <!-- CONTEÚDO DA SALA -->
   <div class="room-container">
     
-    <!-- ÁREA DE VÍDEO / MÍDIA -->
     <div class="video-display-card" id="videoDisplayCard">
       <div class="video-placeholder-icon"><i class="fa-solid fa-film"></i></div>
-      <h2 class="video-main-msg">Nenhum Filme Ativo</h2>
-      <p class="video-sub-msg">O ADMIN precisa escolher um filme ou episódio para que a Watch Party comece!</p>
+      <h2 class="video-main-msg" id="selectedMovieTitleDisplay">Nenhum Filme Ativo</h2>
+      <p class="video-sub-msg" id="selectedMovieSubDisplay">O ADMIN precisa escolher um filme ou episódio para que a Watch Party comece!</p>
     </div>
 
-    <!-- STATUS DA MÍDIA -->
     <div class="media-status-card">
       <div class="media-status-info">
         <span class="media-status-title" id="mediaTitleLabel">Nenhuma mídia selecionada</span>
         <div class="media-status-badge" id="mediaStatusBadge"><i class="fa-solid fa-pause"></i> Aguardando início</div>
       </div>
       <div class="media-actions-right">
-        <button class="btn-choose-movie" onclick="openMovieSelector()"><i class="fa-solid fa-magnifying-glass"></i> Filme</button>
+        <button class="btn-choose-movie" onclick="openCatalogModal()"><i class="fa-solid fa-magnifying-glass"></i> Filme</button>
         <div class="avatar-pill" id="mediaUserInitial">W</div>
       </div>
     </div>
 
-    <!-- AVISO DE SEGURANÇA -->
     <div class="security-notice-card">
       <i class="fa-solid fa-lock"></i>
       <span>Mensagem de Segurança: Suas mensagens nesta sala são protegidas por privacidade rígida. Todo o histórico de chat é totalmente apagado de forma definitiva assim que a sala ficar vazia ou for excluída pelo administrador.</span>
     </div>
 
-    <!-- LOG DE ENTRADA -->
     <div class="system-log-pill" id="systemLogEntry">
       William entrou na Watch Party!
     </div>
 
   </div>
 
-  <!-- PAINEL DE REAÇÕES & INPUT DE CHAT FIXO -->
+  <!-- CHAT & REAÇÕES -->
   <div class="chat-reaction-dock">
     <div class="reactions-bar">
       <div style="font-size: 0.75rem; font-weight: 700; color: #94a3b8; display:flex; align-items:center; gap:6px;">
@@ -378,16 +397,16 @@
     <a class="nav-item" href="index.html"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
     <a class="nav-item" href="index.html"><i class="fa-solid fa-film"></i><span>Filmes</span></a>
     <a class="nav-item active" href="party.html"><i class="fa-solid fa-users"></i><span>OFF Party</span></a>
-    <button class="nav-item" onclick="document.querySelector('.chat-input-field').focus()"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></button>
+    <button class="nav-item" onclick="openCatalogModal()"><i class="fa-solid fa-magnifying-glass"></i><span>Catálogo</span></button>
   </nav>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Pega os dados da sala criada armazenados no LocalStorage
+    let allCatalogMovies = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
       const roomDataJson = localStorage.getItem('offparty_active_room');
       const activeProfile = localStorage.getItem('offrave_active_profile') || 'William';
 
-      // Atualiza iniciais do usuário na interface
       const initial = activeProfile.charAt(0).toUpperCase();
       document.getElementById('headerUserInitial').textContent = initial;
       document.getElementById('mediaUserInitial').textContent = initial;
@@ -397,10 +416,68 @@
         const roomData = JSON.parse(roomDataJson);
         document.getElementById('navRoomName').textContent = roomData.name.toUpperCase();
       }
+
+      // Carrega os filmes do arquivo filmes.json
+      try {
+        const res = await fetch('filmes.json');
+        allCatalogMovies = await res.json();
+        renderCatalogModalList(allCatalogMovies);
+      } catch (err) {
+        document.getElementById('catalogMoviesList').innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;">Erro ao carregar filmes.json</div>';
+      }
     });
 
-    function openMovieSelector() {
-      window.location.href = 'index.html';
+    function openCatalogModal() {
+      document.getElementById('catalogModal').classList.add('active');
+    }
+
+    function closeCatalogModal() {
+      document.getElementById('catalogModal').classList.remove('active');
+    }
+
+    function renderCatalogModalList(movies) {
+      const listContainer = document.getElementById('catalogMoviesList');
+      if (!movies || movies.length === 0) {
+        listContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;">Nenhum filme encontrado.</div>';
+        return;
+      }
+
+      listContainer.innerHTML = '';
+      movies.forEach(movie => {
+        listContainer.innerHTML += `
+          <div class="catalog-movie-item">
+            <div class="catalog-movie-left">
+              <img src="${movie.capa || 'https://via.placeholder.com/45x62?text=Capa'}" alt="${movie.titulo}" class="catalog-movie-poster" onerror="this.src='https://via.placeholder.com/45x62?text=Capa'"/>
+              <div class="catalog-movie-info">
+                <span class="catalog-movie-name">${movie.titulo}</span>
+                <span class="catalog-movie-cat">${movie.categoria || 'Filme'}</span>
+              </div>
+            </div>
+            <button class="btn-select-movie" onclick="selectMovieForParty('${movie.id}', '${encodeURIComponent(movie.titulo)}')">Selecionar</button>
+          </div>
+        `;
+      });
+    }
+
+    function filterCatalogModal(query) {
+      const q = query.toLowerCase().trim();
+      const filtered = allCatalogMovies.filter(m => m.titulo.toLowerCase().includes(q));
+      renderCatalogModalList(filtered);
+    }
+
+    function selectMovieForParty(movieId, movieTitleEncoded) {
+      const title = decodeURIComponent(movieTitleEncoded);
+      
+      // Atualiza o display da sala com o filme escolhido
+      document.getElementById('selectedMovieTitleDisplay').textContent = title;
+      document.getElementById('selectedMovieSubDisplay').textContent = 'Mídia sincronizada para a Watch Party!';
+      document.getElementById('mediaTitleLabel').textContent = title;
+      document.getElementById('mediaStatusBadge').innerHTML = '<i class="fa-solid fa-play" style="color:#10b981;"></i> Pronto para reproduzir';
+      document.getElementById('mediaStatusBadge').style.borderColor = 'rgba(16, 185, 129, 0.3)';
+      document.getElementById('mediaStatusBadge').style.background = 'rgba(16, 185, 129, 0.15)';
+      document.getElementById('mediaStatusBadge').style.color = '#10b981';
+
+      closeCatalogModal();
     }
   </script>
 </body>
