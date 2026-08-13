@@ -465,14 +465,17 @@
     let heroSliderData = [];
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
-    document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', async () => {
       // Trata o retorno do login via Redirecionamento do Google em PWA
       if (typeof firebase !== 'undefined') {
         try {
           const result = await firebase.auth().getRedirectResult();
           if (result && result.user) {
             const user = result.user;
-            selectProfile(user.displayName, user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
+            // Salva diretamente o perfil do Google antes de verificar o overlay
+            localStorage.setItem('offrave_profile_selected', 'true');
+            localStorage.setItem('offrave_active_profile', user.displayName || 'Usuário Google');
+            localStorage.setItem('offrave_active_avatar', user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
           }
         } catch (redirectErr) {
           console.error("Erro no resultado do redirect:", redirectErr);
@@ -480,7 +483,7 @@
       }
 
       const profileOverlay = document.getElementById('profileOverlay');
-      
+
       if (localStorage.getItem('offrave_profile_selected') === 'true') {
         if (profileOverlay) {
           profileOverlay.style.display = 'none';
