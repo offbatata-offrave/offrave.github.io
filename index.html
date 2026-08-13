@@ -466,21 +466,6 @@
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // Trata o retorno do login via Redirecionamento do Google em PWA
-      if (typeof firebase !== 'undefined') {
-        try {
-          const result = await firebase.auth().getRedirectResult();
-          if (result && result.user) {
-            const user = result.user;
-            localStorage.setItem('offrave_profile_selected', 'true');
-            localStorage.setItem('offrave_active_profile', user.displayName || 'Usuário Google');
-            localStorage.setItem('offrave_active_avatar', user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
-          }
-        } catch (redirectErr) {
-          console.error("Erro no resultado do redirect:", redirectErr);
-        }
-      }
-
       const profileOverlay = document.getElementById('profileOverlay');
       
       if (localStorage.getItem('offrave_profile_selected') === 'true') {
@@ -583,10 +568,22 @@
       isLoggingIn = true;
       const provider = new firebase.auth.GoogleAuthProvider();
       
-      firebase.auth().signInWithRedirect(provider).catch(err => {
-        isLoggingIn = false;
-        alert('Erro no login do Google: ' + err.message);
-      });
+      // Utiliza popup com tratamento otimizado para navegadores e PWA
+      firebase.auth().signInWithPopup(provider)
+        .then(result => {
+          isLoggingIn = false;
+          const user = result.user;
+          selectProfile(user.displayName, user.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
+        })
+        .catch(err => {
+          isLoggingIn = false;
+          console.error("Erro no login do Google:", err);
+          if (err.code === 'auth/popup-blocked') {
+            alert('O navegador bloqueou a janela de pop-up. Por favor, permita pop-ups para este site.');
+          } else if (err.code !== 'auth/cancelled-popup-request') {
+            alert('Erro no login do Google: ' + err.message);
+          }
+        });
     }
 
     function resetProfileSelection() {
