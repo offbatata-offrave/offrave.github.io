@@ -137,14 +137,14 @@
       color: #cbd5e1;
       line-height: 1.5;
       display: -webkit-box;
-      -webkit-line-clamp: 3; /* Limita a 3 linhas inicialmente */
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
       transition: all 0.3s ease;
     }
 
     .movie-synopsis.expanded {
-      -webkit-line-clamp: unset; /* Mostra o texto completo */
+      -webkit-line-clamp: unset;
     }
 
     .btn-read-more {
@@ -380,8 +380,8 @@
           <div class="netflix-player-container ${isYouTube ? 'is-youtube' : ''}" id="netflixContainer">
             <div class="movie-title-player">${movie.titulo}</div>
 
-            <video class="netflix-video" id="netflixVideo" playsinline preload="auto" style="display: ${isYouTube ? 'none' : 'block'};">
-              <source src="${!isYouTube ? movie.videoUrl : ''}" type="video/mp4"></source>
+            <video class="netflix-video" id="netflixVideo" playsinline preload="metadata" style="display: ${isYouTube ? 'none' : 'block'};">
+              <source src="${!isYouTube ? movie.videoUrl : ''}" type="video/mp4">
             </video>
 
             <iframe class="youtube-iframe" id="ytIframe" src="${isYouTube ? ytEmbedUrl + '?autoplay=1' : 'about:blank'}" allow="autoplay; encrypted-media" allowfullscreen style="display: ${isYouTube ? 'block' : 'none'};"></iframe>
@@ -454,7 +454,6 @@
       }
     });
 
-    // Função para expandir e recolher a sinopse
     function toggleSynopsis() {
       const synopsis = document.getElementById('movieSynopsis');
       const btn = document.getElementById('readMoreBtn');
@@ -568,4 +567,3 @@
   </script>
 </body>
 </html>
-  
