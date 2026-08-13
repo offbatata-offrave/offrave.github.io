@@ -508,19 +508,20 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let name = localStorage.getItem('offrave_active_profile') || 'William';
-      
-      // Pega o email salvo no localStorage ou tenta pegar do firebase atual
+      let name = localStorage.getItem('offrave_active_profile');
       let email = localStorage.getItem('offrave_user_email');
-      if (!email && typeof firebase !== 'undefined' && firebase.auth().currentUser) {
-        email = firebase.auth().currentUser.email;
-      }
-      if (!email) {
-        email = 'anerosinw@gmail.com'; // fallback para o criador se não achar
+
+      if (typeof firebase !== 'undefined' && firebase.auth().currentUser) {
+        const user = firebase.auth().currentUser;
+        if (user.displayName) name = user.displayName;
+        if (user.email) email = user.email;
       }
 
       if (!name || name === 'Carregando...') {
-        name = email.split('@')[0];
+        name = email ? email.split('@')[0] : 'William';
+      }
+      if (!email) {
+        email = 'anerosinw@gmail.com';
       }
 
       const avatar = localStorage.getItem('offrave_active_avatar');
@@ -592,14 +593,20 @@
     }
 
     function logoutProfile() {
-      if (typeof firebase !== 'undefined') {
-        firebase.auth().signOut().catch(() => {});
-      }
+      // Limpa imediatamente o armazenamento local
       localStorage.removeItem('offrave_profile_selected');
       localStorage.removeItem('offrave_active_profile');
       localStorage.removeItem('offrave_active_avatar');
       localStorage.removeItem('offrave_user_email');
-      window.location.href = 'index.html';
+      localStorage.removeItem('offparty_active_room');
+
+      // Tenta fechar a sessão do Firebase de forma assíncrona sem travar
+      if (typeof firebase !== 'undefined' && firebase.auth()) {
+        firebase.auth().signOut().catch(() => {});
+      }
+
+      // Redireciona imediatamente para a index
+      window.location.replace('index.html');
     }
   </script>
 
