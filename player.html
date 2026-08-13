@@ -325,7 +325,7 @@
     let allMovies = [];
     let heroSliderIndex = 0;
     let heroSliderData = [];
-    let currentHeroMovieId = null;
+    let currentHeroMovieObj = null;
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -390,7 +390,7 @@
       const movie = heroSliderData[index];
       if (!movie) return;
 
-      currentHeroMovieId = movie.id;
+      currentHeroMovieObj = movie;
 
       const banner = document.getElementById('heroBanner');
       const badge = document.getElementById('heroBadge');
@@ -406,9 +406,14 @@
     }
 
     function openCurrentHeroMovie() {
-      if (currentHeroMovieId) {
-        window.location.href = `player.html?id=${currentHeroMovieId}`;
+      if (currentHeroMovieObj) {
+        openPlayer(currentHeroMovieObj);
       }
+    }
+
+    function openPlayer(movieObj) {
+      localStorage.setItem('offrave_selected_movie', JSON.stringify(movieObj));
+      window.location.href = 'player.html';
     }
 
     function selectProfile(profileName, avatarUrl) {
@@ -450,32 +455,22 @@
 
       row1.forEach(movie => {
         slider1.innerHTML += `
-          <a href="player.html?id=${movie.id}" class="movie-card">
+          <div onclick='openPlayer(${JSON.stringify(movie)})' class="movie-card">
             <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
             <div class="movie-card-title">${movie.titulo}</div>
-          </a>
+          </div>
         `;
       });
 
-      if(row2.length > 0) {
-        row2.forEach(movie => {
-          slider2.innerHTML += `
-            <a href="player.html?id=${movie.id}" class="movie-card">
-              <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
-              <div class="movie-card-title">${movie.titulo}</div>
-            </a>
-          `;
-        });
-      } else {
-        row1.forEach(movie => {
-          slider2.innerHTML += `
-            <a href="player.html?id=${movie.id}" class="movie-card">
-              <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
-              <div class="movie-card-title">${movie.titulo}</div>
-            </a>
-          `;
-        });
-      }
+      const targetRow2 = row2.length > 0 ? row2 : row1;
+      targetRow2.forEach(movie => {
+        slider2.innerHTML += `
+          <div onclick='openPlayer(${JSON.stringify(movie)})' class="movie-card">
+            <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
+            <div class="movie-card-title">${movie.titulo}</div>
+          </div>
+        `;
+      });
     }
 
     function renderTrending(movies) {
@@ -484,12 +479,12 @@
       slider.innerHTML = '';
       movies.slice(0, 10).forEach((movie, index) => {
         slider.innerHTML += `
-          <a href="player.html?id=${movie.id}" class="trending-card">
+          <div onclick='openPlayer(${JSON.stringify(movie)})' class="trending-card">
             <span class="trending-number">${index + 1}</span>
             <div class="trending-poster-box">
               <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" class="trending-poster-img" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
             </div>
-          </a>
+          </div>
         `;
       });
     }
@@ -549,10 +544,10 @@
       searchStatusTitle.textContent = `Resultados para "${q}":`;
       results.forEach(movie => {
         searchResultsGrid.innerHTML += `
-          <a href="player.html?id=${movie.id}" class="movie-card">
+          <div onclick='openPlayer(${JSON.stringify(movie)})' class="movie-card">
             <img src="${movie.capa || 'https://via.placeholder.com/130x190?text=Capa'}" alt="${movie.titulo}" onerror="this.src='https://via.placeholder.com/130x190?text=Capa'"/>
             <div class="movie-card-title">${movie.titulo}</div>
-          </a>
+          </div>
         `;
       });
     });
