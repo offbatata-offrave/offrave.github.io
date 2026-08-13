@@ -945,49 +945,28 @@
       });
     }
 
+    // --- CARREGAR FILMES DO FILMES.JSON PARA O CATÁLOGO DA PARTY ---
     function loadBloggerPostsForCatalog() {
-      fetch('/feeds/posts/default?alt=json&max-results=50')
+      fetch('filmes.json')
         .then(res => res.json())
         .then(data => {
-          if (data.feed && data.feed.entry) {
-            catalogPosts = data.feed.entry.map(entry => {
-              let title = entry.title.$t;
-              let img = 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa';
-              if (entry.media$thumbnail) {
-                img = entry.media$thumbnail.url.replace('/s72-c/', '/s300/');
-              }
-              let category = 'Filme / Série';
-              if (entry.category && entry.category[0]) {
-                category = entry.category[0].term;
-              }
-
-              let videoUrl = '';
-              let content = entry.content ? entry.content.$t : (entry.summary ? entry.summary.$t : '');
-
-              let mp4Match = content.match(/https?:\/\/[^\s"']+\.mp4/i);
-              let ytMatch = content.match(/(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\/[^\s"']+)/i);
-              let iframeSrcMatch = content.match(/src=["'](https?:\/\/[^"']+)["']/i);
-
-              if (mp4Match) {
-                videoUrl = mp4Match[0];
-              } else if (ytMatch) {
-                videoUrl = ytMatch[0];
-              } else if (iframeSrcMatch) {
-                videoUrl = iframeSrcMatch[1];
-              } else {
-                for (let i = 0; i < entry.link.length; i++) {
-                  if (entry.link[i].rel === 'alternate') {
-                    videoUrl = entry.link[i].href;
-                    break;
-                  }
-                }
-              }
-
-              return { title, img, category, videoUrl };
+          if (data && Array.isArray(data)) {
+            catalogPosts = data.map(movie => {
+              return {
+                title: movie.titulo || 'Filme sem título',
+                img: movie.capa || 'https://via.placeholder.com/300x450/12131a/ffffff?text=Capa',
+                category: movie.categoria || 'Filme / Série',
+                videoUrl: movie.link || movie.videoUrl || 'https://lhcfadq3.sssrr.org/sora/718831616/dG8rdDhwL2cweHhETFdlMDQ2SzdLQW1NM3EvcVdTUlVNNVhqNEVvbVZ6Y1Z2dExmUUE'
+              };
             });
+            renderCatalogList(catalogPosts);
           }
         })
-        .catch(() => {});
+        .catch(err => {
+          console.error("Erro ao carregar filmes.json:", err);
+          const wrapper = document.getElementById('catalogListWrapper');
+          if(wrapper) wrapper.innerHTML = '<div class="no-rooms-msg">Erro ao carregar filmes.json</div>';
+        });
     }
 
     function renderCatalogList(posts) {
