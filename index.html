@@ -22,7 +22,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* REMOVE BORDAS PRETAS E INTEGRA COM A ÁREA DE SEGURANÇA DO CELULAR */
+    /* REMOVE BORDAS PRETAS E INTEGRA COM A TELA INTEIRA */
     html, body {
       background-color: #08080a;
       background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
@@ -87,14 +87,14 @@
     .profile-name { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
     .profile-card:hover .profile-name { color: #ffffff; }
 
-    /* TOPO COM PREENCHIMENTO DE ÁREA SEGURA (ENTANHO/NOTCH) */
+    /* TOPO AGORA FLUTUA DIRETAMENTE SOB A BARRA DE STATUS DO CELULAR */
     .top-header {
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 100; 
-      padding: max(15px, env(safe-area-inset-top)) 20px 15px 20px;
+      position: absolute; top: 0; left: 0; width: 100%; z-index: 100; 
+      padding: max(25px, env(safe-area-inset-top)) 20px 15px 20px;
       display: flex; flex-direction: column; gap: 12px;
       background: linear-gradient(180deg, rgba(8, 8, 10, 0.85) 0%, rgba(8, 8, 10, 0.4) 60%, rgba(8, 8, 10, 0) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .header-top-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
@@ -114,12 +114,12 @@
     }
     .tab-item:hover, .tab-item.active { background: rgba(229, 9, 20, 0.85); color: #ffffff; }
 
-    /* --- HERO BANNER SLIDER --- */
+    /* --- HERO BANNER SLIDER OCUPA O TOPO ABSOLUTO DA TELA --- */
     .hero-banner {
       position: relative;
       width: 100%;
-      height: 68vh;
-      min-height: 440px;
+      height: 72vh;
+      min-height: 480px;
       margin-top: 0;
       background-size: cover;
       background-position: center;
@@ -135,7 +135,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(180deg, rgba(8,8,10,0.1) 0%, rgba(8,8,10,0.75) 85%, #08080a 100%);
+      background: linear-gradient(180deg, rgba(8,8,10,0.4) 0%, rgba(8,8,10,0.2) 40%, rgba(8,8,10,0.8) 85%, #08080a 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -345,7 +345,20 @@
     </div>
   </div>
 
-  <!-- TOPO COM DEGRADÊ TRANSPARENTE -->
+  <!-- HERO BANNER SLIDER AGORA FICA NO TOPO ABSOLUTO DA TELA -->
+  <div class='hero-banner' id='heroBanner' style="background-image: url('');">
+    <div class='hero-content'>
+      <span class='hero-badge' id='heroBadge'>DESTAQUE OFFRAVE</span>
+      <h1 class='hero-title' id='heroTitle'>Carregando...</h1>
+      <p class='hero-description' id='heroDescription'>Buscando sinopse e detalhes automáticos...</p>
+      <div class='hero-buttons'>
+        <a class='btn-play' id='heroBtnPlay' href='#'><i class='fa-solid fa-play'></i> Assistir</a>
+        <a class='btn-more-info' id='heroBtnInfo' href='#'><i class='fa-solid fa-circle-info'></i> Mais Informações</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPO FLUTUANTE SOBREPOSTO AO BANNER -->
   <header class='top-header'>
     <div class='header-top-row'>
       <a class='brand-logo' href='index.html'>OFFRAVE</a>
@@ -393,19 +406,6 @@
       </div>
     </a>
   </aside>
-
-  <!-- HERO BANNER SLIDER AUTOMÁTICO (5s, 3 FILMES) -->
-  <div class='hero-banner' id='heroBanner' style="background-image: url('');">
-    <div class='hero-content'>
-      <span class='hero-badge' id='heroBadge'>DESTAQUE OFFRAVE</span>
-      <h1 class='hero-title' id='heroTitle'>Carregando...</h1>
-      <p class='hero-description' id='heroDescription'>Buscando sinopse e detalhes automáticos...</p>
-      <div class='hero-buttons'>
-        <a class='btn-play' id='heroBtnPlay' href='#'><i class='fa-solid fa-play'></i> Assistir</a>
-        <a class='btn-more-info' id='heroBtnInfo' href='#'><i class='fa-solid fa-circle-info'></i> Mais Informações</a>
-      </div>
-    </div>
-  </div>
 
   <!-- SLIDER EM ALTA -->
   <section class='trending-section'>
@@ -656,7 +656,7 @@
         searchStatusTitle.textContent = 'Digite para começar a buscar...';
         return;
       }
-      const results = allMovies.filter(m => m.titulo.toLowerCase().includes(q));
+      The results = allMovies.filter(m => m.titulo.toLowerCase().includes(q));
       searchResultsGrid.innerHTML = '';
       if (results.length === 0) {
         searchStatusTitle.textContent = `Nenhum resultado para "${q}"`;
