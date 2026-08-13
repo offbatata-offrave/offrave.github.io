@@ -171,7 +171,7 @@
     .login-lock-title { font-family: 'Bebas Neue', cursive; font-size: 2.4rem; color: #fff; letter-spacing: 1.5px; }
     .login-lock-desc { font-size: 0.9rem; color: #94a3b8; line-height: 1.4; }
 
-    /* --- MODAL CRIAR SALA (ESTILO NETFLIX) --- */
+    /* --- MODAL CRIAR SALA (ESTILO NETFLIX IDÊNTICO À FOTO) --- */
     .create-room-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3500;
       background: rgba(8, 8, 10, 0.85); backdrop-filter: blur(15px);
@@ -180,9 +180,9 @@
     .create-room-overlay.active { display: flex; }
     
     .create-room-card {
-      width: 100%; max-width: 450px; background: rgba(18, 19, 26, 0.9); backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 25px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 20px; position: relative;
+      width: 100%; max-width: 440px; background: rgba(18, 19, 26, 0.95); backdrop-filter: blur(25px);
+      border: 1px solid rgba(229, 9, 20, 0.3); border-radius: 24px; padding: 25px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 18px; position: relative;
     }
 
     .modal-header-row { display: flex; align-items: center; justify-content: space-between; }
@@ -191,7 +191,7 @@
       width: 42px; height: 42px; border-radius: 12px; background: rgba(229, 9, 20, 0.15);
       border: 1px solid rgba(229, 9, 20, 0.4); color: #e50914; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
     }
-    .modal-title-text h3 { font-size: 1.1rem; font-weight: 800; color: #fff; }
+    .modal-title-text h3 { font-size: 1.15rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
     .modal-title-text p { font-size: 0.75rem; color: #94a3b8; }
     
     .modal-close-btn {
@@ -201,11 +201,11 @@
     .modal-close-btn:hover { background: rgba(229, 9, 20, 0.2); border-color: #e50914; }
 
     .form-group-party { display: flex; flex-direction: column; gap: 8px; }
-    .form-group-label { font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group-label { font-size: 0.75rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.5px; }
     
     .form-input-party {
-      width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px; padding: 12px 16px; color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+      width: 100%; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px; padding: 14px 16px; color: #fff; font-size: 0.95rem; outline: none; transition: border-color 0.2s;
     }
     .form-input-party:focus { border-color: #e50914; }
 
@@ -213,31 +213,31 @@
     
     .privacy-card {
       background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px;
-      padding: 12px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; transition: all 0.2s; position: relative;
+      padding: 14px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; transition: all 0.2s; position: relative;
     }
-    .privacy-card.selected { background: rgba(229, 9, 20, 0.1); border-color: #e50914; }
+    .privacy-card.selected { background: rgba(229, 9, 20, 0.12); border-color: #e50914; }
     .privacy-card i { font-size: 1.1rem; color: #e50914; }
-    .privacy-card-title { font-weight: 700; font-size: 0.85rem; color: #fff; }
-    .privacy-card-desc { font-size: 0.7rem; color: #94a3b8; }
-    .privacy-check { position: absolute; top: 10px; right: 10px; color: #10b981; font-size: 0.85rem; display: none; }
+    .privacy-card-title { font-weight: 700; font-size: 0.9rem; color: #fff; }
+    .privacy-card-desc { font-size: 0.72rem; color: #94a3b8; }
+    .privacy-check { position: absolute; top: 12px; right: 12px; color: #e50914; font-size: 0.9rem; display: none; }
     .privacy-card.selected .privacy-check { display: block; }
 
     .select-movie-trigger {
-      background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 12px;
-      padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #cbd5e1;
-      font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; text-decoration: none;
+      background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 14px;
+      padding: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #cbd5e1;
+      font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: background 0.2s; text-decoration: none;
     }
     .select-movie-trigger:hover { background: rgba(255, 255, 255, 0.08); border-color: #e50914; color: #fff; }
 
     .modal-buttons-row { display: flex; gap: 10px; margin-top: 5px; }
     .btn-modal-cancel {
       flex: 1; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff;
-      padding: 12px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer;
+      padding: 14px; border-radius: 14px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;
     }
     .btn-modal-cancel:hover { background: rgba(255, 255, 255, 0.12); }
     .btn-modal-create {
-      flex: 1.5; background: #e50914; border: none; color: #fff; padding: 12px; border-radius: 12px;
-      font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+      flex: 1.5; background: #e50914; border: none; color: #fff; padding: 14px; border-radius: 14px;
+      font-weight: 700; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); transition: background 0.2s;
     }
     .btn-modal-create:hover { background: #ff1f2a; }
   </style>
@@ -257,7 +257,7 @@
     </div>
   </div>
 
-  <!-- MODAL CRIAR SALA (ESTILO NETFLIX) -->
+  <!-- MODAL CRIAR SALA (ESTILO NETFLIX IDÊNTICO À SEGUNDA FOTO) -->
   <div class="create-room-overlay" id="createRoomModal">
     <div class="create-room-card">
       <div class="modal-header-row">
@@ -373,7 +373,6 @@
       const roomName = document.getElementById('roomNameInput').value.trim() || 'Sala OFFRAVE';
       alert(`Criando sala "${roomName}" com privacidade ${currentPrivacy}...`);
       closeCreateRoomModal();
-      // Aqui você pode adicionar a lógica de salvamento no Firebase Database
     }
   </script>
 </body>
