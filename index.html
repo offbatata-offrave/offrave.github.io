@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>OFFRAVE</title>
   
-  <!-- Configurações PWA para o Safari / Tela de Início -->
+  <!-- Configurações PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -29,7 +29,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* REMOVE BORDAS PRETAS E INTEGRA COM A TELA INTEIRA */
     html, body {
       background-color: #08080a;
       background: radial-gradient(circle at top, #13151f 0%, #08080a 70%);
@@ -94,7 +93,6 @@
     .profile-name { font-size: 0.95rem; font-weight: 600; color: #94a3b8; }
     .profile-card:hover .profile-name { color: #ffffff; }
 
-    /* TOPO FLUTUANTE SOBREPOSTO AO BANNER */
     .top-header {
       position: absolute; top: 0; left: 0; width: 100%; z-index: 100; 
       padding: max(25px, env(safe-area-inset-top)) 20px 15px 20px;
@@ -121,7 +119,6 @@
     }
     .tab-item:hover, .tab-item.active { background: rgba(229, 9, 20, 0.85); color: #ffffff; }
 
-    /* --- HERO BANNER SLIDER OCUPA O TOPO ABSOLUTO DA TELA --- */
     .hero-banner {
       position: relative;
       width: 100%;
@@ -222,7 +219,6 @@
     }
     .btn-more-info:hover { background: rgba(109, 109, 110, 0.3); }
 
-    /* --- SLIDER EM ALTA --- */
     .trending-section { max-width: 1200px; margin: 15px auto 10px auto; padding: 0 15px; }
     .trending-scroll { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
     .trending-scroll::-webkit-scrollbar { display: none; }
@@ -249,7 +245,6 @@
     .poster-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 6px; background: rgba(8, 8, 10, 0.75); }
     .poster-title { font-size: 0.78rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
 
-    /* --- MODAL DE BUSCA --- */
     .search-modal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2500;
       background: rgba(8, 8, 10, 0.9);
@@ -278,7 +273,6 @@
     .search-results-container::-webkit-scrollbar { display: none; }
     .search-status-title { font-size: 1.1rem; color: #94a3b8; margin-bottom: 15px; font-weight: 600; }
 
-    /* MENU LATERAL COM LIQUID GLASS TRANSPARENTE */
     .side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; opacity: 0; visibility: hidden; transition: opacity 0.2s ease; }
     .side-menu-overlay.active { opacity: 1; visibility: visible; }
     
@@ -311,7 +305,6 @@
     .footer-profile-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
     .footer-profile-name { font-size: 0.9rem; font-weight: 700; color: #ffffff; }
 
-    /* BARRA INFERIOR LIQUID GLASS TRANSPARENTE */
     .bottom-nav {
       position: fixed; bottom: max(15px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
       width: calc(100% - 30px); max-width: 450px; height: 62px; border-radius: 35px;
@@ -352,7 +345,7 @@
     </div>
   </div>
 
-  <!-- HERO BANNER SLIDER AGORA FICA NO TOPO ABSOLUTO DA TELA -->
+  <!-- HERO BANNER -->
   <div class='hero-banner' id='heroBanner' style="background-image: url('');">
     <div class='hero-content'>
       <span class='hero-badge' id='heroBadge'>DESTAQUE OFFRAVE</span>
@@ -365,7 +358,7 @@
     </div>
   </div>
 
-  <!-- TOPO FLUTUANTE SOBREPOSTO AO BANNER -->
+  <!-- TOPO FLUTUANTE -->
   <header class='top-header'>
     <div class='header-top-row'>
       <a class='brand-logo' href='index.html'>OFFRAVE</a>
@@ -385,7 +378,7 @@
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" class="search-input" id="searchInput" placeholder="Busque por filmes, séries..."/>
       </div>
-      <button class="search-close-btn" id="closeSearchBtn"><i class="fa-solid fa-xmark"></i></button>
+      <button class="search-close-btn" id="closeSearchBtn"><i class='fa-solid fa-xmark'></i></button>
     </div>
     <div class="search-results-container">
       <div class="search-status-title" id="searchStatusTitle">Digite para começar a buscar...</div>
@@ -393,7 +386,7 @@
     </div>
   </div>
 
-  <!-- MENU LATERAL COM LIQUID GLASS TRANSPARENTE -->
+  <!-- MENU LATERAL -->
   <div class='side-menu-overlay' id='sideMenuOverlay'></div>
   <aside class='side-menu-popup' id='sideMenuPopup'>
     <div class='side-menu-header'>
@@ -426,7 +419,7 @@
     <div class='movies-grid' id='catalogGrid'></div>
   </main>
 
-  <!-- BARRA INFERIOR TRANSPARENTE -->
+  <!-- BARRA INFERIOR -->
   <nav class="bottom-nav">
     <a class="nav-item active" href="index.html"><i class="fa-solid fa-house"></i><span>Início</span></a>
     <a class="nav-item" href="index.html"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
@@ -568,7 +561,6 @@
       isLoggingIn = true;
       const provider = new firebase.auth.GoogleAuthProvider();
       
-      // Utiliza popup com tratamento otimizado para navegadores e PWA
       firebase.auth().signInWithPopup(provider)
         .then(result => {
           isLoggingIn = false;
@@ -579,7 +571,7 @@
           isLoggingIn = false;
           console.error("Erro no login do Google:", err);
           if (err.code === 'auth/popup-blocked') {
-            alert('O navegador bloqueou a janela de pop-up. Por favor, permita pop-ups para este site.');
+            alert('O navegador bloqueou a janela de pop-up. Permita pop-ups para continuar.');
           } else if (err.code !== 'auth/cancelled-popup-request') {
             alert('Erro no login do Google: ' + err.message);
           }
