@@ -41,7 +41,7 @@
       background: linear-gradient(180deg, rgba(8, 8, 10, 0.85) 0%, rgba(8, 8, 10, 0.4) 60%, rgba(8, 8, 10, 0) 100%);
       backdrop-filter: blur(8px);
     }
-    .header-top-row { display: flex; align-items: center; justify-content: space-width; width: 100%; justify-content: space-between; }
+    .header-top-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
     .brand-logo { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: #e50914; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; }
     .menu-toggle-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: #ffffff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     
@@ -64,13 +64,13 @@
     .hero-title { font-family: 'Bebas Neue', cursive; font-size: 3.8rem; letter-spacing: 2px; line-height: 0.95; margin-bottom: 12px; color: #fff; }
     .hero-description { font-size: 0.9rem; color: #cbd5e1; line-height: 1.4; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .hero-buttons { display: flex; gap: 12px; width: 100%; }
-    .btn-play { background: #ffffff; color: #000000; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
-    .btn-more-info { background: rgba(109, 109, 110, 0.5); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; backdrop-filter: blur(8px); }
+    .btn-play { background: #ffffff; color: #000000; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; border: none; }
+    .btn-more-info { background: rgba(109, 109, 110, 0.5); color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; backdrop-filter: blur(8px); cursor: pointer; border: none; }
 
     .trending-section { max-width: 1200px; margin: 15px auto 10px auto; padding: 0 15px; }
     .trending-scroll { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
     .trending-scroll::-webkit-scrollbar { display: none; }
-    .trending-card { position: relative; flex: 0 0 auto; width: 180px; height: 220px; display: flex; align-items: flex-end; text-decoration: none; }
+    .trending-card { position: relative; flex: 0 0 auto; width: 180px; height: 220px; display: flex; align-items: flex-end; text-decoration: none; cursor: pointer; }
     .trending-number { font-size: 7.5rem; font-weight: 900; line-height: 0.8; color: #08080a; -webkit-text-stroke: 3px #52525b; position: absolute; left: -10px; bottom: -5px; z-index: 1; }
     .trending-poster-box { position: absolute; right: 0; top: 0; width: 130px; height: 100%; border-radius: 12px; overflow: hidden; z-index: 2; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(18, 19, 26, 0.5); }
     .trending-poster-img { width: 100%; height: 100%; object-fit: cover; }
@@ -154,7 +154,7 @@
       padding: max(30px, env(safe-area-inset-top)) 20px 30px 20px; display: flex; flex-direction: column; gap: 20px; transition: right 0.3s ease;
     }
     .side-menu-popup.active { right: 0; }
-    .side-menu-header { display: flex; justify-content: space-width; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
+    .side-menu-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
     .side-menu-title { font-family: 'Bebas Neue', cursive; font-size: 1.4rem; color: #e50914; }
     .close-menu-btn { background: rgba(255,255,255,0.06); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .menu-options-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
@@ -205,8 +205,8 @@
       <h1 class='hero-title' id='heroTitle'>Carregando...</h1>
       <p class='hero-description' id='heroDescription'>Buscando sinopse e detalhes automáticos...</p>
       <div class='hero-buttons'>
-        <a class='btn-play' id='heroBtnPlay' href='#'><i class='fa-solid fa-play'></i> Assistir</a>
-        <a class='btn-more-info' id='heroBtnInfo' href='#'><i class='fa-solid fa-circle-info'></i> Mais Informações</a>
+        <button class='btn-play' id='heroBtnPlay' onclick='openCurrentHeroMovie()'><i class='fa-solid fa-play'></i> Assistir</button>
+        <button class='btn-more-info' id='heroBtnInfo' onclick='openCurrentHeroMovie()'><i class='fa-solid fa-circle-info'></i> Mais Informações</button>
       </div>
     </div>
   </div>
@@ -325,6 +325,7 @@
     let allMovies = [];
     let heroSliderIndex = 0;
     let heroSliderData = [];
+    let currentHeroMovieId = null;
     const TMDB_KEY = '6f5b9460f7c6019e38e8d79c2f5b4cf0';
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -355,7 +356,6 @@
             const tmdbData = await tmdbRes.json();
             if (tmdbData.results && tmdbData.results.length > 0) {
               const item = tmdbData.results[0];
-              // Garante que pega sempre a capa vertical padrão (w342)
               if (item.poster_path) {
                 movie.capa = `https://image.tmdb.org/t/p/w342${item.poster_path}`;
               }
@@ -390,12 +390,12 @@
       const movie = heroSliderData[index];
       if (!movie) return;
 
+      currentHeroMovieId = movie.id;
+
       const banner = document.getElementById('heroBanner');
       const badge = document.getElementById('heroBadge');
       const title = document.getElementById('heroTitle');
       const desc = document.getElementById('heroDescription');
-      const btnPlay = document.getElementById('heroBtnPlay');
-      const btnInfo = document.getElementById('heroBtnInfo');
 
       const bgImg = movie.banner || movie.capa || '';
       
@@ -403,8 +403,12 @@
       badge.textContent = `DESTAQUE • ${movie.categoria || 'FILME'}`;
       title.textContent = movie.titulo;
       desc.textContent = movie.sinopse || 'Assista a este incrível título agora mesmo no OFFRAVE.';
-      btnPlay.href = `player.html?id=${movie.id}`;
-      btnInfo.href = `player.html?id=${movie.id}`;
+    }
+
+    function openCurrentHeroMovie() {
+      if (currentHeroMovieId) {
+        window.location.href = `player.html?id=${currentHeroMovieId}`;
+      }
     }
 
     function selectProfile(profileName, avatarUrl) {
