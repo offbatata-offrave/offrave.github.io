@@ -410,8 +410,8 @@
         <div class="profile-avatar-large" id="avatarInitial">W</div>
       </div>
       <div>
-        <h1 class="profile-name" id="profileName">Carregando...</h1>
-        <p class="profile-email" id="profileEmail">usuario@offrave.com</p>
+        <h1 class="profile-name" id="profileName">William</h1>
+        <p class="profile-email" id="profileEmail">anerosinw@gmail.com</p>
       </div>
 
       <div class="online-badge"><div class="online-dot"></div> Online</div>
@@ -508,24 +508,11 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Pega o nome e email do login atual (Firebase ou localStorage)
-      let name = localStorage.getItem('offrave_active_profile') || 'Usuário';
-      let email = 'usuario@offrave.com';
+      let name = localStorage.getItem('offrave_active_profile') || 'William';
+      let email = localStorage.getItem('offrave_user_email') || 'anerosinw@gmail.com';
 
-      if (typeof firebase !== 'undefined' && firebase.auth().currentUser) {
-        const user = firebase.auth().currentUser;
-        if (user.displayName) name = user.displayName;
-        if (user.email) email = user.email;
-      } else {
-        // Fallback inteligente se foi salvo no registro por email
-        const savedEmail = localStorage.getItem('offrave_user_email');
-        if (savedEmail) {
-          email = savedEmail;
-        } else if (name.toLowerCase().includes('willian') || name.toLowerCase().includes('william')) {
-          email = 'anerosinw@gmail.com';
-        } else {
-          email = name.toLowerCase().replace(/\s+/g, '') + '@offrave.com';
-        }
+      if (!name || name === 'Carregando...') {
+        name = 'William';
       }
 
       const avatar = localStorage.getItem('offrave_active_avatar');
@@ -558,7 +545,7 @@
       const userEmailLower = email.toLowerCase();
       const userNameLower = name.toLowerCase();
 
-      if (userEmailLower === 'anerosinw@gmail.com' || userNameLower.includes('willian') || userNameLower.includes('william')) {
+      if (userEmailLower === 'anerosinw@gmail.com' || userNameLower.includes('willian') || userNameLower.includes('william') || userNameLower.includes('anerosin')) {
         statusElement.innerHTML = `<i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Dono`;
         statusElement.style.color = '#f59e0b';
       } else {
